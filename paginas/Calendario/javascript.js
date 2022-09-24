@@ -68,10 +68,10 @@ let data = {
     headerToolbar: {
         left: 'prev,next today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+        right: 'dayGridMonth,listMonth'
     },
     initialDate: '2022-07-01',
-    navLinks: true, // can click day/week names to navigate views
+    navLinks: false, // can click day/week names to navigate views
     businessHours: true, // display business hours
     editable: true,
     selectable: true,
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var calendar = new FullCalendar.Calendar(calendarEl, data);
 
-    calendar.getInitialDate();
+    // calendar.getInitialDate();
     calendar.render();
 });
 
@@ -153,7 +153,9 @@ function init() {
                 horario: campoHorario,
                 categoria: campoCategoria,
             };
+
             updatepostit(parseInt(campoId), postit);
+
             // Limpa o formulario
             $("#form-postit")[0].reset();
         }); */
