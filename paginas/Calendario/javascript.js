@@ -1,10 +1,24 @@
 var userLoggedData = localStorage.getItem('user_login');
 
+const formatDate = (date) => {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
 onload = () => {
     if (userLoggedData) {
         var userLogged = JSON.parse(userLoggedData),
-            userLoggedObj = userLogged.user_login;
-
+        userLoggedObj = userLogged.user_login;
+        
         if (userLoggedObj[0].access != true) {
             location.href = '../index.html'
         }
@@ -25,7 +39,6 @@ function logout() {
     localStorage.setItem('user_login', JSON.stringify(users));
     location.href = '../index.html';
 }
-
 
 // Dados iniciais
 
@@ -59,9 +72,7 @@ if (!db) {
 let eventDatabase = JSON.parse(localStorage.getItem('db_postit'))
 
 if (!eventDatabase) {
-
     eventDatabase = db;
-
 }
 
 let data = {
@@ -70,7 +81,7 @@ let data = {
         center: 'title',
         right: 'dayGridMonth,listMonth'
     },
-    initialDate: '2022-07-01',
+    initialDate: formatDate(new Date().getTime()),
     navLinks: false, // can click day/week names to navigate views
     businessHours: true, // display business hours
     editable: true,
@@ -85,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     calendar.render();
 });
-
 
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
@@ -169,7 +179,6 @@ function init() {
     });
 
 }
-
 
 function addNotes() {
 

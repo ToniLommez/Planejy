@@ -1082,8 +1082,8 @@ A HORIZONTAL event
 }
 
 .fc .fc-daygrid-day.fc-day-today {
-    background-color: #6fc6ee49;
-    background-color: var(--fc-today-bg-color, #6fc6ee49);
+    background-color: #6fc6ee49 !important;
+    background-color: var(--fc-today-bg-color, #6fc6ee49) !important;
 }
 
 .fc .fc-daygrid-day-frame {
