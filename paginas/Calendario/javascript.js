@@ -92,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var calendar = new FullCalendar.Calendar(calendarEl, data);
 
+    calendar.getInitialDate();
     calendar.render();
 });
 
@@ -152,9 +153,7 @@ function init() {
                 horario: campoHorario,
                 categoria: campoCategoria,
             };
-
             updatepostit(parseInt(campoId), postit);
-
             // Limpa o formulario
             $("#form-postit")[0].reset();
         }); */
