@@ -92,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var calendar = new FullCalendar.Calendar(calendarEl, data);
 
-    calendar.getInitialDate();
     calendar.render();
 });
 
