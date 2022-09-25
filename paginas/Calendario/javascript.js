@@ -45,22 +45,11 @@ function logout() {
 var db_postits_inicial = {
     "data": [{
         "id": 0,
-        "title": "Nome da tarefa",
-        "start": "2022-06-29",
-        "descricao": "Evento descrito em uma frase de até 50 caracteres.",
+        "title": "Lorem Ipsum",
+        "start": "2022-01-01",
+        "descricao": "Lorem IPsum.",
         "horario": "22:30",
-        "color": "#A7C7E7",
-        "textColor": 'black'
-    }, {
-        "title": 'Prova de aed',
-        "start": '2022-07-06',
-        "end": '2022-07-06',
-        "color": '#a83e7a'
-    }, {
-        "title": 'Prova de calculo',
-        "start": '2022-06-30',
-        "end": '2022-06-31',
-        "color": '#a83e7a'
+        "color": "#A7C7E7"
     }, ]
 }
 
