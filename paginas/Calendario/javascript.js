@@ -53,7 +53,7 @@ var db_postits_inicial = {
     }, ]
 }
 
-var db = JSON.parse(localStorage.getItem('db_postit'));
+let db = JSON.parse(localStorage.getItem('db_postit'));
 if (!db) {
     db = db_postits_inicial
 };
@@ -83,16 +83,30 @@ let data = {
         console.log('week start', weekStart.toISOString());
         console.log('coords', jsEvent.pageX, jsEvent.pageY);
     },
+    eventDrop: function(info){
+        for(let i = 0; i < db.data.length; i++){
+            if(db.data[i].id == info.event.id){
+                db.data[i].start = formatDate(info.event.start);
+            }
+        }
+
+        localStorage.setItem('db_postit', JSON.stringify(db));
+    }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+const initCalendar = () => {
     var calendarEl = document.getElementById('calendar');
-
+    
     var calendar = new FullCalendar.Calendar(calendarEl, data);
 
-    // calendar.getInitialDate();
-    calendar.render();
-});
+    return calendar;
+}
+
+let calendar = initCalendar();
+calendar.render();
+
+calendar.eventDragging = true;
+
 
 // Menu de adição de notas
 
