@@ -2212,7 +2212,7 @@ var FullCalendar = (function(exports) {
         eventOrder: 'start,-duration,allDay,title',
         dayPopoverFormat: { month: 'long', day: 'numeric', year: 'numeric' },
         handleWindowResize: true,
-        windowResizeDelay: 100,
+        windowResizeDelay: 1,
         longPressDelay: 1000,
         eventDragMinDistance: 5,
         expandRows: false,

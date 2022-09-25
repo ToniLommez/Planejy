@@ -6,9 +6,9 @@ const formatDate = (date) => {
         day = '' + d.getDate(),
         year = d.getFullYear();
 
-    if (month.length < 2) 
+    if (month.length < 2)
         month = '0' + month;
-    if (day.length < 2) 
+    if (day.length < 2)
         day = '0' + day;
 
     return [year, month, day].join('-');
@@ -17,8 +17,8 @@ const formatDate = (date) => {
 onload = () => {
     if (userLoggedData) {
         var userLogged = JSON.parse(userLoggedData),
-        userLoggedObj = userLogged.user_login;
-        
+            userLoggedObj = userLogged.user_login;
+
         if (userLoggedObj[0].access != true) {
             location.href = '../index.html'
         }
@@ -86,16 +86,15 @@ let data = {
     businessHours: true, // display business hours
     editable: true,
     selectable: true,
+    handleWindowResize: true,
     events: eventDatabase.data,
+    windowResizeDelay: 0,
+    navLinks: true,
+    navLinkWeekClick: function(weekStart, jsEvent) {
+        console.log('week start', weekStart.toISOString());
+        console.log('coords', jsEvent.pageX, jsEvent.pageY);
+    },
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth'
-    });
-    calendar.render();
-});
 
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
