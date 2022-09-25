@@ -1,5 +1,5 @@
 body {
-    background-image: url("/Configuracoes/images/fundo_Login.png");
+    background-image: url("/Planejy/paginas/Artigos_inside/images/fundo_Login.png");
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
@@ -224,13 +224,13 @@ li a {
     min-width: 0.9em;
     font-size: 25px;
     cursor: pointer;
-    background: url("/Profissionais/images/star0.png");
+    background: url("/Planejy/paginas/Artigos_inside/images/star0.png");
     background-repeat: no-repeat;
     background-position: 0px 10px;
 }
 
 .rating>label::before {
-    content: url("/Profissionais/images/star1.png");
+    content: url("/Planejy/paginas/Artigos_inside/images/star1.png");
     padding-top: 5px;
     position: absolute;
     opacity: 0;
