@@ -78,7 +78,11 @@ h1 {
 }
 
 .inner_content {
-    padding: 20px 10px;
+    padding: 20px 5vw;
+}
+
+.inner_content2 {
+    padding: 0px 5vw 20px 5vw;
 }
 
 .sidebarHeight2 {
@@ -159,7 +163,11 @@ li a {
     max-width: 500px;
 }
 
-#float_config {
+.float-config-salvar {
+    float: right;
+}
+
+.float-config {
     float: right;
 }
 
@@ -167,6 +175,15 @@ li a {
     text-align: center;
     max-width: calc(25% + 400px);
     margin: 0px auto;
+}
+
+.label-box {
+    margin-bottom: 15px;
+}
+
+.config-box {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 @media screen and (min-width: 992px) {}
@@ -225,14 +242,11 @@ li a {
     .sidebarwidth {
         width: 140px;
     }
-    #float_config {
-        float: none;
+    .float-config {
+        margin-bottom: -30px;
     }
-    #fullsizebtn {
+    .fullsizebtn {
         width: 100%;
-    }
-    #fullsizebtn2 {
-        width: calc(50% - 8px);
     }
     #fullsizedropdown {
         width: 100%;

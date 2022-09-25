@@ -233,54 +233,62 @@
                                 <div class="card-header" style="margin: 0px;">
                                     <h1>Cadastro de Configurações</h1>
                                 </div>
-                                <div class="container-fluid">
+                                <div class="container-fluid inner_content2">
                                     <div class="row">
-                                        <div id="msg" class="col-sm-10 offset-sm-1 "></div>
+                                        <div class="col-sm-12 config-box">
+                                            <small class="float-config">* Campos obrigatórios</small>
+                                        </div>
                                     </div>
-
+                                    <!-- dados dos usuarios -->
                                     <form id="form-contato">
+                                        <!-- registro -->
                                         <div class="form-group row">
-                                            <div class="col-sm-4" style="margin-bottom: 15px;">
+                                            <div class="col-sm-3 label-box">
                                                 <label for="inputId">Id</label>
                                                 <input type="text" class="form-control" id="inputId" placeholder="386179-5" disabled>
                                             </div>
-                                            <div class="col-sm-8" style="margin-bottom: 15px;">
-                                                <label for="inputNome">Nome *</label>
-                                                <input type="text" class="form-control" id="inputNome" name="inputNome" autocomplete="off" required placeholder="Informe o nome de usuário">
-                                                <span id="instrucoes"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-sm-5" style="margin-bottom: 15px;">
-                                                <label for="inputTelefone">Telefone *</label>
-                                                <input type="text" class="form-control" id="inputTelefone" name="inputTelefone" autocomplete="off" pattern="^\(?[1-9]{2}\)? ?(?:[2-8]|9[1-9])[0-9]{3}\-?[0-9]{4}$" required placeholder="Telefone">
-                                                <span id="instrucoes"></span>
-                                            </div>
-                                            <div class="col-sm-7" style="margin-bottom: 15px;">
+                                            <div class="col-sm-9 label-box">
                                                 <label for="inputEmail">E-mail *</label>
                                                 <input type="email" class="form-control" id="inputEmail" name="inputEmail" autocomplete="off" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Ex.: john@planejy.com" required placeholder="Informe o e-mail">
                                                 <span id="instrucoes"></span>
                                             </div>
                                         </div>
+                                        <!-- importantes -->
                                         <div class="form-group row">
-                                            <div class="col-sm-3" style="margin-bottom: 15px;">
-                                                <label for="inputIdade">Idade *</label>
-                                                <input type="text" class="form-control" id="inputIdade" name="inputIdade" autocomplete="off" required placeholder="Informe a idade">
+                                            <div class="col-sm-8 label-box">
+                                                <label for="inputNome">Nome *</label>
+                                                <input type="text" class="form-control" id="inputNome" name="inputNome" autocomplete="off" required placeholder="Informe o nome de usuário">
                                                 <span id="instrucoes"></span>
                                             </div>
-                                            <div class="col-sm-9" style="margin-bottom: 15px;">
-                                                <small id="float_config">* Campos obrigatórios</small>
+                                            <div class="col-sm-4 label-box">
+                                                <label for="inputNascimento">Nascimento *</label>
+                                                <input type="date" class="form-control" id="inputNascimento" name="inputNascimento" autocomplete="on">
+                                                <span id="instrucoes"></span>
                                             </div>
                                         </div>
+                                        <!-- triviais -->
                                         <div class="form-group row">
-                                            <div class="col-sm-12" style="margin-bottom: 15px;">
-                                                <a class="btn btn-info" id="fullsizebtn" href="../../login-page/assets/passwd-recovery.html" role="button">Alterar Senha</a>
+                                            <div class="col-sm-7 label-box">
+                                                <label for="inputNick">Nick</label>
+                                                <input type="text" class="form-control" id="inputNick" name="inputNick" autocomplete="on" required placeholder="Nick">
+                                                <span id="instrucoes"></span>
+                                            </div>
+                                            <div class="col-sm-5 label-box">
+                                                <label for="inputGenero">Genero</label>
+                                                <input type="text" class="form-control" id="inputGenero" name="inputGenero" autocomplete="off" required placeholder="Informe o seu genero">
+                                                <span id="instrucoes"></span>
+                                            </div>
+                                        </div>
+                                        <!-- configuracoes -->
+                                        <div class="form-group row">
+                                            <div class="col-sm-6 config-box">
+                                                <a class="btn btn-info fullsizebtn" href="../Login/passwd-recovery.html" role="button">Alterar Senha</a>
                                             </div>
                                         </div>
                                         <div class="form-group row justify-content-between">
-                                            <div class="col-sm-6" style="margin-bottom: 15px;">
-                                                <div class="dropdown" id="fullsizebtn">
-                                                    <button class="btn dropdown-toggle btn-secondary" type="button" id="fullsizebtn" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <div class="col-sm-6 config-box">
+                                                <div class="dropdown fullsizebtn">
+                                                    <button class="btn dropdown-toggle btn-secondary fullsizebtn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                     Alterar Idioma</button>
                                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" id="fullsizedropdown">
                                                         <li><a class="dropdown-item">Português</a></li>
@@ -288,10 +296,8 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6" style="margin-bottom: 15px;">
-                                                <span id="float_config">
-                                                    <button type="submit"  class="btn btn-success fullsizebtn2" id="btnSave">Salvar</button>
-                                                </span>
+                                            <div class="col-sm-6 config-box">
+                                                <button type="submit" class="btn btn-success fullsizebtn float-config-salvar" id="btnSave">Salvar</button>
                                             </div>
                                         </div>
                                     </form>
