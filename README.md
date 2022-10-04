@@ -1,14 +1,14 @@
-Os arquivos estao divididos em tres partes
+# Divisao dos arquivos
 
-# SQL
+## SQL
 codigos sql's para reconstruir o banco de dados
 modelagem do banco de dados: https://miro.com/app/board/uXjVPdM-XNo=/
 
-# modulo_backend
+## modulo_backend
 api restful spark feita atraves de um projeto maven em java
 
 
-# modulo_frontend
+## modulo_frontend
 html, css e javascript
 o frontend nao possui dependencia de pastas com o backend
 pode ser aberto independentemente e sua pasta transferida para outro endereco
