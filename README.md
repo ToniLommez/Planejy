@@ -14,7 +14,7 @@ o frontend nao possui dependencia de pastas com o backend
 pode ser aberto independentemente e sua pasta transferida para outro endereco
 
 
-
+-------------------------------------------------------------------------------
 
 # Planejy  
 
