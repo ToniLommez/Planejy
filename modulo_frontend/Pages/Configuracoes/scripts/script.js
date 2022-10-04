@@ -1,12 +1,14 @@
 var id_input = document.querySelector('#inputId'),
-    name_input = document.querySelector('#inputNome'),
-    phone_input = document.querySelector('#inputTelefone'),
     email_input = document.querySelector('#inputEmail'),
-    age_input = document.querySelector('#inputIdade'),
+    name_input = document.querySelector('#inputNome'),
+    birth_input = document.querySelector('#inputNascimento'),
+    gender_input = document.querySelector('#inputGenero'),
+    nick_input = document.querySelector('#inputNick'),
     btn_save = document.querySelector('#btnSave'),
     userLoggedData = localStorage.getItem('user_login'),
     usersRegistered = localStorage.getItem('users'),
     usersObj = '';
+
 
 onload = () => {
     if (userLoggedData && usersRegistered) {
@@ -19,10 +21,11 @@ onload = () => {
         Object.keys(usersObj).forEach( function(id) {
             if (usersObj[id].email == userLoggedObj[0].email) {
                 id_input.value = id
-                name_input.value = usersObj[id].firstname + ' ' + usersObj[id].lastname
                 email_input.value = usersObj[id].email
-                phone_input.value = usersObj[id].phone
-                age_input.value = usersObj[id].age
+                name_input.value = usersObj[id].firstname + ' ' + usersObj[id].lastname
+                birth_input.value = usersObj[id].birth
+                gender_input.value = usersObj[id].gender
+                nick_input.value = usersObj[id].nick
             }
         })
     }
@@ -62,20 +65,21 @@ email_input.addEventListener('input', () => {
     email_input.value = email_input.value.toLowerCase();
 })
 
-phone_input.addEventListener('input', () => {
-    phone_input.value = phone_input.value.replace(/\D/g, "")
+birth_input.addEventListener('input', () => {
+    birth_input.value = birth_input.value.replace(/\D/g, "");
 })
 
-age_input.addEventListener('input', () => {
-    age_input.value = age_input.value.replace(/\D/g, "")
+gender_input.addEventListener('input', () => {
+    gender_input.value = gender_input.value.toLowerCase();
 })
 
 btn_save.addEventListener('click', () => {
     usersObj[id_input.value].firstname = name_input.value.split(" ")[0]
     usersObj[id_input.value].lastname = name_input.value.split(" ")[1]
     usersObj[id_input.value].email = email_input.value
-    usersObj[id_input.value].phone = phone_input.value
-    usersObj[id_input.value].age = age_input.value
+    usersObj[id_input.value].birth = birth_input.value
+    usersObj[id_input.value].gender = gender_input.value
+    usersObj[id_input.value].nick = nick_input.value
 
 
     localStorage.setItem('users', JSON.stringify({'user_registered': usersObj}))
