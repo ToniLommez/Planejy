@@ -1,11 +1,6 @@
 package service;
 
-<<<<<<< HEAD
-=======
-import java.util.Scanner;
-import java.io.File;
-import java.util.List;
->>>>>>> ae92672a4c231a91a53a39ab29445850af60a8cb
+
 import dao.ArtigoDAO;
 import model.Artigo;
 import spark.Request;
@@ -19,14 +14,9 @@ public class ArtigoService {
 	// private final int FORM_INSERT = 1;
 	// private final int FORM_DETAIL = 2;
 	// private final int FORM_UPDATE = 3;
-<<<<<<< HEAD
 	
 	// private final int FORM_ORDERBY_CHAVE = 1;
 	// private final int FORM_ORDERBY_RESUMO = 2;
-=======
-	private final int FORM_ORDERBY_CHAVE = 1;
-	private final int FORM_ORDERBY_RESUMO = 2;
->>>>>>> ae92672a4c231a91a53a39ab29445850af60a8cb
 
 
 	public ArtigoService() {
@@ -59,18 +49,12 @@ public class ArtigoService {
 		int chave = Integer.parseInt(request.params(":chave"));		
 		Artigo artigo = (Artigo) artigoDAO.get(chave);
 		
-<<<<<<< HEAD
         if (artigo != null) {
             response.status(200); // success
             respostaJSON = "";
             respostaJSON += "{ \"Articles\": [";
             respostaJSON += artigo.toJson();
             respostaJSON += " ] }";
-=======
-		if (artigo != null) {
-			response.status(200); // success
-			respostaJSON = artigo.toJson();
->>>>>>> ae92672a4c231a91a53a39ab29445850af60a8cb
         } else {
             response.status(404); // 404 Not found
             respostaJSON = "Artigo " + chave + " não encontrado.";   

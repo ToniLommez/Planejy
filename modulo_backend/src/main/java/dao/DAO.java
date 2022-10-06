@@ -11,7 +11,7 @@ public class DAO {
     
     public boolean conectar() {
         String driverName = "org.postgresql.Driver";                    
-        String serverName = "localhost";
+        String serverName = "planejy.postgres.database.azure.com";
         String mydatabase = "Planejy";
         int porta = 5432;
         String url = "jdbc:postgresql://" + serverName + ":" + porta +"/" + mydatabase;

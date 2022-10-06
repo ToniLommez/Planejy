@@ -21,20 +21,11 @@ public class ArtigoDAO extends DAO {
 		close();
 	}
 
-<<<<<<< HEAD
 	public Artigo get(int chave) {
-=======
-	public Artigo get(int codigo) {
->>>>>>> ae92672a4c231a91a53a39ab29445850af60a8cb
-		Artigo artigo = null;
-		
+	    Artigo artigo = null;
 		try {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-<<<<<<< HEAD
 			String sql = "SELECT * FROM planejy.artigo WHERE chave="+chave;
-=======
-			String sql = "SELECT * FROM planejy.artigo WHERE codigo="+codigo;
->>>>>>> ae92672a4c231a91a53a39ab29445850af60a8cb
 			ResultSet rs = st.executeQuery(sql);	
 	        if(rs.next()){            
 	        	 artigo = new Artigo(rs.getInt("chave"), rs.getString("imagem"), rs.getString("imagem_alt"), 
