@@ -75,7 +75,7 @@ let data = {
     events: db.data,
     windowResizeDelay: 0,
     navLinks: true,
-    eventClick: function(info){
+    eventClick: function(info) {
         updateNotes(info.event);
     },
     navLinkWeekClick: function(weekStart, jsEvent) {
@@ -130,8 +130,8 @@ function init() {
         let categ = document.getElementById('inputCategoria').querySelectorAll('option');
         let categName;
 
-        for(let i = 0; i < categ.length; i++){
-            if(categ[i].value === campoCategoria){
+        for (let i = 0; i < categ.length; i++) {
+            if (categ[i].value === campoCategoria) {
                 categName = categ[i].textContent;
                 i = categ.length; //break
             }
@@ -197,35 +197,35 @@ const updateNotes = (note) => {
     inputDescription.value = note.extendedProps.description;
     inputHour.value = note.extendedProps.horario;
     inputCategory.value = note.backgroundColor;
-    
-    
+
+
     // == defining behavior of buttons == //
-    
+
     document.getElementById('btnCancel2').onclick = () => {
         noteMenu.style.display = 'none';
     }
-    
+
     document.getElementById('btnInsert2').onclick = () => {
-        if(inputName.value == '' || inputCategory.value == '' || inputDay.value == ''){
+        if (inputName.value == '' || inputCategory.value == '' || inputDay.value == '') {
             alert('Campos obrigatórios não podem estar vazios!');
-        }else{
+        } else {
             let categ = document.getElementById('inputCategoria').querySelectorAll('option');
             let categName;
 
-            for(let i = 0; i < categ.length; i++){
-                if(categ[i].value === inputCategory.value){
+            for (let i = 0; i < categ.length; i++) {
+                if (categ[i].value === inputCategory.value) {
                     categName = categ[i].textContent;
                     i = categ.length; //break
                 }
             }
 
             let index = 0;
-            for(; index < db.data.length; index++){
-                if(db.data[index].id == note.id){
+            for (; index < db.data.length; index++) {
+                if (db.data[index].id == note.id) {
                     break;
                 }
             }
-            
+
             db.data[index].title = inputName.value;
             db.data[index].description = inputDescription.value;
             db.data[index].horario = inputHour.value;
@@ -234,13 +234,13 @@ const updateNotes = (note) => {
             db.data[index].categoria = categName;
 
             localStorage.setItem('db_postit', JSON.stringify(db));
-            
+
             noteMenu.style.display = 'none';
-            
+
             location.reload();
         }
     }
-    
+
     document.getElementById('btnClear2').onclick = () => {
         inputName.value = null;
         inputDay.value = null;
@@ -251,8 +251,8 @@ const updateNotes = (note) => {
 
     document.getElementById('btnDelet2').onclick = () => {
         let index = 0;
-        for(; index < db.data.length; index++){
-            if(db.data[index].id == note.id){
+        for (; index < db.data.length; index++) {
+            if (db.data[index].id == note.id) {
                 break;
             }
         }
@@ -267,7 +267,7 @@ function insertPostit(postit) {
     // Calcula novo Id a partir do último código existente no array (PODE GERAR ERRO SE A BASE ESTIVER VAZIA)
     let novoId = 1;
     if (db.data.length != 0)
-    novoId = db.data[db.data.length - 1].id + 1;
+        novoId = db.data[db.data.length - 1].id + 1;
     let novoPostit = {
         "id": novoId,
         "title": postit.nome,
@@ -289,7 +289,7 @@ function insertPostit(postit) {
     postNotes(postit);
 }
 
-const postNotes = (tmpNote) => {            // unimplemented
+const postNotes = (tmpNote) => { // unimplemented
     // console.log(note);
 
     let note = {
@@ -304,7 +304,7 @@ const postNotes = (tmpNote) => {            // unimplemented
 
     let xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://localhost:5678/nota/post/1', true);
-    
+
     xhr.onload = () => {
         console.log(xhr.responseText);
         alert('deu bom');
@@ -313,13 +313,13 @@ const postNotes = (tmpNote) => {            // unimplemented
     xhr.onerror = () => {
         alert('erro ao salvar nota ;-;');
     }
-    
+
     xhr.send(note);
 }
 
 const getNotes = () => {
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:5678/nota/post/1', true);
+    xhr.open('GET', 'http://localhost:5678/nota/get/1', true);
 
     xhr.onload = () => {
         console.log(xhr.responseText);
@@ -391,13 +391,13 @@ window.addEventListener('keyup', (e) => {
     const key = e.key.toLowerCase();
     bufferArray.push(key);
 
-    if(bufferArray.length === code.length){
-        if(bufferArray.every(function(element, index) {
-            return element === code[index];
-        })){
+    if (bufferArray.length === code.length) {
+        if (bufferArray.every(function(element, index) {
+                return element === code[index];
+            })) {
             location.href = 'https://taskmaster.carolnigri.repl.co/';
         }
-    }else if(bufferArray[bufferArray.length - 1] != code[bufferArray.length - 1]){
+    } else if (bufferArray[bufferArray.length - 1] != code[bufferArray.length - 1]) {
         bufferArray = [];
     }
 });
