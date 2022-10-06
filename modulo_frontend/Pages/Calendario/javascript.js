@@ -276,7 +276,7 @@ const updateNotes = (note) => {
     }
 
     document.getElementById('btnDelet2').onclick = () => {
-        db.data.pop();
+        db.data.splice(note.id, 1);
         localStorage.setItem('db_postit', JSON.stringify(db));
         location.reload();
     }
