@@ -1920,6 +1920,15 @@ A VERTICAL event
     }
 }
 
+#rr{
+    text-decoration: none;
+    color: #212529;
+}
+
+#rr:hover{
+    cursor: default;
+}
+
 #btnInsert,
 #btnInsert2 {
     background: #a7a486;
