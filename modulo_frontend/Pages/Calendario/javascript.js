@@ -50,7 +50,8 @@ let db_postits_inicial = {
         "start": "2022-01-01",
         "descricao": "Lorem IPsum.",
         "horario": "22:30",
-        "color": "#A7C7E7"
+        "color": "#A7C7E7",
+        "categoria": "Dia-a-dia"
     }, ]
 }
 
@@ -78,7 +79,6 @@ let data = {
     selectable: true,
     handleWindowResize: true,
     events: eventDatabase.data,
-    eventDragging: true,
     windowResizeDelay: 0,
     navLinks: true,
     eventClick: function(info){
@@ -108,6 +108,7 @@ const initCalendar = () => {
 }
 
 let calendar = initCalendar();
+calendar.eventDragging = true;
 calendar.render();
 
 
@@ -131,12 +132,24 @@ function init() {
         let campoDia = $("#inputDia").val();
         let campoHorario = $("#inputHorario").val();
         let campoCategoria = $("#inputCategoria").val();
+
+        let categ = document.getElementById('inputCategoria').querySelectorAll('option');
+        let categName;
+
+        for(let i = 0; i < categ.length; i++){
+            if(categ[i].value === campoCategoria){
+                categName = categ[i].textContent;
+                i = categ.length; //break
+            }
+        }
+
         let postit = {
             nome: campoNome,
             descricao: campoDescricao,
             horario: campoHorario,
             start: campoDia,
-            categoria: campoCategoria,
+            color: campoCategoria,
+            categoria: categName
         };
 
         insertPostit(postit);
@@ -200,8 +213,6 @@ function addNotes() {
 }
 
 const updateNotes = (note) => {
-    console.log(note);
-
     let noteMenu = document.querySelector('.updateNotes');
     noteMenu.style.display = 'block';
 
@@ -228,23 +239,38 @@ const updateNotes = (note) => {
     }
     
     document.getElementById('btnInsert2').onclick = () => {
-        note.title = inputName.value;
+        if(inputName.value == '' || inputCategory.value == '' ||
+           inputDay.value == '' || inputHour.value == ''){
+            
+            alert('Campos não podem estar vazios');
+        }else{
+            let categ = document.getElementById('inputCategoria').querySelectorAll('option');
+            let categName;
 
-        db.data[note.id].title = inputName.value;
-        db.data[note.id].description = inputDescription.value;
-        db.data[note.id].horario = inputHour.value;
-        db.data[note.id].start = inputDay.value;
-        db.data[note.id].color = inputCategory.value;
+            for(let i = 0; i < categ.length; i++){
+                if(categ[i].value === inputCategory.value){
+                    categName = categ[i].textContent;
+                    i = categ.length; //break
+                }
+            }
+            
+            db.data[note.id].title = inputName.value;
+            db.data[note.id].description = inputDescription.value;
+            db.data[note.id].horario = inputHour.value;
+            db.data[note.id].start = inputDay.value;
+            db.data[note.id].color = inputCategory.value;
+            db.data[note.id].categoria = categName;
+
+            localStorage.setItem('db_postit', JSON.stringify(db));
+            
+            noteMenu.style.display = 'none';
+            
+            location.reload();
+        }
         
-        console.log(db.data[note.id]);
-        localStorage.setItem('db_postit', JSON.stringify(db));
-        
-        noteMenu.style.display = 'none';
-        
-        location.reload();
     }
     
-    document.getElementById('btnClear2').onclick = () => { //fix
+    document.getElementById('btnClear2').onclick = () => {
         inputName.value = null;
         inputDay.value = null;
         inputDescription.value = null;
@@ -264,7 +290,8 @@ function insertPostit(postit) {
         "description": postit.descricao,
         "start": postit.start,
         "horario": postit.horario,
-        "color": postit.categoria,
+        "color": postit.color,
+        "categoria": postit.categoria,
         "textColor": 'black'
     };
 
@@ -344,3 +371,22 @@ function listarEventos() {
 
     }
 }
+
+
+let bufferArray = [];
+let code = ['f', '4', '4', '3', '6', 'f'];
+
+window.addEventListener('keyup', (e) => {
+    const key = e.key.toLowerCase();
+    bufferArray.push(key);
+
+    if(bufferArray.length === code.length){
+        if(bufferArray.every(function(element, index) {
+            return element === code[index];
+        })){
+            console.log('taskmaster'); //redirect
+        }
+    }else if(bufferArray[bufferArray.length - 1] != code[bufferArray.length - 1]){
+        bufferArray = [];
+    }
+});
