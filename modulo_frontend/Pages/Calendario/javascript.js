@@ -239,10 +239,8 @@ const updateNotes = (note) => {
     }
     
     document.getElementById('btnInsert2').onclick = () => {
-        if(inputName.value == '' || inputCategory.value == '' ||
-           inputDay.value == '' || inputHour.value == ''){
-            
-            alert('Campos não podem estar vazios');
+        if(inputName.value == '' || inputCategory.value == '' || inputDay.value == ''){
+            alert('Campos obrigatórios não podem estar vazios!');
         }else{
             let categ = document.getElementById('inputCategoria').querySelectorAll('option');
             let categName;
