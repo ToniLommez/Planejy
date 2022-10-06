@@ -8,6 +8,7 @@ CREATE TABLE Planejy.Usuario (
     senha       TEXT         NOT NULL,
     email       VARCHAR(120) NOT NULL UNIQUE,
     genero      CHAR(1)                       DEFAULT 'n',
+    token       CHAR(80),
     
     PRIMARY KEY (id)
 );
