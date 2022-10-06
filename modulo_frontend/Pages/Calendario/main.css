@@ -1920,25 +1920,25 @@ A VERTICAL event
     }
 }
 
-#btnInsert {
+#btnInsert, #btnInsert2 {
     background: #a7a486;
     color: white;
     border-color: #757354;
 }
 
-#btnClear {
+#btnClear, #btnClear2 {
     background: #8d7ea3;
     color: white;
     border-color: #5e4c77;
 }
 
-#btnCancel {
+#btnCancel, #btnCancel2 {
     background: #aa727f;
     color: white;
     border-color: #723f4a;
 }
 
-#btnInsert:hover {
+#btnInsert:hover, #btnInsert2:hover {
     color: #fff;
     color: var(--fc-button-text-color, #fff);
     background-color: #757354;
@@ -1947,7 +1947,7 @@ A VERTICAL event
     border-color: var(--fc-button-hover-border-color, #757354);
 }
 
-#btnClear:hover {
+#btnClear:hover, #btnClear2:hover {
     color: #fff;
     color: var(--fc-button-text-color, #fff);
     background-color: #5e4c77;
@@ -1956,7 +1956,7 @@ A VERTICAL event
     border-color: var(--fc-button-hover-border-color, #5e4c77);
 }
 
-#btnCancel:hover {
+#btnCancel:hover, #btnCancel2:hover {
     color: #fff;
     color: var(--fc-button-text-color, #fff);
     background-color: #723f4a;

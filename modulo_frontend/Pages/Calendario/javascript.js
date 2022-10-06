@@ -1,7 +1,7 @@
-var userLoggedData = localStorage.getItem('user_login');
+let userLoggedData = localStorage.getItem('user_login');
 
 const formatDate = (date) => {
-    var d = new Date(date),
+    let d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
@@ -16,7 +16,7 @@ const formatDate = (date) => {
 
 onload = () => {
     if (userLoggedData) {
-        var userLogged = JSON.parse(userLoggedData),
+        let userLogged = JSON.parse(userLoggedData),
             userLoggedObj = userLogged.user_login;
 
         if (userLoggedObj[0].access != true) {
@@ -27,8 +27,9 @@ onload = () => {
     }
 }
 
-function logout() {
-    var users = {
+//function called by Calendario.html
+const logout = () => {
+    let users = {
         'user_login': [{
             'firstname': '',
             'email': '',
@@ -42,7 +43,7 @@ function logout() {
 
 // Dados iniciais
 
-var db_postits_inicial = {
+let db_postits_inicial = {
     "data": [{
         "id": 0,
         "title": "Lorem Ipsum",
@@ -58,7 +59,7 @@ if (!db) {
     db = db_postits_inicial
 };
 
-let eventDatabase = JSON.parse(localStorage.getItem('db_postit'))
+let eventDatabase = JSON.parse(localStorage.getItem('db_postit'));
 
 if (!eventDatabase) {
     eventDatabase = db;
@@ -77,8 +78,12 @@ let data = {
     selectable: true,
     handleWindowResize: true,
     events: eventDatabase.data,
+    eventDragging: true,
     windowResizeDelay: 0,
     navLinks: true,
+    eventClick: function(info){
+        updateNotes(info.event);
+    },
     navLinkWeekClick: function(weekStart, jsEvent) {
         console.log('week start', weekStart.toISOString());
         console.log('coords', jsEvent.pageX, jsEvent.pageY);
@@ -95,17 +100,15 @@ let data = {
 }
 
 const initCalendar = () => {
-    var calendarEl = document.getElementById('calendar');
+    let calendarEl = document.getElementById('calendar');
 
-    var calendar = new FullCalendar.Calendar(calendarEl, data);
+    let calendar = new FullCalendar.Calendar(calendarEl, data);
 
     return calendar;
 }
 
 let calendar = initCalendar();
 calendar.render();
-
-calendar.eventDragging = true;
 
 
 // Menu de adição de notas
@@ -184,7 +187,7 @@ function init() {
 
 function addNotes() {
 
-    let noteMenu = document.querySelector('.container')
+    let noteMenu = document.querySelector('.addNotes');
     noteMenu.style.display = 'block';
 
     $('#btnCancel').click(function() {
@@ -196,11 +199,65 @@ function addNotes() {
     init();
 }
 
+const updateNotes = (note) => {
+    console.log(note);
+
+    let noteMenu = document.querySelector('.updateNotes');
+    noteMenu.style.display = 'block';
+
+    let inputName = document.getElementById('inputNome2');
+    let inputDay = document.getElementById('inputDia2');
+    let inputDescription = document.getElementById('inputDescricao2');
+    let inputHour = document.getElementById('inputHorario2');
+    let inputCategory = document.getElementById('inputCategoria2');
+
+
+    // == fill current note values == //
+
+    inputName.value = note.title;
+    inputDay.value = note.startStr;
+    inputDescription.value = note.extendedProps.description;
+    inputHour.value = note.extendedProps.horario;
+    inputCategory.value = note.backgroundColor;
+    
+    
+    // == defining behavior of buttons == //
+    
+    document.getElementById('btnCancel2').onclick = () => {
+        noteMenu.style.display = 'none';
+    }
+    
+    document.getElementById('btnInsert2').onclick = () => {
+        note.title = inputName.value;
+
+        db.data[note.id].title = inputName.value;
+        db.data[note.id].description = inputDescription.value;
+        db.data[note.id].horario = inputHour.value;
+        db.data[note.id].start = inputDay.value;
+        db.data[note.id].color = inputCategory.value;
+        
+        console.log(db.data[note.id]);
+        localStorage.setItem('db_postit', JSON.stringify(db));
+        
+        noteMenu.style.display = 'none';
+        
+        location.reload();
+    }
+    
+    document.getElementById('btnClear2').onclick = () => { //fix
+        inputName.value = null;
+        inputDay.value = null;
+        inputDescription.value = null;
+        inputHour.value = null;
+        inputCategory.value = null;
+    }
+}
+
 function insertPostit(postit) {
     // Calcula novo Id a partir do último código existente no array (PODE GERAR ERRO SE A BASE ESTIVER VAZIA)
     let novoId = 1;
     if (db.data.length != 0)
-        novoId = db.data[db.data.length - 1].id + 1;
+    novoId = db.data[db.data.length - 1].id + 1;
     let novoPostit = {
         "id": novoId,
         "title": postit.nome,
@@ -219,22 +276,22 @@ function insertPostit(postit) {
     localStorage.setItem('db_postit', JSON.stringify(db));
 }
 
-function updatepostit(id, postit) {
-    // Localiza o indice do objeto a ser alterado no array a partir do seu ID
-    let index = db.data.map(obj => obj.id).indexOf(id);
+// function updatepostit(id, postit) {
+//     // Localiza o indice do objeto a ser alterado no array a partir do seu ID
+//     let index = db.data.map(obj => obj.id).indexOf(id);
 
-    // Altera os dados do objeto no array
-    db.data[index].descricao = postit.descricao,
-        db.data[index].dia = postit.dia,
-        db.data[index].horario = postit.horario,
-        db.data[index].urgencia = postit.urgencia,
-        db.data[index].categoria = postit.categoria
+//     // Altera os dados do objeto no array
+//     db.data[index].descricao = postit.descricao,
+//         db.data[index].dia = postit.dia,
+//         db.data[index].horario = postit.horario,
+//         db.data[index].urgencia = postit.urgencia,
+//         db.data[index].categoria = postit.categoria
 
-    //displayMessage("Post-it alterado com sucesso");
+//     //displayMessage("Post-it alterado com sucesso");
 
-    // Atualiza os dados no Local Storage
-    localStorage.setItem('db_postit', JSON.stringify(db));
-}
+//     // Atualiza os dados no Local Storage
+//     localStorage.setItem('db_postit', JSON.stringify(db));
+// }
 
 function deletepostit(id) {
     // Filtra o array removendo o elemento com o id passado
@@ -250,7 +307,7 @@ function openEventList() {
 
     // Abrindo a lista
 
-    let noteList = document.querySelector('.tabelaEventos')
+    let noteList = document.querySelector('.tabelaEventos');
 
     noteList.style.display = 'block';
 
@@ -259,11 +316,8 @@ function openEventList() {
     listarEventos();
 
     $('#btnClose').click(function() {
-
         noteList.style.display = 'none';
-
     });
-
 }
 
 function listarEventos() {
@@ -289,5 +343,4 @@ function listarEventos() {
         // Colorindo o fundo da tabela de acordo com a categoria
 
     }
-
 }

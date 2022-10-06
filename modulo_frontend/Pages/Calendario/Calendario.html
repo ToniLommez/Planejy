@@ -202,7 +202,7 @@
                 list_alt
             </span></div>
 
-        <div class="container">
+        <div class="container addNotes">
             <div class="img-box2">
                 <img src="images/Untitled-1.jpg" id="login-img" alt="Post-its">
             </div>
@@ -253,6 +253,62 @@
                             <input type="button" class="btn btn-success" id="btnInsert" value="Inserir">
                             <input type="button" class="btn btn-secondary" id="btnClear" value="Limpar">
                             <input type="button" class="btn btn-cancel" id="btnCancel" value="Cancelar">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="container updateNotes">
+            <div class="img-box2">
+                <img src="images/Untitled-1.jpg" id="login-img" alt="Post-its">
+            </div>
+            <div class="row">
+                <div id="msg" class="col-sm-10 offset-sm-1 ">
+                    <!--<div class="alert alert-warning">Post-it não encontrado.</div>-->
+                </div>
+            </div>
+            <form id="form-postit">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="inputNome2">Nome do evento (*)</label>
+                        <input type="text" class="form-control" id="inputNome2" required placeholder="Nomeie sua anotação">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="inputDia2">Data (*)</label>
+                        <input type="date" class="form-control" id="inputDia2" required placeholder="aaaa-mm-dd">
+                    </div>
+                </div>
+                <div class="form-group row smallPadding">
+                    <div class="col-sm-12">
+                        <label for="inputDescricao2">Descrição do evento (*)</label>
+                        <input type="text" class="form-control" id="inputDescricao2" required placeholder="Descreva a tarefa da melhor forma que conseguir!">
+                    </div>
+                </div>
+                <div class="form-group row smallPadding">
+                    <div class="col-sm-6">
+                        <label for="inputHorario2">Horário</label>
+                        <input type="time" class="form-control" id="inputHorario2" placeholder="Informe o horário da tarefa">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="inputCategoria2">Categoria</label>
+                        <select name="selectCategoria" id="inputCategoria2" class="form-control">
+                            <option value="">Selecione a Categoria</option>
+                            <option value="#dfaeb8">Trabalho</option>
+                            <option value="#fac898">Estudos</option>
+                            <option value="#a7c7e7">Dia-a-dia</option>
+                            <option value="#c1e1c1">Lazer</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row justify-content-between smallPadding">
+                    <div class="col-sm-4">
+                        <small>(*) Campos obrigatórios</small>
+                    </div>
+                    <div class="form-group col-4" style="margin-top: 10px;">
+                        <div id="form-buttons">
+                            <input type="button" class="btn btn-success" id="btnInsert2" value="Inserir">
+                            <input type="button" class="btn btn-secondary" id="btnClear2" value="Limpar">
+                            <input type="button" class="btn btn-cancel" id="btnCancel2" value="Cancelar">
                         </div>
                     </div>
                 </div>
