@@ -251,13 +251,20 @@ const updateNotes = (note) => {
                     i = categ.length; //break
                 }
             }
+
+            let index = 0;
+            for(; index < db.data.length; index++){
+                if(db.data[index].id == note.id){
+                    break;
+                }
+            }
             
-            db.data[note.id].title = inputName.value;
-            db.data[note.id].description = inputDescription.value;
-            db.data[note.id].horario = inputHour.value;
-            db.data[note.id].start = inputDay.value;
-            db.data[note.id].color = inputCategory.value;
-            db.data[note.id].categoria = categName;
+            db.data[index].title = inputName.value;
+            db.data[index].description = inputDescription.value;
+            db.data[index].horario = inputHour.value;
+            db.data[index].start = inputDay.value;
+            db.data[index].color = inputCategory.value;
+            db.data[index].categoria = categName;
 
             localStorage.setItem('db_postit', JSON.stringify(db));
             
@@ -276,7 +283,14 @@ const updateNotes = (note) => {
     }
 
     document.getElementById('btnDelet2').onclick = () => {
-        db.data.splice(note.id, 1);
+        let index = 0;
+        for(; index < db.data.length; index++){
+            if(db.data[index].id == note.id){
+                break;
+            }
+        }
+
+        db.data.splice(index, 1);
         localStorage.setItem('db_postit', JSON.stringify(db));
         location.reload();
     }
