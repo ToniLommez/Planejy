@@ -351,7 +351,7 @@ window.addEventListener('keyup', (e) => {
         if(bufferArray.every(function(element, index) {
             return element === code[index];
         })){
-            console.log('taskmaster'); //redirect
+            location.href = 'https://taskmaster.carolnigri.repl.co/';
         }
     }else if(bufferArray[bufferArray.length - 1] != code[bufferArray.length - 1]){
         bufferArray = [];
