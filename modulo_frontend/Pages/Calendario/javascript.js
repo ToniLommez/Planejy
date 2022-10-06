@@ -303,7 +303,7 @@ const postNotes = (tmpNote) => {            // unimplemented
     }
 
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', '/nota/post/1', true);
+    xhr.open('POST', 'http://localhost:5678/nota/post/1', true);
     
     xhr.onload = () => {
         console.log(xhr.responseText);
@@ -315,6 +315,21 @@ const postNotes = (tmpNote) => {            // unimplemented
     }
     
     xhr.send(note);
+}
+
+const getNotes = () => {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:5678/nota/post/1', true);
+
+    xhr.onload = () => {
+        console.log(xhr.responseText);
+    }
+
+    xhr.onerror = () => {
+        alert('erro ao salvar nota ;-;');
+    }
+
+    xhr.send();
 }
 
 function deletepostit(id) {
