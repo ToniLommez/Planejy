@@ -23,7 +23,6 @@ onload = () => {
             location.href = '../../index.html'
         }
 
-        // getNotes();
     } else {
         location.href = '../../index.html'
     }
@@ -57,57 +56,77 @@ let db_postits_inicial = {
     }, ]
 }
 
-let db = JSON.parse(localStorage.getItem('db_postit'));
+const getNotes = () => {
+    let xhttp = new XMLHttpRequest();
 
-if(!db){
-    db = db_postits_inicial;
-}
-
-let data = {
-    headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,listMonth'
-    },
-    initialDate: formatDate(new Date().getTime()),
-    navLinks: false, // can click day/week names to navigate views
-    businessHours: true, // display business hours
-    editable: true,
-    selectable: true,
-    handleWindowResize: true,
-    events: db.data,
-    windowResizeDelay: 0,
-    navLinks: true,
-    eventClick: function(info) {
-        updateNotes(info.event);
-    },
-    navLinkWeekClick: function(weekStart, jsEvent) {
-        console.log('week start', weekStart.toISOString());
-        console.log('coords', jsEvent.pageX, jsEvent.pageY);
-    },
-    eventDrop: function(info) {
-        for (let i = 0; i < db.data.length; i++) {
-            if (db.data[i].id == info.event.id) {
-                db.data[i].start = formatDate(info.event.start);
-            }
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            loadNotes(xhttp.responseText);
         }
+    };
+    xhttp.open("GET", "http://localhost:5678/nota/get/1", true);
+    xhttp.send();
+}
 
-        localStorage.setItem('db_postit', JSON.stringify(db));
+function loadNotes(teste) {
+    const jsonteste = JSON.parse(teste);
+    console.log(jsonteste);
+
+    let db = JSON.parse(xhttp.responseText);
+
+    for (let i = 0; i < db.Notas.length; i++) {
+        db.Notas.push(db.Notas[i]);
     }
+
+    if (!db) {
+        db = db_postits_inicial;
+    }
+
+    let data = {
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,listMonth'
+        },
+        initialDate: formatDate(new Date().getTime()),
+        navLinks: false, // can click day/week names to navigate views
+        businessHours: true, // display business hours
+        editable: true,
+        selectable: true,
+        handleWindowResize: true,
+        events: db.Notas,
+        windowResizeDelay: 0,
+        navLinks: true,
+        eventClick: function(info) {
+            updateNotes(info.event);
+        },
+        navLinkWeekClick: function(weekStart, jsEvent) {
+            console.log('week start', weekStart.toISOString());
+            console.log('coords', jsEvent.pageX, jsEvent.pageY);
+        },
+        eventDrop: function(info) {
+            for (let i = 0; i < db.Notas.length; i++) {
+                if (db.Notas[i].id == info.event.id) {
+                    db.Notas[i].start = formatDate(info.event.start);
+                }
+            }
+
+            localStorage.setItem('db_postit', JSON.stringify(db));
+        }
+    }
+
+    const initCalendar = () => {
+        let calendarEl = document.getElementById('calendar');
+
+        let calendar = new FullCalendar.Calendar(calendarEl, data);
+
+        return calendar;
+    }
+
+    let calendar = initCalendar();
+    calendar.eventDragging = true;
+    calendar.render();
 }
-
-const initCalendar = () => {
-    let calendarEl = document.getElementById('calendar');
-
-    let calendar = new FullCalendar.Calendar(calendarEl, data);
-
-    return calendar;
-}
-
-let calendar = initCalendar();
-calendar.eventDragging = true;
-calendar.render();
-
 
 // Menu de adição de notas
 
@@ -223,18 +242,18 @@ const updateNotes = (note) => {
             }
 
             let index = 0;
-            for (; index < db.data.length; index++) {
-                if (db.data[index].id == note.id) {
+            for (; index < db.Notas.length; index++) {
+                if (db.Notas[index].id == note.id) {
                     break;
                 }
             }
 
-            db.data[index].title = inputName.value;
-            db.data[index].description = inputDescription.value;
-            db.data[index].horario = inputHour.value;
-            db.data[index].start = inputDay.value;
-            db.data[index].color = inputCategory.value;
-            db.data[index].categoria = categName;
+            db.Notas[index].title = inputName.value;
+            db.Notas[index].description = inputDescription.value;
+            db.Notas[index].horario = inputHour.value;
+            db.Notas[index].start = inputDay.value;
+            db.Notas[index].color = inputCategory.value;
+            db.Notas[index].categoria = categName;
 
             localStorage.setItem('db_postit', JSON.stringify(db));
 
@@ -254,13 +273,13 @@ const updateNotes = (note) => {
 
     document.getElementById('btnDelet2').onclick = () => {
         let index = 0;
-        for (; index < db.data.length; index++) {
-            if (db.data[index].id == note.id) {
+        for (; index < db.Notas.length; index++) {
+            if (db.Notas[index].id == note.id) {
                 break;
             }
         }
 
-        db.data.splice(index, 1);
+        db.Notas.splice(index, 1);
         localStorage.setItem('db_postit', JSON.stringify(db));
         location.reload();
     }
@@ -269,8 +288,8 @@ const updateNotes = (note) => {
 function insertPostit(postit) {
     // Calcula novo Id a partir do último código existente no array (PODE GERAR ERRO SE A BASE ESTIVER VAZIA)
     let novoId = 1;
-    if (db.data.length != 0)
-        novoId = db.data[db.data.length - 1].id + 1;
+    if (db.Notas.length != 0)
+        novoId = db.Notas[db.Notas.length - 1].id + 1;
     let novoPostit = {
         "id": novoId,
         "title": postit.nome,
@@ -283,7 +302,7 @@ function insertPostit(postit) {
     };
 
     // Insere o novo objeto no array
-    db.data.push(novoPostit);
+    db.Notas.push(novoPostit);
     //displayMessage("Post-it criado com sucesso");
 
     // Atualiza os dados no Local Storage
@@ -319,31 +338,9 @@ const postNotes = (tmpNote) => { // unimplemented
     xhr.send(note);
 }
 
-const getNotes = () => {
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:5678/nota/get/1', true);
-
-    xhr.onload = () => {
-        let tmp = JSON.parse(xhr.responseText);
-
-        for(let i = 0; i < tmp.Notas.length; i++){
-            db.data.push(tmp.Notas[i]);
-        }
-
-        localStorage.setItem('db_postit', JSON.stringify(db));
-        location.reload();
-    }
-
-    xhr.onerror = () => {
-        alert('erro ao recuperar notas ;-;');
-    }
-
-    xhr.send();
-}
-
 function deletepostit(id) {
     // Filtra o array removendo o elemento com o id passado
-    db.data = db.data.filter(function(element) { return element.id != id });
+    db.Notas = db.Notas.filter(function(element) { return element.id != id });
 
     //displayMessage("Post-it removido com sucesso");
 
@@ -376,8 +373,8 @@ function listarEventos() {
 
     // Popula a tabela com os registros do banco de dados
 
-    for (let index = 0; index < db.data.length; index++) {
-        const evento = db.data[index];
+    for (let index = 0; index < db.Notas.length; index++) {
+        const evento = db.Notas[index];
 
         // Inclui o contato na tabela   
 
