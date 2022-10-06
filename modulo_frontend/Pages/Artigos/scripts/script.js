@@ -38,7 +38,7 @@ function executaPesquisa() {
             loadArticles(xhttp.responseText);
         }
     };
-    xhttp.open("GET", "http://localhost:5678/hello", true);
+    xhttp.open("GET", "http://localhost:5678/articles/1", true);
     xhttp.send();
 }
 
@@ -67,16 +67,16 @@ function loadArticles(teste) {
                 <div class="card mb-6">
                     <div class="row">
                         <div class="col-auto">
-                            <img src="${jsonteste.Articles[i].image}" alt="Trendy Pants and Shoes" class="img-fluid rounded-start" id="img_Control" />
+                            <img src="/Pages/Artigos/images/article-${jsonteste.Articles[i].chave}.png" alt="${jsonteste.Articles[i].imagem_alt}" class="img-fluid rounded-start" id="img_Control" />
                         </div>
                         <div class="col-lg">
                             <div class="card-body">
-                                <h5 class="card-title">${jsonteste.Articles[i].title}</h5>
+                                <h5 class="card-title">${jsonteste.Articles[i].titulo}</h5>
                                 <p class="card-text">
-                                    ${jsonteste.Articles[i].brief}
+                                    ${jsonteste.Articles[i].resumo}
                                 </p>
                                 <form action="../Artigos_inside/Artigos_inside.html">
-                                    <input type="hidden" name="article_id" value="1">
+                                    <input type="hidden" name="article_id" value="${jsonteste.Articles[i].chave}">
                                     <input class="btn btn-primary" type="submit" value="Leia Mais">
                                 </form>
                                 <div class="stars">

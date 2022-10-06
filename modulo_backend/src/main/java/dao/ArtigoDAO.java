@@ -1,17 +1,17 @@
 package dao;
 
-import model.Usuario;
+import model.Artigo;
 
-import java.sql.PreparedStatement;
+// import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+// import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class UsuarioDAO extends DAO {	
-	public UsuarioDAO() {
+public class ArtigoDAO extends DAO {	
+	public ArtigoDAO() {
 		super();
 		conectar();
 	}
@@ -20,85 +20,61 @@ public class UsuarioDAO extends DAO {
 	public void finalize() {
 		close();
 	}
-	
-	
-	public boolean insert(Usuario usuario) {
-		boolean status = false;
-		try {  
-			Statement st = conexao.createStatement();
-			st.executeUpdate("INSERT INTO x (login, senha, sexo) "
-					       + "VALUES ('"+ usuario.getLogin() + "', '"  
-					       + usuario.getSenha() + "', '" + usuario.getSexo() + "');");
-			st.close();
-			status = true;
-		} catch (SQLException u) {  
-			throw new RuntimeException(u);
-		}
-		return status;
-	}
 
-	
-	public Usuario get(int codigo) {
-		Usuario usuario = null;
+	public Artigo get(int chave) {
+		Artigo artigo = null;
 		
 		try {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM x WHERE codigo="+codigo;
+			String sql = "SELECT * FROM planejy.artigo WHERE chave="+chave;
 			ResultSet rs = st.executeQuery(sql);	
 	        if(rs.next()){            
-	        	 usuario = new Usuario(rs.getInt("codigo"), rs.getString("login"), rs.getString("senha"), 
-	                				   rs.getString("sexo"));
+	        	 artigo = new Artigo(rs.getInt("chave"), rs.getString("imagem"), rs.getString("imagem_alt"), 
+	                				 rs.getString("titulo"), rs.getString("conteudo"), rs.getString("resumo"),
+	                				 rs.getString("autor"), rs.getDate("dia").toLocalDate());
 	        }
 	        st.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
-		return usuario;
+		return artigo;
 	}
 	
 	
-	public List<Usuario> get() {
+	public List<Artigo> get() {
 		return get("");
 	}
 
 	
-	public List<Usuario> getOrderByCodigo() {
+	public List<Artigo> getOrderByCodigo() {
 		return get("codigo");		
 	}
 	
 	
-	public List<Usuario> getOrderByLogin() {
-		return get("login");		
-	}
+	// public List<Artigo> getOrderByLogin() {
+	// 	return get("login");		
+	// }
 	
-	
-	public List<Usuario> getOrderBySenha() {
-		return get("senha");		
-	}
-	
-	public List<Usuario> getOrderBySexo() {
-		return get("sexo");		
-	}
-	
-	private List<Usuario> get(String orderBy) {
-		List<Usuario> usuarios = new ArrayList<Usuario>();
+	private List<Artigo> get(String orderBy) {
+		List<Artigo> artigos = new ArrayList<Artigo>();
 		try {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM x" + ((orderBy.trim().length() == 0) ? "" : (" ORDER BY " + orderBy));
+			String sql = "SELECT * FROM planejy.artigo" + ((orderBy.trim().length() == 0) ? "" : (" ORDER BY " + orderBy));
 			ResultSet rs = st.executeQuery(sql);	           
 	        while(rs.next()) {	            	
-	        	Usuario p = new Usuario(rs.getInt("codigo"), rs.getString("login"), rs.getString("senha"), 
-     				   					rs.getString("sexo"));
-	            usuarios.add(p);
+	        	Artigo p = new Artigo(rs.getInt("chave"), rs.getString("imagem"), rs.getString("imagem_alt"), 
+                                      rs.getString("titulo"), rs.getString("conteudo"), rs.getString("resumo"),
+                                      rs.getString("autor"), rs.getDate("dia").toLocalDate());
+	            artigos.add(p);
 	        }
 	        st.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
-		return usuarios;
+		return artigos;
 	}
 	
-	
+	/*
 	public boolean update(Usuario usuario) {
 		boolean status = false;
 		try {  
@@ -115,8 +91,9 @@ public class UsuarioDAO extends DAO {
 		}
 		return status;
 	}
+	*/
 	
-	
+	/*
 	public boolean delete(int codigo) {
 		boolean status = false;
 		try {  
@@ -129,7 +106,9 @@ public class UsuarioDAO extends DAO {
 		}
 		return status;
 	}
+	*/
 	
+	/*
 	public int getLastCodigo() {
 		Usuario[] usuarios = null;
 		
@@ -161,4 +140,5 @@ public class UsuarioDAO extends DAO {
 		
 		return novoCodigo;
 	}
+	*/
 }
