@@ -22,6 +22,8 @@ onload = () => {
         if (userLoggedObj[0].access != true) {
             location.href = '../../index.html'
         }
+
+        // getNotes();
     } else {
         location.href = '../../index.html'
     }
@@ -56,9 +58,10 @@ let db_postits_inicial = {
 }
 
 let db = JSON.parse(localStorage.getItem('db_postit'));
-if (!db) {
-    db = db_postits_inicial
-};
+
+if(!db){
+    db = db_postits_inicial;
+}
 
 let data = {
     headerToolbar: {
@@ -151,7 +154,7 @@ function init() {
         // Limpa o formulario
         $("#form-postit")[0].reset();
 
-        // location.reload();
+        location.reload();
 
     });
 
@@ -286,7 +289,6 @@ function insertPostit(postit) {
     // Atualiza os dados no Local Storage
     localStorage.setItem('db_postit', JSON.stringify(db));
 
-    postNotes(postit);
 }
 
 const postNotes = (tmpNote) => { // unimplemented
@@ -311,7 +313,7 @@ const postNotes = (tmpNote) => { // unimplemented
     }
 
     xhr.onerror = () => {
-        alert('erro ao salvar nota ;-;');
+        alert('erro ao salvar notas ;-;');
     }
 
     xhr.send(note);
@@ -322,11 +324,18 @@ const getNotes = () => {
     xhr.open('GET', 'http://localhost:5678/nota/get/1', true);
 
     xhr.onload = () => {
-        console.log(xhr.responseText);
+        let tmp = JSON.parse(xhr.responseText);
+
+        for(let i = 0; i < tmp.Notas.length; i++){
+            db.data.push(tmp.Notas[i]);
+        }
+
+        localStorage.setItem('db_postit', JSON.stringify(db));
+        location.reload();
     }
 
     xhr.onerror = () => {
-        alert('erro ao salvar nota ;-;');
+        alert('erro ao recuperar notas ;-;');
     }
 
     xhr.send();
