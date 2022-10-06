@@ -1920,25 +1920,35 @@ A VERTICAL event
     }
 }
 
-#btnInsert, #btnInsert2 {
+#btnInsert,
+#btnInsert2 {
     background: #a7a486;
     color: white;
     border-color: #757354;
 }
 
-#btnClear, #btnClear2 {
+#btnClear,
+#btnClear2 {
     background: #8d7ea3;
     color: white;
     border-color: #5e4c77;
 }
 
-#btnCancel, #btnCancel2 {
+#btnCancel,
+#btnCancel2 {
     background: #aa727f;
     color: white;
     border-color: #723f4a;
 }
 
-#btnInsert:hover, #btnInsert2:hover {
+#btnDelet2 {
+    background: #302d38;
+    color: white;
+    border-color: #0b0b0e;
+}
+
+#btnInsert:hover,
+#btnInsert2:hover {
     color: #fff;
     color: var(--fc-button-text-color, #fff);
     background-color: #757354;
@@ -1947,7 +1957,8 @@ A VERTICAL event
     border-color: var(--fc-button-hover-border-color, #757354);
 }
 
-#btnClear:hover, #btnClear2:hover {
+#btnClear:hover,
+#btnClear2:hover {
     color: #fff;
     color: var(--fc-button-text-color, #fff);
     background-color: #5e4c77;
@@ -1956,13 +1967,27 @@ A VERTICAL event
     border-color: var(--fc-button-hover-border-color, #5e4c77);
 }
 
-#btnCancel:hover, #btnCancel2:hover {
+#btnCancel:hover,
+#btnCancel2:hover {
     color: #fff;
     color: var(--fc-button-text-color, #fff);
     background-color: #723f4a;
     background-color: var(--fc-button-hover-bg-color, #723f4a);
     border-color: #723f4a;
     border-color: var(--fc-button-hover-border-color, #723f4a);
+}
+
+#btnDelet2:hover {
+    color: #fff;
+    color: var(--fc-button-text-color, #fff);
+    background-color: #0b0b0e;
+    background-color: var(--fc-button-hover-bg-color, #0b0b0e);
+    border-color: #0b0b0e;
+    border-color: var(--fc-button-hover-border-color, #0b0b0e);
+}
+
+.float-rigth {
+    float: right;
 }
 
 .btn-add-postit {
