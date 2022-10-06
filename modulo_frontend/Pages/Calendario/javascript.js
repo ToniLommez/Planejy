@@ -151,7 +151,7 @@ function init() {
         // Limpa o formulario
         $("#form-postit")[0].reset();
 
-        location.reload();
+        // location.reload();
 
     });
 
@@ -285,6 +285,36 @@ function insertPostit(postit) {
 
     // Atualiza os dados no Local Storage
     localStorage.setItem('db_postit', JSON.stringify(db));
+
+    postNotes(postit);
+}
+
+const postNotes = (tmpNote) => {            // unimplemented
+    // console.log(note);
+
+    let note = {
+        id_usuario: 1,
+        titulo: tmpNote.nome,
+        dia: tmpNote.start,
+        descricao: tmpNote.descricao,
+        horario: tmpNote.horario,
+        categoria: tmpNote.categoria,
+        cor: tmpNote.color
+    }
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', '/nota/post/1', true);
+    
+    xhr.onload = () => {
+        console.log(xhr.responseText);
+        alert('deu bom');
+    }
+
+    xhr.onerror = () => {
+        alert('erro ao salvar nota ;-;');
+    }
+    
+    xhr.send(note);
 }
 
 function deletepostit(id) {
@@ -338,7 +368,6 @@ function listarEventos() {
 
     }
 }
-
 
 let bufferArray = [];
 let code = ['f', '4', '4', '3', '6', 'f'];
