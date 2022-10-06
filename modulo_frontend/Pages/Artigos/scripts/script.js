@@ -38,11 +38,7 @@ function executaPesquisa() {
             loadArticles(xhttp.responseText);
         }
     };
-<<<<<<< HEAD
     xhttp.open("GET", "http://localhost:5678/articles/1", true);
-=======
-    xhttp.open("GET", "http://localhost:5678/article/2", true);
->>>>>>> ae92672a4c231a91a53a39ab29445850af60a8cb
     xhttp.send();
 }
 
