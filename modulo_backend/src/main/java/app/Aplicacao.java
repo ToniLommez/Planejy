@@ -2,11 +2,13 @@ package app;
 
 import static spark.Spark.*;
 import service.ArtigoService;
+import service.NotaService;
 import spark.Filter;
 
 public class Aplicacao {
     
     private static ArtigoService artigoService = new ArtigoService();
+    private static NotaService notaService = new NotaService();
     
     public static void main(String[] args) {
         port(5678);
@@ -19,7 +21,9 @@ public class Aplicacao {
         
         get("/articles/:chave", (request, response) -> artigoService.get(request, response));
         
-        // post("/usuario/insert", (request, response) -> usuarioService.insert(request, response));
+        get("/nota/get/:id_usuario", (request, response) -> notaService.get(request, response));
+        
+        // post("/users/registra", (request, response) -> usuarioService.insert(request, response));
 
         // get("/usuario/:codigo", (request, response) -> usuarioService.get(request, response));
         

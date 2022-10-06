@@ -1,6 +1,5 @@
 const ARTICLES = {
-    "Articles": [
-        {
+    "Articles": [{
             "id": "1",
             "title": "Será que as notícias estão afetando a minha saúde mental?",
             "brief": "Você sabia que a quantidade de informação que consumimos pode afetar a nossa psique? Leia o artigo e entenda melhor como isso funciona.",

@@ -11,7 +11,7 @@ public class Artigo {
     private String resumo;
     private String autor;
     private LocalDate dataFabricacao;
-    
+
     public Artigo() {
         this.chave = -1;
         this.imagem = "";
@@ -22,7 +22,7 @@ public class Artigo {
         this.autor = "";
         this.dataFabricacao = LocalDate.now();
     }
-    
+
     public Artigo(int chave, String imagem, String imagem_alt, String titulo, String conteudo, String resumo, String autor, LocalDate dataFabricacao) {
         this.chave = chave;
         this.imagem = imagem;
@@ -41,7 +41,7 @@ public class Artigo {
     public String get_imagem() {
         return this.imagem;
     }
-    
+
     public String get_imagem_alt() {
         return this.imagem_alt;
     }
