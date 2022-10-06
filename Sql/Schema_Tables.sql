@@ -32,6 +32,7 @@ CREATE TABLE Planejy.Nota (
     descricao   VARCHAR(255),
     horario     TIME,
     categoria   VARCHAR(40)  NOT NULL,
+    cor         CHAR(7)      NOT NULL,
     
     PRIMARY KEY (chave),
 

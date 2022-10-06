@@ -1,21 +1,27 @@
 package app;
 
 import static spark.Spark.*;
+import service.ArtigoService;
 import spark.Filter;
 
 public class Aplicacao {
-	
-	// private static UsuarioService usuarioService = new UsuarioService();
-	
+    
+    private static ArtigoService artigoService = new ArtigoService();
+    
     public static void main(String[] args) {
         port(5678);
-        
+
         staticFiles.location("/public");
         after((Filter) (request, response) -> {
             response.header("Access-Control-Allow-Origin", "*");
             response.header("Access-Control-Allow-Methods", "GET");
         });
-        get("/articles/:usuario", (request, response) -> "articlesService.get(request, response)");
+<<<<<<< HEAD
+        
+        get("/articles/:chave", (request, response) -> artigoService.get(request, response));
+=======
+        get("/articles/:chave", (request, response) -> articlesService.get(request, response));
+>>>>>>> ae92672a4c231a91a53a39ab29445850af60a8cb
         
         // post("/usuario/insert", (request, response) -> usuarioService.insert(request, response));
 
