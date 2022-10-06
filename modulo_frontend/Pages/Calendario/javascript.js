@@ -14,6 +14,33 @@ const formatDate = (date) => {
     return [year, month, day].join('-');
 }
 
+const getNotes = () => {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:5678/nota/get/1', true);
+
+    xhr.onload = () => {
+        let tmp = JSON.parse(xhr.responseText);
+
+        for(let i = 0; i < tmp.Notas.length; i++){
+            db.data.push(tmp.Notas[i]);
+
+            let calendar = initCalendar();
+            calendar.eventDragging = true;
+            calendar.render();
+        }
+
+        localStorage.setItem('db_postit', JSON.stringify(db));
+    }
+
+    xhr.onerror = () => {
+        alert('erro ao recuperar notas ;-;');
+    }
+
+    xhr.send();
+}
+
+getNotes();
+
 onload = () => {
     if (userLoggedData) {
         let userLogged = JSON.parse(userLoggedData),
@@ -22,8 +49,6 @@ onload = () => {
         if (userLoggedObj[0].access != true) {
             location.href = '../../index.html'
         }
-
-        // getNotes();
     } else {
         location.href = '../../index.html'
     }
@@ -57,11 +82,16 @@ let db_postits_inicial = {
     }, ]
 }
 
-let db = JSON.parse(localStorage.getItem('db_postit'));
+// let db = JSON.parse(localStorage.getItem('db_postit'));
+let db = {
+    data:[
 
-if(!db){
-    db = db_postits_inicial;
-}
+    ]
+};
+
+// if(!db){
+//     db = db_postits_inicial;
+// }
 
 let data = {
     headerToolbar: {
@@ -103,11 +133,6 @@ const initCalendar = () => {
 
     return calendar;
 }
-
-let calendar = initCalendar();
-calendar.eventDragging = true;
-calendar.render();
-
 
 // Menu de adição de notas
 
@@ -154,7 +179,7 @@ function init() {
         // Limpa o formulario
         $("#form-postit")[0].reset();
 
-        location.reload();
+        // location.reload();
 
     });
 
@@ -284,6 +309,7 @@ function insertPostit(postit) {
 
     // Insere o novo objeto no array
     db.data.push(novoPostit);
+    console.log(db)
     //displayMessage("Post-it criado com sucesso");
 
     // Atualiza os dados no Local Storage
@@ -309,7 +335,6 @@ const postNotes = (tmpNote) => { // unimplemented
 
     xhr.onload = () => {
         console.log(xhr.responseText);
-        alert('deu bom');
     }
 
     xhr.onerror = () => {
@@ -317,28 +342,6 @@ const postNotes = (tmpNote) => { // unimplemented
     }
 
     xhr.send(note);
-}
-
-const getNotes = () => {
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:5678/nota/get/1', true);
-
-    xhr.onload = () => {
-        let tmp = JSON.parse(xhr.responseText);
-
-        for(let i = 0; i < tmp.Notas.length; i++){
-            db.data.push(tmp.Notas[i]);
-        }
-
-        localStorage.setItem('db_postit', JSON.stringify(db));
-        location.reload();
-    }
-
-    xhr.onerror = () => {
-        alert('erro ao recuperar notas ;-;');
-    }
-
-    xhr.send();
 }
 
 function deletepostit(id) {
