@@ -60,12 +60,6 @@ if (!db) {
     db = db_postits_inicial
 };
 
-let eventDatabase = JSON.parse(localStorage.getItem('db_postit'));
-
-if (!eventDatabase) {
-    eventDatabase = db;
-}
-
 let data = {
     headerToolbar: {
         left: 'prev,next today',
@@ -78,7 +72,7 @@ let data = {
     editable: true,
     selectable: true,
     handleWindowResize: true,
-    events: eventDatabase.data,
+    events: db.data,
     windowResizeDelay: 0,
     navLinks: true,
     eventClick: function(info){
@@ -160,33 +154,6 @@ function init() {
         location.reload();
 
     });
-
-    // Intercepta o click do botão Alterar
-    /*     $("#btnUpdate").click(function() {
-            // Obtem os valores dos campos do formulário
-            let campoId = $("#inputId").val();
-            if (campoId == "") {
-                //displayMessage("Selecione um post-it para ser alterado.");
-                return;
-            }
-            let campoDescricao = $("#inputDescricao").val();
-            let campoUrgencia = $("#inputUrgencia").val();
-            let campoDia = $("#inputDia").val();
-            let campoHorario = $("#inputHorario").val();
-            let campoCategoria = $("#inputCategoria").val();
-            let postit = {
-                descricao: campoDescricao,
-                urgencia: campoUrgencia,
-                dia: campoDia,
-                horario: campoHorario,
-                categoria: campoCategoria,
-            };
-
-            updatepostit(parseInt(campoId), postit);
-
-            // Limpa o formulario
-            $("#form-postit")[0].reset();
-        }); */
 
     // Intercepta o click do botao Limpar Form
 
@@ -320,23 +287,6 @@ function insertPostit(postit) {
     localStorage.setItem('db_postit', JSON.stringify(db));
 }
 
-// function updatepostit(id, postit) {
-//     // Localiza o indice do objeto a ser alterado no array a partir do seu ID
-//     let index = db.data.map(obj => obj.id).indexOf(id);
-
-//     // Altera os dados do objeto no array
-//     db.data[index].descricao = postit.descricao,
-//         db.data[index].dia = postit.dia,
-//         db.data[index].horario = postit.horario,
-//         db.data[index].urgencia = postit.urgencia,
-//         db.data[index].categoria = postit.categoria
-
-//     //displayMessage("Post-it alterado com sucesso");
-
-//     // Atualiza os dados no Local Storage
-//     localStorage.setItem('db_postit', JSON.stringify(db));
-// }
-
 function deletepostit(id) {
     // Filtra o array removendo o elemento com o id passado
     db.data = db.data.filter(function(element) { return element.id != id });
@@ -372,8 +322,8 @@ function listarEventos() {
 
     // Popula a tabela com os registros do banco de dados
 
-    for (let index = 0; index < eventDatabase.data.length; index++) {
-        const evento = eventDatabase.data[index];
+    for (let index = 0; index < db.data.length; index++) {
+        const evento = db.data[index];
 
         // Inclui o contato na tabela   
 
