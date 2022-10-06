@@ -15,7 +15,7 @@ public class Aplicacao {
             response.header("Access-Control-Allow-Origin", "*");
             response.header("Access-Control-Allow-Methods", "GET");
         });
-        get("/articles/:usuario", (request, response) -> "articlesService.get(request, response)");
+        get("/articles/:chave", (request, response) -> articlesService.get(request, response));
         
         // post("/usuario/insert", (request, response) -> usuarioService.insert(request, response));
 
