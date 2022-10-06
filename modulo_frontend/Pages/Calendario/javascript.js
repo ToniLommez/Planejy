@@ -265,7 +265,6 @@ const updateNotes = (note) => {
             
             location.reload();
         }
-        
     }
     
     document.getElementById('btnClear2').onclick = () => {
@@ -274,6 +273,12 @@ const updateNotes = (note) => {
         inputDescription.value = null;
         inputHour.value = null;
         inputCategory.value = null;
+    }
+
+    document.getElementById('btnDelet2').onclick = () => {
+        db.data.pop();
+        localStorage.setItem('db_postit', JSON.stringify(db));
+        location.reload();
     }
 }
 
