@@ -92,12 +92,17 @@ public class Nota {
     public String toJson() {
         String Json = "";
         Nota last = this;
+        
         while(last.hasNext()) {
             last = last.next;
             Json += "{ ";
-            Json += "\"chave\":" + last.chave + ", \"id_usuario\":" + last.id_usuario + ", \"titulo\":" + last.titulo + ", \"dia\":" + last.dia + ", \"descricao\":" + last.descricao + ", \"horario\":" + last.horario + ", \"categoria\":" + last.categoria + ", \"cor\":" + last.cor;
-            Json += "},\n";
+            Json += "\"id\":" + last.chave + ", \"id_usuario\":" + last.id_usuario + ", \"title\":\"" + last.titulo + "\", \"start\":\"" + last.dia + "\", \"description\":\"" + last.descricao + "\", \"horario\":\"" + last.horario + "\", \"categoria\":\"" + last.categoria + "\", \"color\":\"" + last.cor + "\"";
+            Json += "}";
+            if(last.hasNext()) {
+                Json += ",";                
+            }
         }
+        
         last = null;
         return Json;
     }
