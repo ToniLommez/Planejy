@@ -37,15 +37,23 @@ const noteToSql = (note, method) => {
 }
 
 const postNotes = (tmpNote, method) => {
-    let note = {
-        id_usuario: 1,
-        id: tmpNote.id,
-        titulo: tmpNote.title,
-        dia: tmpNote.start,
-        descricao: tmpNote.description,
-        horario: tmpNote.horario,
-        categoria: tmpNote.categoria,
-        cor: tmpNote.color
+    let note = {};
+    
+    if(isNaN(tmpNote)){
+        note = {
+            id_usuario: 1,
+            id: tmpNote.id,
+            titulo: tmpNote.title,
+            dia: tmpNote.start,
+            descricao: tmpNote.description,
+            horario: tmpNote.horario,
+            categoria: tmpNote.categoria,
+            cor: tmpNote.color
+        };
+    }else{
+        note = {
+            id: tmpNote
+        };
     }
 
     let sql = noteToSql(note, method);
@@ -399,7 +407,7 @@ function listarEventos() {
                                         <td>${evento.description}</td>
                                         <td>${evento.start}</td>
                                         <td>${evento.horario}</td>
-                                        <td><span onclick="function deleteButton () {deletepostit(${evento.id}); listarEventos()}; deleteButton(); location.reload();" id="btn-delete-event" class="material-icons">delete</span>
+                                        <td><span onclick="postNotes(${db.data[index].id}, 'delete'); listarEventos(); location.reload();" id="btn-delete-event" class="material-icons">delete</span>
                                     </tr>`);
     }
 }
