@@ -96,17 +96,10 @@ public class Nota {
         while(last.hasNext()) {
             last = last.next;
             Json += "{ ";
-<<<<<<< HEAD
             Json += "\"id\":" + last.chave + ", \"id_usuario\":" + last.id_usuario + ", \"title\":\"" + last.titulo + "\", \"start\":\"" + last.dia + "\", \"description\":\"" + last.descricao + "\", \"horario\":\"" + last.horario + "\", \"categoria\":\"" + last.categoria + "\", \"color\":\"" + last.cor + "\"";
             Json += "}";
             if(last.hasNext()) {
                 Json += ",";                
-=======
-            Json += "\"chave\":" + last.chave + ", \"id_usuario\":" + last.id_usuario + ", \"titulo\":\"" + last.titulo + "\", \"dia\":\"" + last.dia + "\", \"descricao\":\"" + last.descricao + "\", \"horario\":\"" + last.horario + "\", \"categoria\":\"" + last.categoria + "\", \"cor\":\"" + last.cor + "\"";
-            Json += "}";
-            if(last.hasNext()) {
-                Json += ",";
->>>>>>> 153d0f095493b143557314b9515354d2a3744329
             }
         }
         
