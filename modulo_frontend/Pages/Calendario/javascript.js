@@ -28,16 +28,15 @@ const noteToSql = (note, method) => {
                WHERE nota.chave = '${note.id}'`;
     }else if(method === 'insert'){
         sql = `INSERT INTO planejy.nota (id_usuario, titulo, dia, descricao, horario, categoria, cor)
-               VALUES (${note.id_usuario}, ${note.titulo}, ${note.dia}, ${note.descricao}, ${note.horario}, ${note.categoria}, ${note.cor})`;
+               VALUES ('${note.id_usuario}', '${note.titulo}', '${note.dia}', '${note.descricao}', '${note.horario}', '${note.categoria}', '${note.cor}')`;
     }else if(method === 'delete'){
-        sql = `DELETE FROM planejy.nota WHERE chave = ${note.id}`;
+        sql = `DELETE FROM planejy.nota WHERE chave = '${note.id}'`;
     }
 
     return sql;
 }
 
 const postNotes = (tmpNote, method) => {
-    console.log(tmpNote)
     let note = {
         id_usuario: 1,
         id: tmpNote.id,
@@ -50,7 +49,6 @@ const postNotes = (tmpNote, method) => {
     }
 
     let sql = noteToSql(note, method);
-    console.log(sql)
 
     let xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://localhost:5678/nota/post/1', true);
@@ -171,10 +169,9 @@ let data = {
         for (let i = 0; i < db.data.length; i++) {
             if (db.data[i].id == info.event.id) {
                 db.data[i].start = formatDate(info.event.start);
+                postNotes(db.data[i], 'update');
             }
         }
-
-        // localStorage.setItem('db_postit', JSON.stringify(db));
     }
 }
 
@@ -231,16 +228,14 @@ function init() {
         // Limpa o formulario
         $("#form-postit")[0].reset();
 
-        // location.reload();
+        location.reload();
 
     });
 
     // Intercepta o click do botao Limpar Form
 
     $("#btnClear").click(function() {
-
         $("#form-postit")[0].reset();
-
     });
 
 }
@@ -313,13 +308,10 @@ const updateNotes = (note) => {
             db.data[index].color = inputCategory.value;
             db.data[index].categoria = categName;
 
-            // localStorage.setItem('db_postit', JSON.stringify(db));
-
             noteMenu.style.display = 'none';
 
             postNotes(db.data[index], 'update');
-            
-            // location.reload();
+            location.reload();
         }
     }
 
@@ -340,10 +332,7 @@ const updateNotes = (note) => {
         }
 
         postNotes(db.data[index], 'delete');
-
-        // db.data.splice(index, 1);
-        // localStorage.setItem('db_postit', JSON.stringify(db));
-        // location.reload();
+        location.reload();
     }
 }
 
@@ -363,26 +352,12 @@ function insertPostit(postit) {
         "textColor": 'black'
     };
 
-    // Insere o novo objeto no array
-
     postNotes(novoPostit, 'insert');
-    // db.data.push(novoPostit);
-    // console.log(db)
-    //displayMessage("Post-it criado com sucesso");
-
-    // Atualiza os dados no Local Storage
-    // localStorage.setItem('db_postit', JSON.stringify(db));
-
 }
 
 function deletepostit(id) {
     // Filtra o array removendo o elemento com o id passado
     db.data = db.data.filter(function(element) { return element.id != id });
-
-    //displayMessage("Post-it removido com sucesso");
-
-    // Atualiza os dados no Local Storage
-    // localStorage.setItem('db_postit', JSON.stringify(db));
 }
 
 function openEventList() {
@@ -416,14 +391,11 @@ function listarEventos() {
         // Inclui o contato na tabela   
 
         $("#table-events").append(`<tr><td scope="row">${evento.title}</td>
-                                            <td>${evento.description}</td>
-                                            <td>${evento.start}</td>
-                                            <td>${evento.horario}</td>
-                                            <td><span onclick="function deleteButton () {deletepostit(${evento.id}); listarEventos()}; deleteButton(); location.reload();" id="btn-delete-event" class="material-icons">delete</span>
-                                        </tr>`);
-
-        // Colorindo o fundo da tabela de acordo com a categoria
-
+                                        <td>${evento.description}</td>
+                                        <td>${evento.start}</td>
+                                        <td>${evento.horario}</td>
+                                        <td><span onclick="function deleteButton () {deletepostit(${evento.id}); listarEventos()}; deleteButton(); location.reload();" id="btn-delete-event" class="material-icons">delete</span>
+                                    </tr>`);
     }
 }
 
