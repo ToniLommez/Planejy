@@ -80,13 +80,11 @@ const getNotes = () => {
 
     xhr.onload = () => {
         let tmp = JSON.parse(xhr.responseText);
-        // db = {data:[]};
 
         for(let i = 0; i < tmp.Notas.length; i++){
             db.data.push(tmp.Notas[i]);
         }
         
-        // console.log(db.data);
         data.events = db.data;
         calendar = initCalendar();
         calendar.eventDragging = true;
@@ -110,7 +108,6 @@ const initCalendar = () => {
 
 let db = {data:[]};
 getNotes();
-// console.log(db.data)
 
 const data = {
     headerToolbar: {
@@ -172,27 +169,10 @@ const logout = () => {
     location.href = '../../index.html';
 }
 
-// Dados iniciais
-
-let db_postits_inicial = {
-    "data": [{
-        "id": 0,
-        "title": "Lorem Ipsum",
-        "start": "2022-01-01",
-        "descricao": "Lorem IPsum.",
-        "horario": "22:30",
-        "color": "#A7C7E7",
-        "categoria": "Dia-a-dia"
-    }, ]
-}
-
 // Menu de adição de notas
 
-// Init
-
-function init() {
+const init = () => {
     // Adiciona funções para tratar os eventos 
-
     $("#btnInsert").click(function() {
         // Verfica se o formulário está preenchido corretamente
         if (!$("#form-postit")[0].checkValidity()) {
@@ -237,18 +217,16 @@ function init() {
         $("#form-postit")[0].reset();
 
         document.querySelector('.addNotes').style.display = 'none';
-        // location.reload();
     });
 
     // Intercepta o click do botao Limpar Form
-
     $("#btnClear").click(function() {
         $("#form-postit")[0].reset();
     });
 
 }
 
-function addNotes() {
+const addNotes = () => {
 
     let noteMenu = document.querySelector('.addNotes');
     noteMenu.style.display = 'block';
@@ -322,7 +300,6 @@ const updateNotes = (note) => {
             noteMenu.style.display = 'none';
             db = {data:[]};
             getNotes();
-            // location.reload();
         }
     }
 
@@ -344,19 +321,17 @@ const updateNotes = (note) => {
 
         postNotes(db.data[index], 'delete');
         noteMenu.style.display = 'none';
-        // db = {data:[]};
-        // getNotes();
-        // location.reload();
     }
 }
 
-function insertPostit(postit) {
+const insertPostit = (postit) => {
     // Calcula novo Id a partir do último código existente no array (PODE GERAR ERRO SE A BASE ESTIVER VAZIA)
-    let novoId = 1;
-    if (db.data.length != 0)
-        novoId = db.data[db.data.length - 1].id + 1;
+    // let novoId = 1;
+    // if (db.data.length != 0)
+    //     novoId = db.data[db.data.length - 1].id + 1;
+
     let novoPostit = {
-        "id": novoId,
+        // "id": novoId,
         "title": postit.nome,
         "description": postit.descricao,
         "start": postit.start,
@@ -367,52 +342,43 @@ function insertPostit(postit) {
     };
 
     postNotes(novoPostit, 'insert');
-    // db = {data:[]};
-    // getNotes();
 }
 
-function deletepostit(id) {
-    // Filtra o array removendo o elemento com o id passado
-    db.data = db.data.filter(function(element) { return element.id != id });
-}
-
-function openEventList() {
-
+const openEventList = () => {
     // Abrindo a lista
-
     let noteList = document.querySelector('.tabelaEventos');
-
     noteList.style.display = 'block';
-
-    // caso clique no botao de fechar...
-
     listarEventos();
 
+    
+    // caso clique no botao de fechar...
     $('#btnClose').click(function() {
         noteList.style.display = 'none';
     });
 }
 
-function listarEventos() {
-
+const listarEventos = () => {
     // limpa a lista de contatos apresentados
-
     $("#table-events").empty();
 
     // Popula a tabela com os registros do banco de dados
-
     for (let index = 0; index < db.data.length; index++) {
         const evento = db.data[index];
 
-        // Inclui o contato na tabela   
-
+        // Inclui o evento na tabela   
         $("#table-events").append(`<tr><td scope="row">${evento.title}</td>
                                         <td>${evento.description}</td>
                                         <td>${evento.start}</td>
                                         <td>${evento.horario}</td>
-                                        <td><span onclick="postNotes(${db.data[index].id}, 'delete'); listarEventos(); location.reload();" id="btn-delete-event" class="material-icons">delete</span>
+                                        <td><span onclick="trashcanFunc(${db.data[index].id});" id="btn-delete-event" class="material-icons">delete</span>
                                     </tr>`);
     }
+}
+
+const trashcanFunc = (id) => {
+    postNotes(id, 'delete');
+    $("#table-events").empty();
+    listarEventos();
 }
 
 let bufferArray = [];
