@@ -103,10 +103,10 @@ public class Artigo {
 
     public String toJson() {
         String Json = "";
-        Artigo last = this;
+        Artigo last = this.next;
 
         Json += toJsonRec(last);
-        Json += Json.substring(0, Json.length() - 1);
+        Json = Json.substring(0, Json.length() - 1);
         last = null;
         return Json;
     }
