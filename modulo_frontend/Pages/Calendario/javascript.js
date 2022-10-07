@@ -364,8 +364,10 @@ function insertPostit(postit) {
     };
 
     // Insere o novo objeto no array
-    db.data.push(novoPostit);
-    console.log(db)
+
+    postNotes(novoPostit, 'insert');
+    // db.data.push(novoPostit);
+    // console.log(db)
     //displayMessage("Post-it criado com sucesso");
 
     // Atualiza os dados no Local Storage
