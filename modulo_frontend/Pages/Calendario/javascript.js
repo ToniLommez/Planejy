@@ -63,7 +63,6 @@ const postNotes = (tmpNote, method) => {
     xhr.open('POST', 'http://localhost:5678/nota/post/1', true);
 
     xhr.onload = () => {
-        db = {data:[]};
         getNotes();
     }
 
@@ -80,6 +79,7 @@ const getNotes = () => {
 
     xhr.onload = () => {
         let tmp = JSON.parse(xhr.responseText);
+        db = {data:[]};
 
         for(let i = 0; i < tmp.Notas.length; i++){
             db.data.push(tmp.Notas[i]);
@@ -89,6 +89,7 @@ const getNotes = () => {
         calendar = initCalendar();
         calendar.eventDragging = true;
         calendar.render();
+        listarEventos();
     }
 
     xhr.onerror = () => {
@@ -378,7 +379,7 @@ const listarEventos = () => {
 const trashcanFunc = (id) => {
     postNotes(id, 'delete');
     $("#table-events").empty();
-    listarEventos();
+    // listarEventos();
 }
 
 let bufferArray = [];
