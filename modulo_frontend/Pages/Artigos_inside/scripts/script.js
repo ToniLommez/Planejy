@@ -37,7 +37,7 @@ function logout() {
     let users = {
         'user_login': [{
             'firstname': '',
-            'email': '', 
+            'email': '',
             'passwd': '',
             'access': false
         }]
@@ -85,7 +85,7 @@ function logout() {
 const getArticleId = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const articleId = urlParams.get('article_id');
-    
+
     return articleId;
 }
 
@@ -94,7 +94,8 @@ const updatePage = (html) => {
     document.querySelector('.card-header').innerHTML = `<h1>${html.titulo}</h1>`;
     document.querySelector('.card-body').innerHTML = html.conteudo;
     document.querySelector('.autor').innerHTML = html.autor;
-    document.getElementById('imagem').setAttribute('src', `../../Artigos/images/article-${html.chave}.png`); // ---------- not working
+    document.querySelector('.controle-imagem1').setAttribute('src', `../Artigos/images/article-${html.chave}.png`); // ---------- not working
+    document.querySelector('.controle-imagem2').setAttribute('src', `../Artigos/images/article-${html.chave}.png`); // ---------- not working
 }
 
 const getArticles = () => {
