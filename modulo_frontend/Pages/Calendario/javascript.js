@@ -14,6 +14,56 @@ const formatDate = (date) => {
     return [year, month, day].join('-');
 }
 
+const noteToSql = (note, method) => {
+    let sql = '';
+
+    if(method === 'update'){
+        sql = `UPDATE planejy.nota 
+               SET titulo = '${note.titulo}', 
+               dia = '${note.dia}',
+               categoria = '${note.categoria}',
+               descricao = '${note.descricao}',
+               horario = '${note.horario}',
+               cor = '${note.cor}'
+               WHERE nota.chave = '${note.id}'`;
+    }else if(method === 'insert'){
+        sql = `INSERT INTO planejy.nota (id_usuario, titulo, dia, descricao, horario, categoria, cor)
+               VALUES (${note.id_usuario}, ${note.titulo}, ${note.dia}, ${note.descricao}, ${note.horario}, ${note.categoria}, ${note.cor})`;
+    }else if(method === 'delete'){
+        sql = `DELETE FROM planejy.nota WHERE chave = ${note.id}`;
+    }
+
+    return sql;
+}
+
+const postNotes = (tmpNote, method) => {
+    let note = {
+        id_usuario: 1,
+        id: tmpNote.id,
+        titulo: tmpNote.nome,
+        dia: tmpNote.start,
+        descricao: tmpNote.descricao,
+        horario: tmpNote.horario,
+        categoria: tmpNote.categoria,
+        cor: tmpNote.color
+    }
+
+    let sql = noteToSql(note, method);
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:5678/nota/post/1', true);
+
+    xhr.onload = () => {
+        console.log(xhr.responseText);
+    }
+
+    xhr.onerror = () => {
+        alert('erro ao salvar notas ;-;');
+    }
+
+    xhr.send(sql);
+}
+
 const getNotes = () => {
     let xhr = new XMLHttpRequest();
     xhr.open('GET', 'http://localhost:5678/nota/get/1', true);
@@ -29,7 +79,7 @@ const getNotes = () => {
             calendar.render();
         }
 
-        localStorage.setItem('db_postit', JSON.stringify(db));
+        // localStorage.setItem('db_postit', JSON.stringify(db));
     }
 
     xhr.onerror = () => {
@@ -122,7 +172,7 @@ let data = {
             }
         }
 
-        localStorage.setItem('db_postit', JSON.stringify(db));
+        // localStorage.setItem('db_postit', JSON.stringify(db));
     }
 }
 
@@ -261,7 +311,7 @@ const updateNotes = (note) => {
             db.data[index].color = inputCategory.value;
             db.data[index].categoria = categName;
 
-            localStorage.setItem('db_postit', JSON.stringify(db));
+            // localStorage.setItem('db_postit', JSON.stringify(db));
 
             noteMenu.style.display = 'none';
 
@@ -286,7 +336,7 @@ const updateNotes = (note) => {
         }
 
         db.data.splice(index, 1);
-        localStorage.setItem('db_postit', JSON.stringify(db));
+        // localStorage.setItem('db_postit', JSON.stringify(db));
         location.reload();
     }
 }
@@ -313,35 +363,8 @@ function insertPostit(postit) {
     //displayMessage("Post-it criado com sucesso");
 
     // Atualiza os dados no Local Storage
-    localStorage.setItem('db_postit', JSON.stringify(db));
+    // localStorage.setItem('db_postit', JSON.stringify(db));
 
-}
-
-const postNotes = (tmpNote) => { // unimplemented
-    // console.log(note);
-
-    let note = {
-        id_usuario: 1,
-        titulo: tmpNote.nome,
-        dia: tmpNote.start,
-        descricao: tmpNote.descricao,
-        horario: tmpNote.horario,
-        categoria: tmpNote.categoria,
-        cor: tmpNote.color
-    }
-
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:5678/nota/post/1', true);
-
-    xhr.onload = () => {
-        console.log(xhr.responseText);
-    }
-
-    xhr.onerror = () => {
-        alert('erro ao salvar notas ;-;');
-    }
-
-    xhr.send(note);
 }
 
 function deletepostit(id) {
@@ -351,7 +374,7 @@ function deletepostit(id) {
     //displayMessage("Post-it removido com sucesso");
 
     // Atualiza os dados no Local Storage
-    localStorage.setItem('db_postit', JSON.stringify(db));
+    // localStorage.setItem('db_postit', JSON.stringify(db));
 }
 
 function openEventList() {
