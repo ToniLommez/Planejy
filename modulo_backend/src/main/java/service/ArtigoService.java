@@ -63,6 +63,23 @@ public class ArtigoService {
 		return respostaJSON;
 	}
 
+	public Object getAll(Request request, Response response) {	
+		Artigo artigo = (Artigo) artigoDAO.getAll();
+		
+        if (artigo != null) {
+            response.status(200); // success
+            respostaJSON = "";
+            respostaJSON += "{ \"Articles\": [";
+            respostaJSON += artigo.toJson();
+            respostaJSON += " ] }";
+        } else {
+            response.status(404); // 404 Not found
+            respostaJSON = "Artigos não encontrados.";   
+        }
+
+		return respostaJSON;
+	}
+
 	/* 
 	public Object getToUpdate(Request request, Response response) {
 		int codigo = Integer.parseInt(request.params(":codigo"));		
