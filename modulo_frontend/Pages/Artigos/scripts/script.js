@@ -31,14 +31,14 @@ const logout = () => {
 }
 
 function executaPesquisa() {
-    var xhttp = new XMLHttpRequest();
+    let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             // Typical action to be performed when the document is ready:
             loadArticles(xhttp.responseText);
         }
     };
-    xhttp.open("GET", "http://localhost:5678/articles/1", true);
+    xhttp.open("GET", "http://localhost:5678/articles/all/", true);
     xhttp.send();
 }
 

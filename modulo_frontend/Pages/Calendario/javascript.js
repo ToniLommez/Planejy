@@ -214,6 +214,11 @@ function init() {
             }
         }
 
+        if(campoNome == '' || campoDescricao == '' || campoDia == '' || campoHorario == '' || campoCategoria == '' || categName == ''){
+            alert('Campos obrigatórios não podem estar vazios!');
+            return;
+        }
+
         let postit = {
             nome: campoNome,
             descricao: campoDescricao,
@@ -281,7 +286,7 @@ const updateNotes = (note) => {
     }
 
     document.getElementById('btnInsert2').onclick = () => {
-        if (inputName.value == '' || inputCategory.value == '' || inputDay.value == '') {
+        if (inputName.value == '' || inputCategory.value == '' || inputDay.value == '' || inputDescription.value == '' || inputHour.value == '') {
             alert('Campos obrigatórios não podem estar vazios!');
         } else {
             let categ = document.getElementById('inputCategoria').querySelectorAll('option');
