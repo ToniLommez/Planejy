@@ -2,9 +2,9 @@ package dao;
 
 import model.Nota;
 
-// import java.sql.PreparedStatement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-// import java.sql.SQLException;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class NotaDAO extends DAO {
@@ -48,7 +48,6 @@ public class NotaDAO extends DAO {
 	 * }
 	 */
 
-
 	public Nota get(int id_usuario) {
 		Nota notas = new Nota();
 		try {
@@ -56,9 +55,10 @@ public class NotaDAO extends DAO {
 			String sql = "SELECT * FROM planejy.nota WHERE id_usuario = " + id_usuario;
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {
-				Nota p = new Nota(rs.getLong("chave"), rs.getInt("id_usuario"), rs.getString("titulo"), rs.getDate("dia").toLocalDate(),
-						          rs.getString("descricao"), rs.getTime("horario"), rs.getString("categoria"), 
-								  rs.getString("cor"));
+				Nota p = new Nota(rs.getLong("chave"), rs.getInt("id_usuario"), rs.getString("titulo"),
+						rs.getDate("dia").toLocalDate(),
+						rs.getString("descricao"), rs.getTime("horario"), rs.getString("categoria"),
+						rs.getString("cor"));
 				notas.add(p);
 			}
 			st.close();
@@ -68,24 +68,18 @@ public class NotaDAO extends DAO {
 		return notas;
 	}
 
-	/*
-	 * public boolean update(Usuario usuario) {
-	 * boolean status = false;
-	 * try {
-	 * String sql = "UPDATE x SET login = '" + usuario.getLogin() + "', "
-	 * + "senha = '" + usuario.getSenha() + "', "
-	 * + "sexo = '" + usuario.getSexo()
-	 * + "' WHERE codigo = " + usuario.getCodigo();
-	 * PreparedStatement st = conexao.prepareStatement(sql);
-	 * st.executeUpdate();
-	 * st.close();
-	 * status = true;
-	 * } catch (SQLException u) {
-	 * throw new RuntimeException(u);
-	 * }
-	 * return status;
-	 * }
-	 */
+	public boolean post(String sql) {
+		boolean status = false;
+		try {
+			PreparedStatement st = conexao.prepareStatement(sql);
+			st.executeUpdate();
+			st.close();
+			status = true;
+		} catch (SQLException u) {
+			throw new RuntimeException(u);
+		}
+		return status;
+	}
 
 	/*
 	 * public boolean delete(int codigo) {

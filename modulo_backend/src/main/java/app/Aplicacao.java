@@ -23,7 +23,7 @@ public class Aplicacao {
         
         get("/nota/get/:id_usuario", (request, response) -> notaService.get(request, response));
         
-        // post("/users/registra", (request, response) -> usuarioService.insert(request, response));
+        post("/nota/post/:id_usuario", (request, response) -> notaService.insert(request, response));
 
         // get("/usuario/:codigo", (request, response) -> usuarioService.get(request, response));
         

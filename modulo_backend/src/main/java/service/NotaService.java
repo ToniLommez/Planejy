@@ -63,6 +63,21 @@ public class NotaService {
 		return respostaJSON;
 	}
 
+	public Object insert(Request request, Response response) {
+		String sqlString = request.body();
+		boolean result = notaDAO.post(sqlString);
+
+		if (result) {
+			response.status(200); // success
+			respostaJSON = "bem sucedido! :D";
+		} else {
+			response.status(404); // 404 Not found
+			respostaJSON = "mal sucedido! >:(";
+		}
+
+		return respostaJSON;
+	}
+
 	/*
 	 * public Object getToUpdate(Request request, Response response) {
 	 * int codigo = Integer.parseInt(request.params(":codigo"));
