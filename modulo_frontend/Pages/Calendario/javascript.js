@@ -1,4 +1,5 @@
-let userLoggedData = localStorage.getItem('user_login');
+let userLoggedData = localStorage.getItem('user_login'); //remover futuramente
+let calendar;
 
 const formatDate = (date) => {
     let d = new Date(date),
@@ -62,7 +63,8 @@ const postNotes = (tmpNote, method) => {
     xhr.open('POST', 'http://localhost:5678/nota/post/1', true);
 
     xhr.onload = () => {
-        console.log(xhr.responseText);
+        db = {data:[]};
+        getNotes();
     }
 
     xhr.onerror = () => {
@@ -78,16 +80,17 @@ const getNotes = () => {
 
     xhr.onload = () => {
         let tmp = JSON.parse(xhr.responseText);
+        // db = {data:[]};
 
         for(let i = 0; i < tmp.Notas.length; i++){
             db.data.push(tmp.Notas[i]);
-
-            let calendar = initCalendar();
-            calendar.eventDragging = true;
-            calendar.render();
         }
-
-        // localStorage.setItem('db_postit', JSON.stringify(db));
+        
+        // console.log(db.data);
+        data.events = db.data;
+        calendar = initCalendar();
+        calendar.eventDragging = true;
+        calendar.render();
     }
 
     xhr.onerror = () => {
@@ -97,61 +100,19 @@ const getNotes = () => {
     xhr.send();
 }
 
+const initCalendar = () => {
+    let calendarEl = document.getElementById('calendar');
+
+    let calendar = new FullCalendar.Calendar(calendarEl, data);
+
+    return calendar;
+}
+
+let db = {data:[]};
 getNotes();
+// console.log(db.data)
 
-onload = () => {
-    if (userLoggedData) {
-        let userLogged = JSON.parse(userLoggedData),
-            userLoggedObj = userLogged.user_login;
-
-        if (userLoggedObj[0].access != true) {
-            location.href = '../../index.html'
-        }
-    } else {
-        location.href = '../../index.html'
-    }
-}
-
-//function called by Calendario.html
-const logout = () => {
-    let users = {
-        'user_login': [{
-            'firstname': '',
-            'email': '',
-            'passwd': '',
-            'access': false
-        }]
-    }
-    localStorage.setItem('user_login', JSON.stringify(users));
-    location.href = '../../index.html';
-}
-
-// Dados iniciais
-
-let db_postits_inicial = {
-    "data": [{
-        "id": 0,
-        "title": "Lorem Ipsum",
-        "start": "2022-01-01",
-        "descricao": "Lorem IPsum.",
-        "horario": "22:30",
-        "color": "#A7C7E7",
-        "categoria": "Dia-a-dia"
-    }, ]
-}
-
-// let db = JSON.parse(localStorage.getItem('db_postit'));
-let db = {
-    data:[
-
-    ]
-};
-
-// if(!db){
-//     db = db_postits_inicial;
-// }
-
-let data = {
+const data = {
     headerToolbar: {
         left: 'prev,next today',
         center: 'title',
@@ -183,12 +144,46 @@ let data = {
     }
 }
 
-const initCalendar = () => {
-    let calendarEl = document.getElementById('calendar');
+onload = () => {
+    if (userLoggedData) {
+        let userLogged = JSON.parse(userLoggedData),
+        userLoggedObj = userLogged.user_login;
+        
+        if (userLoggedObj[0].access != true) {
+            location.href = '../../index.html'
+        }
+    } else {
+        location.href = '../../index.html'
+    }
+}
 
-    let calendar = new FullCalendar.Calendar(calendarEl, data);
 
-    return calendar;
+//function called by Calendario.html
+const logout = () => {
+    let users = {
+        'user_login': [{
+            'firstname': '',
+            'email': '',
+            'passwd': '',
+            'access': false
+        }]
+    }
+    localStorage.setItem('user_login', JSON.stringify(users)); //remover futuramente
+    location.href = '../../index.html';
+}
+
+// Dados iniciais
+
+let db_postits_inicial = {
+    "data": [{
+        "id": 0,
+        "title": "Lorem Ipsum",
+        "start": "2022-01-01",
+        "descricao": "Lorem IPsum.",
+        "horario": "22:30",
+        "color": "#A7C7E7",
+        "categoria": "Dia-a-dia"
+    }, ]
 }
 
 // Menu de adição de notas
@@ -241,8 +236,8 @@ function init() {
         // Limpa o formulario
         $("#form-postit")[0].reset();
 
-        location.reload();
-
+        document.querySelector('.addNotes').style.display = 'none';
+        // location.reload();
     });
 
     // Intercepta o click do botao Limpar Form
@@ -324,7 +319,10 @@ const updateNotes = (note) => {
             noteMenu.style.display = 'none';
 
             postNotes(db.data[index], 'update');
-            location.reload();
+            noteMenu.style.display = 'none';
+            db = {data:[]};
+            getNotes();
+            // location.reload();
         }
     }
 
@@ -345,7 +343,10 @@ const updateNotes = (note) => {
         }
 
         postNotes(db.data[index], 'delete');
-        location.reload();
+        noteMenu.style.display = 'none';
+        // db = {data:[]};
+        // getNotes();
+        // location.reload();
     }
 }
 
@@ -366,6 +367,8 @@ function insertPostit(postit) {
     };
 
     postNotes(novoPostit, 'insert');
+    // db = {data:[]};
+    // getNotes();
 }
 
 function deletepostit(id) {
