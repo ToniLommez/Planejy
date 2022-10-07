@@ -171,13 +171,11 @@ const logout = () => {
 }
 
 // Menu de adição de notas
-
 const init = () => {
     // Adiciona funções para tratar os eventos 
     $("#btnInsert").click(function() {
         // Verfica se o formulário está preenchido corretamente
         if (!$("#form-postit")[0].checkValidity()) {
-            //displayMessage("Preencha o formulário corretamente.");
             return;
         }
 
@@ -326,13 +324,7 @@ const updateNotes = (note) => {
 }
 
 const insertPostit = (postit) => {
-    // Calcula novo Id a partir do último código existente no array (PODE GERAR ERRO SE A BASE ESTIVER VAZIA)
-    // let novoId = 1;
-    // if (db.data.length != 0)
-    //     novoId = db.data[db.data.length - 1].id + 1;
-
     let novoPostit = {
-        // "id": novoId,
         "title": postit.nome,
         "description": postit.descricao,
         "start": postit.start,
@@ -379,7 +371,6 @@ const listarEventos = () => {
 const trashcanFunc = (id) => {
     postNotes(id, 'delete');
     $("#table-events").empty();
-    // listarEventos();
 }
 
 let bufferArray = [];
