@@ -103,11 +103,18 @@ public class Artigo {
 
     public String toJson() {
         String Json = "";
-        Artigo last = this.next;
-
-        Json += toJsonRec(last);
-        Json = Json.substring(0, Json.length() - 1);
-        last = null;
+        if(this.hasNext()) {
+            Artigo last = this.next;
+            Json += toJsonRec(last);
+            Json = Json.substring(0, Json.length() - 1);
+            last = null;
+        } else {
+            Json += "{ ";
+            Json += "\"chave\":" + chave + ", \"imagem\":\"" + imagem + "\", \"imagem_alt\":\"" + imagem_alt
+                    + "\", \"titulo\":\"" + titulo + "\", \"conteudo\":\"" + conteudo + "\", \"resumo\":\"" + resumo
+                    + "\", \"autor\":\"" + autor + "\", \"dataFabricacao\":\"" + dataFabricacao + "\"";
+            Json += "}";
+        }
         return Json;
     }
 }
