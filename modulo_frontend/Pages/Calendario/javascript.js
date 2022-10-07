@@ -37,18 +37,20 @@ const noteToSql = (note, method) => {
 }
 
 const postNotes = (tmpNote, method) => {
+    console.log(tmpNote)
     let note = {
         id_usuario: 1,
         id: tmpNote.id,
-        titulo: tmpNote.nome,
+        titulo: tmpNote.title,
         dia: tmpNote.start,
-        descricao: tmpNote.descricao,
+        descricao: tmpNote.description,
         horario: tmpNote.horario,
         categoria: tmpNote.categoria,
         cor: tmpNote.color
     }
 
     let sql = noteToSql(note, method);
+    console.log(sql)
 
     let xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://localhost:5678/nota/post/1', true);
@@ -315,7 +317,9 @@ const updateNotes = (note) => {
 
             noteMenu.style.display = 'none';
 
-            location.reload();
+            postNotes(db.data[index], 'update');
+            
+            // location.reload();
         }
     }
 
@@ -335,9 +339,11 @@ const updateNotes = (note) => {
             }
         }
 
-        db.data.splice(index, 1);
+        postNotes(db.data[index], 'delete');
+
+        // db.data.splice(index, 1);
         // localStorage.setItem('db_postit', JSON.stringify(db));
-        location.reload();
+        // location.reload();
     }
 }
 
