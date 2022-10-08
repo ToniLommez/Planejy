@@ -1,13 +1,13 @@
 :root {
     --dgd-top-light: #e8e3eeba;
     --dgd-bottom-light: #a298afbb;
-    --bg-light: #e8e3ee;
+    --bg-light: rgba(221, 211, 233, 0.651);
     --dgd-bottom-dark: #a79cb688;
-    --bg-medium: #a79cb688;
+    --bg-medium: #a79cb679;
     --bg-dark: #a79cb688;
-    --dgd-top-dark: #614f75be;
-    --txt-primary: #614f75be;
-    --txt-secondary: #614f75be;
+    --dgd-top-dark: #614f7596;
+    --txt-primary: #443b4bbe;
+    --txt-secondary: #40354dbe;
     --white: #fff;
 }
 
