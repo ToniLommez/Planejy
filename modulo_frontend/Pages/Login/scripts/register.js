@@ -9,7 +9,7 @@ const back_box = document.querySelector('.back-box'),
     form_element = document.querySelector('#register'),
     show_passwd = document.querySelector('#show-passwd'),
     hide_passwd = document.querySelector('#hide-passwd');
-    
+
 let btn_submit = document.querySelector('.btn-submit');
 
 // Back Box Event Listener
@@ -74,20 +74,20 @@ btn_submit.onclick = () => {
         password: user_passwd.value,
         gender: 'n'
     }
-    
+
     postUser(user);
 }
 
 const userToSql = user => {
-    return `INSERT INTO planejy.usuario (nome, nascimento, nick, senha, email, genero)
-            VALUES ('${user.name}', '${user.birth}', '${user.nick}', '${user.password}', '${user.email}', '${user.gender}')`;
+    return `INSERT INTO planejy.usuario (nome, nick, senha, email)
+            VALUES ('${user.name}', '${user.nick}', '${user.password}', '${user.email}')`;
 }
 
 const postUser = (user) => {
     let sql = userToSql(user);
-    
+
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:5678/usuario/registrar/', true);
+    xhr.open('POST', 'http://localhost:5678/usuario/registrar/:nome/:nick/:senha/:email', true);
 
     xhr.onload = () => {
         location.href = '../../index.html';

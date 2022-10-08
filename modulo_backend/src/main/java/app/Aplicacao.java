@@ -33,7 +33,7 @@ public class Aplicacao {
 
         get("/profissional/all/", (request, response) -> profissionalService.getAll(request, response));
         
-        post("/usuario/registrar/", (request, response) -> usuarioService.insert(request, response));
+        post("/usuario/registrar/:nome/:nick/:senha/:email", (request, response) -> usuarioService.insert(request, response));
 
         get("/usuario/get/:token_usuario", (request, response) -> usuarioService.get(request, response));
         
