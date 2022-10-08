@@ -68,16 +68,11 @@ public class UsuarioService {
 		String nick = request.params(":nick");
 		String senha = request.params(":senha");
 		String email = request.params(":email");
-		
-		boolean result = usuarioDAO.post(sqlString);
 
-		if (result) {
-			response.status(200); // success
-			respostaJSON = "bem sucedido! :D";
-		} else {
-			response.status(404); // 404 Not found
-			respostaJSON = "mal sucedido! >:(";
-		}
+		String result = usuarioDAO.insert(nome, nick, senha, email);
+
+		response.status(200); // success ??
+		respostaJSON = result;
 
 		return respostaJSON;
 	}
