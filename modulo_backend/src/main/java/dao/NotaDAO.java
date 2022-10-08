@@ -39,16 +39,13 @@ public class NotaDAO extends DAO {
 	 * }
 	 */
 
-	public Nota get() {
-		return get(1);
-	}
 	/*
 	 * public List<Nota> getOrderByCodigo() {
 	 * return get("dia");
 	 * }
 	 */
 
-	public Nota get(int token_usuario) {
+	public Nota get(String token_usuario) {
 		Nota notas = new Nota();
 		try {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -68,7 +65,7 @@ public class NotaDAO extends DAO {
 		return notas;
 	}
 
-	public boolean post(int token, String body) {
+	public boolean post(String token, String body) {
 		boolean status = false;
 		try {
 			Nota nota = new Nota(body);

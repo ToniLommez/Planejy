@@ -46,7 +46,7 @@ public class NotaService {
 	 */
 
 	public Object get(Request request, Response response) {
-		int token_usuario = Integer.parseInt(request.params(":token_usuario"));
+		String token_usuario = request.params(":token_usuario");
 		Nota nota = (Nota) notaDAO.get(token_usuario);
 
 		if (nota != null) {
@@ -64,7 +64,7 @@ public class NotaService {
 	}
 
 	public Object insert(Request request, Response response) {
-		int token_usuario = Integer.parseInt(request.params(":token_usuario"));
+		String token_usuario = request.params(":token_usuario");
 		String body = request.body();
 		boolean result = notaDAO.post(token_usuario, body);
 
