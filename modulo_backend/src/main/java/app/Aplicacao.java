@@ -3,12 +3,14 @@ package app;
 import static spark.Spark.*;
 import service.ArtigoService;
 import service.NotaService;
+import service.ProfissionalService;
 import spark.Filter;
 
 public class Aplicacao {
     
     private static ArtigoService artigoService = new ArtigoService();
     private static NotaService notaService = new NotaService();
+    private static ProfissionalService profissionalService = new ProfissionalService();
     
     public static void main(String[] args) {
         port(5678);
@@ -27,7 +29,7 @@ public class Aplicacao {
         
         post("/nota/post/:id_usuario", (request, response) -> notaService.insert(request, response));
 
-        // get("/usuario/:codigo", (request, response) -> usuarioService.get(request, response));
+        get("/profissional/all/", (request, response) -> profissionalService.getAll(request, response));
         
         // get("/usuario/list/:orderby", (request, response) -> usuarioService.getAll(request, response));
 
