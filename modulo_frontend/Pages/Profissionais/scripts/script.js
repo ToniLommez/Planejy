@@ -10,35 +10,35 @@
 
 onload = () => {
     getPro();
-    
-//     if (userLoggedData && usersRegistered) {
-//         let users = JSON.parse(usersRegistered),
-//             userLogged = JSON.parse(userLoggedData),
-//             userLoggedObj = userLogged.user_login;
 
-//         usersObj = users.user_registered
+    //     if (userLoggedData && usersRegistered) {
+    //         let users = JSON.parse(usersRegistered),
+    //             userLogged = JSON.parse(userLoggedData),
+    //             userLoggedObj = userLogged.user_login;
 
-//         Object.keys(usersObj).forEach( function(id) {
-//             if (usersObj[id].email == userLoggedObj[0].email) {
-//                 id_input.value = id
-//                 name_input.value = usersObj[id].firstname + ' ' + usersObj[id].lastname
-//                 email_input.value = usersObj[id].email
-//                 phone_input.value = usersObj[id].phone
-//                 age_input.value = usersObj[id].age
-//             }
-//         })
-//     }
+    //         usersObj = users.user_registered
 
-//     else {
-//         location.href = '../index.html'
-//     }
+    //         Object.keys(usersObj).forEach( function(id) {
+    //             if (usersObj[id].email == userLoggedObj[0].email) {
+    //                 id_input.value = id
+    //                 name_input.value = usersObj[id].firstname + ' ' + usersObj[id].lastname
+    //                 email_input.value = usersObj[id].email
+    //                 phone_input.value = usersObj[id].phone
+    //                 age_input.value = usersObj[id].age
+    //             }
+    //         })
+    //     }
+
+    //     else {
+    //         location.href = '../index.html'
+    //     }
 }
 
 const logout = () => {
     let users = {
         'user_login': [{
             'firstname': '',
-            'email': '', 
+            'email': '',
             'passwd': '',
             'access': false
         }]
@@ -103,7 +103,7 @@ const loadPro = (pros) => { //fix when pro doesnt have x social media
 
     let cards = '';
 
-    for(let i = 0; i < pros.Profissional.length; i++){
+    for (let i = 0; i < pros.Profissional.length; i++) {
         cards += `<div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3 pro-margin">
                       <!-- Card-->
                       <div class="card shadow border-0 rounded">
@@ -113,10 +113,10 @@ const loadPro = (pros) => { //fix when pro doesnt have x social media
                                   <p class="small text-muted preco">${pros.Profissional[i].preco}/h</p>
                                   <p class="small text-muted area">${pros.Profissional[i].servico}</p>
                                   <ul class="social mb-0 list-inline mt-3">
-                                      <li class="list-inline-item m-0"><a href="${pros.Profissional[i].facebook}" class="social-link"><i class="fa fa-facebook-f"></i></a></li>
-                                      <li class="list-inline-item m-0"><a href="${pros.Profissional[i].twitter}" class="social-link"><i class="fa fa-twitter"></i></a></li>
-                                      <li class="list-inline-item m-0"><a href="${pros.Profissional[i].instagram}" class="social-link"><i class="fa fa-instagram"></i></a></li>
-                                      <li class="list-inline-item m-0"><a href="${pros.Profissional[i].linkedin}" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                                      <li class="list-inline-item m-0"><a href="https://${pros.Profissional[i].facebook}" class="social-link"><i class="fa fa-facebook-f"></i></a></li>
+                                      <li class="list-inline-item m-0"><a href="https://${pros.Profissional[i].twitter}" class="social-link"><i class="fa fa-twitter"></i></a></li>
+                                      <li class="list-inline-item m-0"><a href="https://${pros.Profissional[i].instagram}" class="social-link"><i class="fa fa-instagram"></i></a></li>
+                                      <li class="list-inline-item m-0"><a href="https://${pros.Profissional[i].linkedin}" class="social-link"><i class="fa fa-linkedin"></i></a></li>
                                   </ul>
                                   <div class="stars">
                                       <div class="rating">
