@@ -34,16 +34,21 @@ const postUser = (e, p) => {
     xhr.open('POST', `http://localhost:5678/usuario/login/${e}/${token}`, true);
 
     xhr.onload = () => {
-        const user = {
-            id: JSON.parse(xhr.responseText).Usuario[0].id,
-            token: token
-        }
-
-        if(user.id === -1){
+        const xhrResponse = JSON.parse(xhr.responseText).Usuario[0];
+        
+        if(xhrResponse.id === -1){
             alert('Email e/ou senha inválidos');
+            console.log(xhr.responseText);
+            console.log(xhrResponse);
         }else{
+            const user = {
+                id: xhrResponse.id,
+                token: token
+            }
+            
             sessionStorage.setItem('user', JSON.stringify(user));
-            location.href = '/Pages/Calendario/Calendario.html';
+            console.log('yo')
+            // location.href = '/Pages/Calendario/Calendario.html';
         }
     }
 

@@ -148,8 +148,6 @@ onload = () => {
     }
 }
 
-
-//function called by Calendario.html
 const logout = () => {
     sessionStorage.removeItem('user');
     location.href = '../../index.html';
@@ -211,7 +209,6 @@ const init = () => {
 }
 
 const addNotes = () => {
-
     let noteMenu = document.querySelector('.addNotes');
     noteMenu.style.display = 'block';
 
