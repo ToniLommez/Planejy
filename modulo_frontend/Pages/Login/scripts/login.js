@@ -7,6 +7,10 @@ onload = () => {
 
 document.getElementById('login').addEventListener('submit', e => {e.preventDefault()});
 
+document.querySelector('.about-us').onclick = () => {
+    location.href = 'Pages/login/about.html';
+}
+
 document.getElementById('btn_submit').onclick = () => {
     if(email.checkValidity() && passwd.checkValidity()){
         postUser(email.value, passwd.value);
