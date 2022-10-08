@@ -64,7 +64,11 @@ public class UsuarioService {
 	}
 
 	public Object insert(Request request, Response response) {
-		String sqlString = request.body();
+		String nome = request.params(":nome");
+		String nick = request.params(":nick");
+		String senha = request.params(":senha");
+		String email = request.params(":email");
+		
 		boolean result = usuarioDAO.post(sqlString);
 
 		if (result) {

@@ -78,6 +78,7 @@ btn_submit.onclick = () => {
     postUser(user);
 }
 
+// comentario so pra gerar commit
 const userToSql = user => {
     return `INSERT INTO planejy.usuario (nome, nick, senha, email)
             VALUES ('${user.name}', '${user.nick}', '${user.password}', '${user.email}')`;
