@@ -115,6 +115,7 @@ CREATE TABLE Planejy.Tags_Artigo (
 CREATE TABLE Planejy.Profissional (
     registro   SERIAL,
     nome       VARCHAR(120)  NOT NULL,
+    servico    VARCHAR(60),
     preco      MONEY         NOT NULL   DEFAULT 0.00,
     foto       VARCHAR(255)             UNIQUE,
     facebook   VARCHAR(255),
