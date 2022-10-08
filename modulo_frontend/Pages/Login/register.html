@@ -36,15 +36,17 @@
                                 <div class="input-box first-name-box">
                                     <input type="text" id="firstname" class="form-control" name="firstname" pattern="^[a-zA-Z][a-zA-Z-_\.]{3,19}$" title="Mínimo 3 caracteres, máximo 20, somente letras. Ex.: John" placeholder="Nome" autocomplete="off" required>
                                 </div>
-                                <div class="input-box last-name-box">
-                                    <input type="text" id="lastname" class="form-control" name="lastname" pattern="^[a-zA-Z][a-zA-Z-_\.]{3,19}$" title="Mínimo 3 caracteres, máximo 20, somente letras. Ex.: Walker" autocomplete="off" placeholder="Sobrenome" required>
+                                <div class="input-box nick-box">
+                                    <input type="text" id="nickname" class="form-control" name="nickname" pattern=".{5,15}" title="Mínimo 5 caracteres, máximo 15, somente letras. Ex.: CoolNickName" placeholder="Nick" autocomplete="off" required>
                                 </div>
                                 <div class="input-box email-box">
                                     <input type="email" id="email" class="form-control" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Ex.: john@planejy.com" autocomplete="off" placeholder="Email" required>
                                 </div>
                                 <div class="input-box confirm-email-box">
                                     <input type="email" id="confirmemail" class="form-control" name="confirmemail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Ex.: john@planejy.com" placeholder="Confirme seu email" autocomplete="off" required>
-                                    <span></span>
+                                </div>
+                                <div class="input-box birth-box">
+                                    <input type="date" id="birthDate" class="form-control" name="birthDate" title="Ex.: 21/02/2001" placeholder="data de nascimento" autocomplete="off" required>
                                 </div>
                                 <div class="input-box passwd-box">
                                     <input type="password" id="passwd" class="form-control" name="passwd" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" title="Sua senha deve conter pelo menos 8 caracteres, tendo pelo menos um número, letras maiúsculas e minúsculas e caracteres especiais."

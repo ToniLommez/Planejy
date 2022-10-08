@@ -10,11 +10,11 @@ const back_box = document.querySelector('.back-box'),
 let localStorageData = localStorage.getItem('users');
 
 if (localStorageData) {
-    var users = JSON.parse(localStorageData),
+    let users = JSON.parse(localStorageData),
         obj = users.user_registered
 }
 
-var firstname_registered,
+let firstname_registered,
     email_registered,
     passwd_registered,
     valid_email = false,
@@ -23,12 +23,12 @@ var firstname_registered,
 // Back Box Event Listener
 back_box.addEventListener('click', () => {
     history.back();
-})
+});
 
 // User Email Event Listeners
 user_email.addEventListener('input', () => {
     user_email.value = user_email.value.toLowerCase();
-})
+});
 
 user_email.addEventListener('change', () => {
     Object.keys(obj).forEach(function(id) {
@@ -37,8 +37,8 @@ user_email.addEventListener('change', () => {
             email_registered = obj[id].email
             passwd_registered = obj[id].passwd
         }
-    })
-})
+    });
+});
 
 
 
@@ -58,7 +58,7 @@ form_element.addEventListener('submit', (evento) => {
     if (!valid_email || !valid_passwd) {
         user_passwd.style.backgroundColor = '#f1343499';
     } else if (valid_email && valid_passwd) {
-        var users = {
+        let users = {
             'user_login': [{
                 'firstname': firstname_registered,
                 'email': user_email.value,
@@ -70,7 +70,7 @@ form_element.addEventListener('submit', (evento) => {
         localStorage.setItem('user_login', JSON.stringify(users));
         location.href = '/Pages/Calendario/Calendario.html';
     } else {
-        var users = {
+        let users = {
             'user_login': [{
                 'firstname': firstname_registered,
                 'email': user_email.value,
@@ -81,26 +81,46 @@ form_element.addEventListener('submit', (evento) => {
         localStorage.setItem('user_login', JSON.stringify(users));
     }
     evento.preventDefault();
-})
+});
 
 btn_register.addEventListener('click', () => {
     location.href = '/Pages/Login/register.html';
-})
+});
 
 show_passwd.addEventListener('click', (event) => {
     user_passwd.setAttribute('type', 'text');
     show_passwd.style.display = 'none';
     hide_passwd.style.display = 'block';
     event.preventDefault();
-})
+});
 
 hide_passwd.addEventListener('click', (event) => {
     user_passwd.setAttribute('type', 'password');
     show_passwd.style.display = 'block';
     hide_passwd.style.display = 'none';
     event.preventDefault();
-})
+});
 
 about_us.addEventListener('click', () => {
     location.href = '/Pages/Login/about.html';
-})
+});
+
+const tokenLength = 40;
+
+const generateRandomString = (num) => {
+    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = ' ';
+
+    for(let i = 0; i < num; i++){
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+
+    return result;
+}
+
+// const displayRandomString = () =>{
+//     let randomStringContainer = document.getElementById('random_string'); 
+//     randomStringContainer.innerHTML = generateRandomString(8);
+// }
+
+console.log(generateRandomString(tokenLength));
