@@ -15,41 +15,24 @@ const formatDate = (date) => {
     return [year, month, day].join('-');
 }
 
-const noteToSql = (note, method) => {
-    let sql = '';
-
-    if(method === 'update'){
-        sql = `UPDATE planejy.nota 
-               SET titulo = '${note.titulo}', 
-               dia = '${note.dia}',
-               categoria = '${note.categoria}',
-               descricao = '${note.descricao}',
-               horario = '${note.horario}',
-               cor = '${note.cor}'
-               WHERE nota.chave = '${note.id}'`;
-    }else if(method === 'insert'){
-        sql = `INSERT INTO planejy.nota (id_usuario, titulo, dia, descricao, horario, categoria, cor)
-               VALUES ('${note.id_usuario}', '${note.titulo}', '${note.dia}', '${note.descricao}', '${note.horario}', '${note.categoria}', '${note.cor}')`;
-    }else if(method === 'delete'){
-        sql = `DELETE FROM planejy.nota WHERE chave = '${note.id}'`;
-    }
-
-    return sql;
+//id|titulo|dia|descricao|horario|categoria|cor
+const noteToString = (note) => {
+    return `${user.token}|${note.titulo}|${note.dia}|${note.descricao}|${note.horario}|${note.categoria}|${note.cor}`;
 }
 
-const postNotes = (tmpNote, method) => {
+const postNotes = (tmpNote, method) => { //only inserting
     let note = {};
     
     if(isNaN(tmpNote)){
         note = {
-            id_usuario: 1,
-            id: tmpNote.id,
+            id_usuario: user.token,
             titulo: tmpNote.title,
             dia: tmpNote.start,
             descricao: tmpNote.description,
             horario: tmpNote.horario,
             categoria: tmpNote.categoria,
-            cor: tmpNote.color
+            cor: tmpNote.color,
+            id: tmpNote.id
         };
     }else{
         note = {
@@ -57,10 +40,10 @@ const postNotes = (tmpNote, method) => {
         };
     }
 
-    let sql = noteToSql(note, method);
+    let str = noteToString(note);
 
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:5678/nota/post/1', true);
+    xhr.open('POST', `http://localhost:5678/nota/post/${user.token}`, true);
 
     xhr.onload = () => {
         getNotes();
@@ -70,12 +53,12 @@ const postNotes = (tmpNote, method) => {
         alert('erro ao salvar notas ;-;');
     }
 
-    xhr.send(sql);
+    xhr.send(str);
 }
 
 const getNotes = () => {
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:5678/nota/get/1', true);
+    xhr.open('GET', `http://localhost:5678/nota/get/${user.token}`, true);
 
     xhr.onload = () => {
         let tmp = JSON.parse(xhr.responseText);
