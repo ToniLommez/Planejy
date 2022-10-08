@@ -75,8 +75,6 @@ btn_submit.onclick = () => {
         gender: 'n'
     }
     
-    console.log(user)
-
     postUser(user);
 }
 
@@ -92,7 +90,7 @@ const postUser = (user) => {
     xhr.open('POST', 'http://localhost:5678/usuario/registrar/', true);
 
     xhr.onload = () => {
-        console.log('yo');
+        location.href = '../../index.html';
     }
 
     xhr.onerror = () => {
