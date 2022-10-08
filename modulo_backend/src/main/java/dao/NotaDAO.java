@@ -48,11 +48,11 @@ public class NotaDAO extends DAO {
 	 * }
 	 */
 
-	public Nota get(int id_usuario) {
+	public Nota get(int token_usuario) {
 		Nota notas = new Nota();
 		try {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM planejy.nota WHERE id_usuario = " + id_usuario;
+			String sql = "SELECT * FROM planejy.nota WHERE id_usuario = ( SELECT id FROM planejy.usuario WHERE token = '" + token_usuario + "' )";
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {
 				Nota p = new Nota(rs.getLong("chave"), rs.getInt("id_usuario"), rs.getString("titulo"),
@@ -68,9 +68,11 @@ public class NotaDAO extends DAO {
 		return notas;
 	}
 
-	public boolean post(String sql) {
+	public boolean post(int token, String body) {
 		boolean status = false;
 		try {
+			Nota nota = new Nota(body);
+			String sql = "INSERT INTO planejy.nota (id_usuario, titulo, dia, descricao, horario, categoria, cor) VALUES ((SELECT id FROM planejy.usuario WHERE token = '" + token + "'), '" + nota.get_titulo() + "', '" + nota.get_dia().toString() + "', '" + nota.get_descricao() + "', '" + nota.get_horario().toString() + "', '" + nota.get_categoria() + "','" + nota.get_cor() + "')";
 			PreparedStatement st = conexao.prepareStatement(sql);
 			st.executeUpdate();
 			st.close();

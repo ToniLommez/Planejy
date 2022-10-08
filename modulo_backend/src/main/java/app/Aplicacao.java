@@ -27,9 +27,9 @@ public class Aplicacao {
         
         get("/articles/all/", (request, response) -> artigoService.getAll(request, response));
         
-        get("/nota/get/:id_usuario", (request, response) -> notaService.get(request, response));
+        get("/nota/get/:token_usuario", (request, response) -> notaService.get(request, response));
         
-        post("/nota/post/:id_usuario", (request, response) -> notaService.insert(request, response));
+        post("/nota/post/:token_usuario", (request, response) -> notaService.insert(request, response));
 
         get("/profissional/all/", (request, response) -> profissionalService.getAll(request, response));
         

@@ -46,8 +46,8 @@ public class NotaService {
 	 */
 
 	public Object get(Request request, Response response) {
-		int id_usuario = Integer.parseInt(request.params(":id_usuario"));
-		Nota nota = (Nota) notaDAO.get(id_usuario);
+		int token_usuario = Integer.parseInt(request.params(":token_usuario"));
+		Nota nota = (Nota) notaDAO.get(token_usuario);
 
 		if (nota != null) {
 			response.status(200); // success
@@ -57,15 +57,16 @@ public class NotaService {
 			respostaJSON += " ] }";
 		} else {
 			response.status(404); // 404 Not found
-			respostaJSON = "Usuario " + id_usuario + " não encontrado.";
+			respostaJSON = "Usuario " + token_usuario + " não encontrado.";
 		}
 
 		return respostaJSON;
 	}
 
 	public Object insert(Request request, Response response) {
-		String sqlString = request.body();
-		boolean result = notaDAO.post(sqlString);
+		int token_usuario = Integer.parseInt(request.params(":token_usuario"));
+		String body = request.body();
+		boolean result = notaDAO.post(token_usuario, body);
 
 		if (result) {
 			response.status(200); // success

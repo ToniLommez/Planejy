@@ -27,6 +27,20 @@ public class Nota {
         this.next = null;
     }
 
+    public Nota(String body) {
+        String[] tmp = body.split("|");
+
+        this.chave = Long.parseLong(tmp[0]);
+        this.id_usuario = Integer.parseInt(tmp[1]);
+        this.titulo = tmp[2];
+        this.dia = LocalDate.parse(tmp[3]);
+        this.descricao = tmp[4];
+        this.horario = LocalTime.parse(tmp[5]);
+        this.categoria = tmp[6];
+        this.cor = tmp[7];
+        this.next = null;
+    }
+
     public Nota(long chave, int id_usuario, String titulo, LocalDate dia, String descricao, Time time,
             String categoria, String cor) {
         this.chave = chave;
