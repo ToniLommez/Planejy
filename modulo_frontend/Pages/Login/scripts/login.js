@@ -38,17 +38,14 @@ const postUser = (e, p) => {
         
         if(xhrResponse.id === -1){
             alert('Email e/ou senha inválidos');
-            console.log(xhr.responseText);
-            console.log(xhrResponse);
         }else{
             const user = {
                 id: xhrResponse.id,
                 token: token
             }
-            
+
             sessionStorage.setItem('user', JSON.stringify(user));
-            console.log('yo')
-            // location.href = '/Pages/Calendario/Calendario.html';
+            location.href = '/Pages/Calendario/Calendario.html';
         }
     }
 
