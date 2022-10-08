@@ -118,7 +118,7 @@ const loadPro = (pros) => { //fix when pro doesnt have x social media
                           <div class="card-body p-0"><img src="images/pro-${pros[i].registro}.jpg" alt="" class="w-100 card-img-top">
                               <div class="p-4">
                                   <h5 class="mb-0 nome">${pros[i].nome}</h5>
-                                  <p class="small text-muted preco">${pros[i].preco}</p>
+                                  <p class="small text-muted preco">${pros[i].preco}/h</p>
                                   <p class="small text-muted area">${services}</p>
                                   <ul class="social mb-0 list-inline mt-3">
                                       <li class="list-inline-item m-0"><a href="${pros[i].facebook}" class="social-link"><i class="fa fa-facebook-f"></i></a></li>
