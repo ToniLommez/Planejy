@@ -82,11 +82,19 @@ h1 {
 }
 
 .inner_content {
-    padding: 20px 4vw;
+    padding: 20px 2vw;
 }
 
 .sidebarHeight2 {
     height: calc(100vh - 50px) !important;
+}
+
+.card {
+    background-color: #f9f7fb9c !important;
+}
+
+.fundoTransparente {
+    background-color: #f9f7fbf1 !important;
 }
 
 .fundoBranco {

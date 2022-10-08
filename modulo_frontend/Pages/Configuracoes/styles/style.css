@@ -16,6 +16,10 @@ h1 {
     color: black;
 }
 
+.card {
+    background-color: #f9f7fbe0 !important;
+}
+
 #msg {
     height: 60px;
 }

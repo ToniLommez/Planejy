@@ -162,6 +162,25 @@ li a {
     opacity: 0.2;
 }
 
+.card {
+    background-color: #f9f7fbd3 !important;
+}
+
+.btn-primary {
+    background: #757bc7 !important;
+    color: white !important;
+    border-color: #757bc7 !important;
+}
+
+.btn-primary:hover {
+    color: #fff !important;
+    color: var(--fc-button-text-color, #fff) !important;
+    background-color: #5e4c77 !important;
+    background-color: var(--fc-button-hover-bg-color, #5e4c77) !important;
+    border-color: #5e4c77 !important;
+    border-color: var(--fc-button-hover-border-color, #5e4c77) !important;
+}
+
 @media screen and (max-width: 1024px) {
     .stars {
         bottom: 25px;
