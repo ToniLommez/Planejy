@@ -97,9 +97,9 @@ public class Profissional {
         if (tmp != null) {
             Json += toJsonRec(tmp.next);
             Json += "{ ";
-            Json += "\"registro\":" + tmp.registro + ",\"nome\":" + tmp.nome + ",\"servico\":" + tmp.servico + ",\"preco\":" + tmp.preco
-                    + ",\"foto\":" + tmp.foto + ",\"facebook\":" + tmp.facebook + ",\"twitter\":" + tmp.twitter + ",\"instagram\":"
-                    + tmp.instagram + ",\"linkedin\":" + tmp.linkedin + "\"";
+            Json += "\"registro\":" + tmp.registro + ",\"nome\":\"" + tmp.nome + "\",\"servico\":\"" + tmp.servico + "\",\"preco\":" + tmp.preco
+                    + ",\"foto\":\"" + tmp.foto + "\",\"facebook\":\"" + tmp.facebook + "\",\"twitter\":\"" + tmp.twitter + "\",\"instagram\":\""
+                    + tmp.instagram + "\",\"linkedin\":\"" + tmp.linkedin + "\"";
             Json += "}";
             Json += ",";
         }
@@ -115,9 +115,9 @@ public class Profissional {
             last = null;
         } else {
             Json += "{ ";
-            Json += "\"registro\":" + registro + ",\"nome\":" + nome + ",\"servico\":" + servico + ",\"preco\":" + preco
-                    + ",\"foto\":" + foto + ",\"facebook\":" + facebook + ",\"twitter\":" + twitter + ",\"instagram\":"
-                    + instagram + ",\"linkedin\":" + linkedin + "\"";
+            Json += "\"registro\":" + registro + ",\"nome\":\"" + nome + "\",\"servico\":\"" + servico + "\",\"preco\":" + preco
+                    + ",\"foto\":\"" + foto + "\",\"facebook\":\"" + facebook + "\",\"twitter\":\"" + twitter + "\",\"instagram\":"
+                    + instagram + "\",\"linkedin\":\"" + linkedin + "\"";
             Json += "}";
         }
         return Json;

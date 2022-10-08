@@ -85,10 +85,10 @@ const logout = () => {
 
 const getPro = () => {
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'url', true);
+    xhr.open('GET', 'http://localhost:5678/profissional/all/', true);
 
     xhr.onload = () => {
-        loadPro(xhr.responseText);
+        loadPro(JSON.parse(xhr.responseText));
     }
 
     xhr.onerror = () => {
@@ -103,28 +103,20 @@ const loadPro = (pros) => { //fix when pro doesnt have x social media
 
     let cards = '';
 
-    for(let i = 0; i < pros.length; i++){
-        let services = '';
-
-        for(let j = 0; j < pros[i].services.length; j++){
-            services += pros[j].services[j];
-
-            if(j < pros[i].services.length - 1) services += '<br>';
-        }
-
+    for(let i = 0; i < pros.Profissional.length; i++){
         cards += `<div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3 pro-margin">
                       <!-- Card-->
                       <div class="card shadow border-0 rounded">
-                          <div class="card-body p-0"><img src="images/pro-${pros[i].registro}.jpg" alt="" class="w-100 card-img-top">
+                          <div class="card-body p-0"><img src="images/pro-${pros.Profissional[i].registro}.jpg" alt="" class="w-100 card-img-top">
                               <div class="p-4">
-                                  <h5 class="mb-0 nome">${pros[i].nome}</h5>
-                                  <p class="small text-muted preco">${pros[i].preco}/h</p>
-                                  <p class="small text-muted area">${services}</p>
+                                  <h5 class="mb-0 nome">${pros.Profissional[i].nome}</h5>
+                                  <p class="small text-muted preco">${pros.Profissional[i].preco}/h</p>
+                                  <p class="small text-muted area">${pros.Profissional[i].servico}</p>
                                   <ul class="social mb-0 list-inline mt-3">
-                                      <li class="list-inline-item m-0"><a href="${pros[i].facebook}" class="social-link"><i class="fa fa-facebook-f"></i></a></li>
-                                      <li class="list-inline-item m-0"><a href="${pros[i].twitter}" class="social-link"><i class="fa fa-twitter"></i></a></li>
-                                      <li class="list-inline-item m-0"><a href="${pros[i].instagram}" class="social-link"><i class="fa fa-instagram"></i></a></li>
-                                      <li class="list-inline-item m-0"><a href="${pros[i].linkedin}" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                                      <li class="list-inline-item m-0"><a href="${pros.Profissional[i].facebook}" class="social-link"><i class="fa fa-facebook-f"></i></a></li>
+                                      <li class="list-inline-item m-0"><a href="${pros.Profissional[i].twitter}" class="social-link"><i class="fa fa-twitter"></i></a></li>
+                                      <li class="list-inline-item m-0"><a href="${pros.Profissional[i].instagram}" class="social-link"><i class="fa fa-instagram"></i></a></li>
+                                      <li class="list-inline-item m-0"><a href="${pros.Profissional[i].linkedin}" class="social-link"><i class="fa fa-linkedin"></i></a></li>
                                   </ul>
                                   <div class="stars">
                                       <div class="rating">
