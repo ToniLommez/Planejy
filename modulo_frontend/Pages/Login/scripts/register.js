@@ -83,19 +83,12 @@ btn_submit.onclick = () => {
     }
 }
 
-const userToSql = user => {
-    return `INSERT INTO planejy.usuario (nome, nick, senha, email)
-            VALUES ('${user.name}', '${user.nick}', '${user.password}', '${user.email}')`;
-}
-
 const postUser = user => {
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', `http://localhost:5678/usuario/registrar/${user.name}/${user.nick}/${user.email}/${user.password}`, true);
+    xhr.open('POST', `http://localhost:5678/usuario/registrar/${user.name}/${user.nick}/${user.password}/${user.email}`, true);
 
     xhr.onload = () => {
-        console.log(xhr.responseText)
         let response = JSON.parse(xhr.responseText).Usuario[0];
-        console.log(response);
         if(response.sucesso){
             alert('Nova conta criada!\nProceda com o login');
             location.href = '../../index.html';
