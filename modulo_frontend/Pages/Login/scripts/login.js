@@ -7,6 +7,10 @@ onload = () => {
 
 document.getElementById('login').addEventListener('submit', e => {e.preventDefault()});
 
+document.querySelector('.about-us').onclick = () => {
+    location.href = 'Pages/login/about.html';
+}
+
 document.getElementById('btn_submit').onclick = () => {
     if(email.checkValidity() && passwd.checkValidity()){
         postUser(email.value, passwd.value);
@@ -30,13 +34,22 @@ const postUser = (e, p) => {
     xhr.open('POST', `http://localhost:5678/usuario/login/${e}/${token}`, true);
 
     xhr.onload = () => {
-        let user = {
-            id: JSON.parse(xhr.responseText).Usuario[0].id,
-            token: token
+        const xhrResponse = JSON.parse(xhr.responseText).Usuario[0];
+        
+        if(xhrResponse.id === -1){
+            alert('Email e/ou senha inválidos');
+            console.log(xhr.responseText);
+            console.log(xhrResponse);
+        }else{
+            const user = {
+                id: xhrResponse.id,
+                token: token
+            }
+            
+            sessionStorage.setItem('user', JSON.stringify(user));
+            console.log('yo')
+            // location.href = '/Pages/Calendario/Calendario.html';
         }
-
-        sessionStorage.setItem('user', JSON.stringify(user));
-        location.href = '/Pages/Calendario/Calendario.html';
     }
 
     xhr.onerror = () => {

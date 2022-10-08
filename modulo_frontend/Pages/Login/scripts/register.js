@@ -16,6 +16,10 @@ onload = () => {
     sessionStorage.removeItem('user');
 }
 
+document.querySelector('.btn-login').onclick = () => {
+    location.href = '../../index.html';
+}
+
 back_box.addEventListener('click', () => {
     location.href = '../../index.html';
 });
