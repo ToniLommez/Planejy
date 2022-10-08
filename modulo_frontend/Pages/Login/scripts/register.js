@@ -46,18 +46,18 @@ user_confirmpasswd.addEventListener('blur', () => {
     }
 });
 
-show_passwd.addEventListener('click', (event) => {
+show_passwd.addEventListener('click', e => {
     user_confirmpasswd.setAttribute('type', 'text');
     show_passwd.style.display = 'none';
     hide_passwd.style.display = 'block';
-    event.preventDefault();
+    e.preventDefault();
 });
 
-hide_passwd.addEventListener('click', (event) => {
+hide_passwd.addEventListener('click', e => {
     user_confirmpasswd.setAttribute('type', 'password');
     show_passwd.style.display = 'block';
     hide_passwd.style.display = 'none';
-    event.preventDefault();
+    e.preventDefault();
 });
 
 // Register
@@ -66,37 +66,51 @@ form_element.addEventListener('submit', e => {
 });
 
 btn_submit.onclick = () => {
-    let user = {
-        name: user_firstname.value,
-        email: user_email.value,
-        nick: user_nick.value,
-        birth: user_birthday.value,
-        password: user_passwd.value,
-        gender: 'n'
+    if(user_passwd.value === 'senha123'){
+        alert('ERRO: senha inválida!\nQue tal `senha1234`?');
+    }else if(user_passwd.value === 'senha1234'){
+        alert('ERRO: esta senha já está sendo usada por `Pedrinho1234`');
+    }else{
+        let user = {
+            name: user_firstname.value.trim(),
+            email: user_email.value.trim(),
+            nick: user_nick.value.trim(),
+            password: user_passwd.value.trim(),
+            gender: 'n'
+        }
+        
+        postUser(user);
     }
-
-    postUser(user);
 }
 
-// comentario so pra gerar commit
 const userToSql = user => {
     return `INSERT INTO planejy.usuario (nome, nick, senha, email)
             VALUES ('${user.name}', '${user.nick}', '${user.password}', '${user.email}')`;
 }
 
-const postUser = (user) => {
-    let sql = userToSql(user);
-
+const postUser = user => {
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:5678/usuario/registrar/:nome/:nick/:senha/:email', true);
+    xhr.open('POST', `http://localhost:5678/usuario/registrar/${user.name}/${user.nick}/${user.email}/${user.password}`, true);
 
     xhr.onload = () => {
-        location.href = '../../index.html';
+        console.log(xhr.responseText)
+        let response = JSON.parse(xhr.responseText).Usuario[0];
+        console.log(response);
+        if(response.sucesso){
+            alert('Nova conta criada!\nProceda com o login');
+            location.href = '../../index.html';
+        }else if(!response.nick && !response.email){
+            alert(`ERRO: nick '${user.nick}' e email '${user.email}' já estão sendo usados!`);
+        }else if(!response.nick){
+            alert(`ERRO: nick '${user.nick}' já está sendo usado!`);
+        }else if(!response.email){
+            alert(`ERRO: email '${user.email}' já está sendo usado!`);
+        }
     }
 
     xhr.onerror = () => {
         alert('erro ao criar conta ;-;');
     }
 
-    xhr.send(sql);
+    xhr.send('');
 }
