@@ -66,8 +66,8 @@ public class UsuarioService {
 	public Object insert(Request request, Response response) {
 		String nome = request.params(":nome");
 		String nick = request.params(":nick");
-		String senha = request.params(":senha");
 		String email = request.params(":email");
+		String senha = request.body();
 
 		String result = usuarioDAO.insert(nome, nick, senha, email);
 
@@ -79,8 +79,8 @@ public class UsuarioService {
 
 	public Object login(Request request, Response response) {
 		String email = request.params(":email");
-		String senha = request.params(":senha");
 		String token = request.params(":token");
+		String senha = request.body();
 		int resposta = usuarioDAO.login(email, senha, token);
 
 		response.status(200); // success

@@ -33,11 +33,11 @@ public class Aplicacao {
 
         get("/profissional/all/", (request, response) -> profissionalService.getAll(request, response));
         
-        post("/usuario/registrar/:nome/:nick/:senha/:email", (request, response) -> usuarioService.insert(request, response));
+        post("/usuario/registrar/:nome/:nick/:email", (request, response) -> usuarioService.insert(request, response));
 
         get("/usuario/get/:token_usuario", (request, response) -> usuarioService.get(request, response));
         
-        get("/usuario/login/:email/:senha/:token", (request, response) -> usuarioService.login(request, response));
+        get("/usuario/login/:email/:token", (request, response) -> usuarioService.login(request, response));
            
         // get("/usuario/delete/:codigo", (request, response) -> usuarioService.delete(request, response));
 
