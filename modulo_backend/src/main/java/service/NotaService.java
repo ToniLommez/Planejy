@@ -66,6 +66,7 @@ public class NotaService {
 	public Object insert(Request request, Response response) {
 		String token_usuario = request.params(":token_usuario");
 		String body = request.body();
+		System.out.printf(body);
 		boolean result = notaDAO.post(token_usuario, body);
 
 		if (result) {

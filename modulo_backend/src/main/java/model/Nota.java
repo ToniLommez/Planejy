@@ -30,14 +30,14 @@ public class Nota {
     public Nota(String body) {
         String[] tmp = body.split("|");
 
-        this.chave = Long.parseLong(tmp[0]);
-        this.id_usuario = Integer.parseInt(tmp[1]);
-        this.titulo = tmp[2];
-        this.dia = LocalDate.parse(tmp[3]);
-        this.descricao = tmp[4];
-        this.horario = LocalTime.parse(tmp[5]);
-        this.categoria = tmp[6];
-        this.cor = tmp[7];
+        this.chave = -1;
+        this.id_usuario = Integer.parseInt(tmp[0]);
+        this.titulo = tmp[1];
+        this.dia = LocalDate.parse(tmp[2]);
+        this.descricao = tmp[3];
+        this.horario = LocalTime.parse(tmp[4]);
+        this.categoria = tmp[5];
+        this.cor = tmp[6];
         this.next = null;
     }
 
