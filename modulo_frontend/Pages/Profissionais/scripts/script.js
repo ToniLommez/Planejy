@@ -1,4 +1,4 @@
-var id_input = document.querySelector('#inputId'),
+let id_input = document.querySelector('#inputId'),
     name_input = document.querySelector('#inputNome'),
     phone_input = document.querySelector('#inputTelefone'),
     email_input = document.querySelector('#inputEmail'),
@@ -10,7 +10,7 @@ var id_input = document.querySelector('#inputId'),
 
 onload = () => {
     if (userLoggedData && usersRegistered) {
-        var users = JSON.parse(usersRegistered),
+        let users = JSON.parse(usersRegistered),
             userLogged = JSON.parse(userLoggedData),
             userLoggedObj = userLogged.user_login;
 
@@ -33,7 +33,7 @@ onload = () => {
 }
 
 function logout() {
-    var users = {
+    let users = {
         'user_login': [{
             'firstname': '',
             'email': '', 
