@@ -1,4 +1,4 @@
-let userLoggedData = localStorage.getItem('user_login'); //remover futuramente
+let user = JSON.parse(sessionStorage.getItem('user'));
 let calendar;
 
 const formatDate = (date) => {
@@ -143,14 +143,7 @@ const data = {
 }
 
 onload = () => {
-    if (userLoggedData) {
-        let userLogged = JSON.parse(userLoggedData),
-        userLoggedObj = userLogged.user_login;
-        
-        if (userLoggedObj[0].access != true) {
-            location.href = '../../index.html'
-        }
-    } else {
+    if(!user) {
         location.href = '../../index.html'
     }
 }
@@ -158,15 +151,7 @@ onload = () => {
 
 //function called by Calendario.html
 const logout = () => {
-    let users = {
-        'user_login': [{
-            'firstname': '',
-            'email': '',
-            'passwd': '',
-            'access': false
-        }]
-    }
-    localStorage.setItem('user_login', JSON.stringify(users)); //remover futuramente
+    sessionStorage.clear();
     location.href = '../../index.html';
 }
 
