@@ -52,9 +52,9 @@ public class UsuarioService {
 		if (usuario != null) {
 			response.status(200); // success
 			respostaJSON = "";
-			respostaJSON += "{ \"Usuario\": [";
+			respostaJSON += "{ \"Usuario\": [{";
 			respostaJSON += usuario.toJson();
-			respostaJSON += " ] }";
+			respostaJSON += "} ] }";
 		} else {
 			response.status(404); // 404 Not found
 			respostaJSON = "Usuario " + token_usuario + " não encontrado.";
@@ -86,9 +86,9 @@ public class UsuarioService {
 
 		response.status(200); // success
 		respostaJSON = "";
-		respostaJSON += "{ \"Usuario\": [";
+		respostaJSON += "{ \"Usuario\": [{";
 		respostaJSON += "\"id\":" + resposta;
-		respostaJSON += " ] }";
+		respostaJSON += "} ] }";
 
 		return respostaJSON;
 	}
