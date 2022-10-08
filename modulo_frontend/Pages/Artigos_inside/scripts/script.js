@@ -33,7 +33,7 @@ onload = () => {
     // }
 }
 
-function logout() {
+const logout = () => {
     let users = {
         'user_login': [{
             'firstname': '',
@@ -90,12 +90,15 @@ const getArticleId = () => {
 }
 
 const updatePage = (html) => {
-    console.log(html);
+    let date = new Date(html.dataFabricacao); //for some reason new Date is parsing the date 1 day behind (no clue why that is)
+    date.setDate(date.getDate() + 1); //this line adds that one day back
+
     document.querySelector('.card-header').innerHTML = `<h1>${html.titulo}</h1>`;
     document.querySelector('.card-body').innerHTML = html.conteudo;
-    document.querySelector('.autor').innerHTML = html.autor;
-    document.querySelector('.controle-imagem1').setAttribute('src', `../Artigos/images/article-${html.chave}.png`); // ---------- not working
-    document.querySelector('.controle-imagem2').setAttribute('src', `../Artigos/images/article-${html.chave}.png`); // ---------- not working
+    document.querySelectorAll('.autor').forEach(autor => autor.innerHTML = html.autor);
+    document.querySelectorAll('.controle-imagem').forEach(imagem => imagem.setAttribute('src', `../Artigos/images/article-${html.chave}.png`));
+    document.querySelectorAll('.controle-imagem').forEach(imagem => imagem.setAttribute('alt', html.imagem_alt));
+    document.querySelectorAll('.dataFabricacao').forEach(data => data.innerHTML = date.toLocaleDateString('pt-BR'));
 }
 
 const getArticles = () => {

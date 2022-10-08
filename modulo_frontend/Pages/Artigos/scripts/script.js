@@ -43,7 +43,6 @@ function executaPesquisa() {
 }
 
 function loadArticles(teste) {
-    console.log(teste);
     const jsonteste = JSON.parse(teste);
     let tab = document.querySelector('.inner_content');
 
