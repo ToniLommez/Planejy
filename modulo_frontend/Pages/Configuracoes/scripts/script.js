@@ -1,3 +1,5 @@
+const USER = JSON.parse(sessionStorage.getItem('user'));
+
 var id_input = document.querySelector('#inputId'),
     email_input = document.querySelector('#inputEmail'),
     name_input = document.querySelector('#inputNome'),
@@ -11,40 +13,13 @@ var id_input = document.querySelector('#inputId'),
 
 
 onload = () => {
-    if (userLoggedData && usersRegistered) {
-        var users = JSON.parse(usersRegistered),
-            userLogged = JSON.parse(userLoggedData),
-            userLoggedObj = userLogged.user_login;
-
-        usersObj = users.user_registered
-
-        Object.keys(usersObj).forEach( function(id) {
-            if (usersObj[id].email == userLoggedObj[0].email) {
-                id_input.value = id
-                email_input.value = usersObj[id].email
-                name_input.value = usersObj[id].firstname + ' ' + usersObj[id].lastname
-                birth_input.value = usersObj[id].birth
-                gender_input.value = usersObj[id].gender
-                nick_input.value = usersObj[id].nick
-            }
-        })
-    }
-
-    else {
+    if(!USER) {
         location.href = '../index.html'
     }
 }
 
 function logout() {
-    var users = {
-        'user_login': [{
-            'firstname': '',
-            'email': '', 
-            'passwd': '',
-            'access': false
-        }]
-    }
-    localStorage.setItem('user_login', JSON.stringify(users));
+    sessionStorage.clear();
     location.href = '../index.html';
 }
 
