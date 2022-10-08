@@ -1,4 +1,4 @@
-const USER = JSON.parse(sessionStorage.getItem('user'));
+const user = JSON.parse(sessionStorage.getItem('user'));
 
 var id_input = document.querySelector('#inputId'),
     email_input = document.querySelector('#inputEmail'),
@@ -13,13 +13,13 @@ var id_input = document.querySelector('#inputId'),
 
 
 onload = () => {
-    if(!USER) {
+    if(!user) {
         location.href = '../index.html'
     }
 }
 
 function logout() {
-    sessionStorage.clear();
+    sessionStorage.removeItem('user');
     location.href = '../index.html';
 }
 

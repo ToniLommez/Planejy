@@ -151,7 +151,7 @@ onload = () => {
 
 //function called by Calendario.html
 const logout = () => {
-    sessionStorage.clear();
+    sessionStorage.removeItem('user');
     location.href = '../../index.html';
 }
 

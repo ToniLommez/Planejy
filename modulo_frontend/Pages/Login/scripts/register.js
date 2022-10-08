@@ -12,10 +12,13 @@ const back_box = document.querySelector('.back-box'),
 
 let btn_submit = document.querySelector('.btn-submit');
 
-// Back Box Event Listener
+onload = () => {
+    sessionStorage.removeItem('user');
+}
+
 back_box.addEventListener('click', () => {
     location.href = '../../index.html';
-})
+});
 
 user_confirmemail.addEventListener('blur', () => {
     if (user_confirmemail.value != user_email.value) {
@@ -31,7 +34,6 @@ user_confirmemail.addEventListener('blur', () => {
     }
 });
 
-// User Confirm Password Event Listener
 user_confirmpasswd.addEventListener('blur', () => {
     if (user_confirmpasswd.value != user_passwd.value) {
         user_confirmpasswd.style.backgroundColor = '#f1343499';
@@ -60,7 +62,6 @@ hide_passwd.addEventListener('click', e => {
     e.preventDefault();
 });
 
-// Register
 form_element.addEventListener('submit', e => {
     e.preventDefault();
 });

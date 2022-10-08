@@ -1,16 +1,8 @@
-let userLoggedData = localStorage.getItem('user_login');
+const user = JSON.parse(sessionStorage.getItem('user'));
 
 onload = () => {
-    if (userLoggedData) {
-        let userLogged = JSON.parse(userLoggedData),
-            userLoggedObj = userLogged.user_login;
-
-        if (userLoggedObj[0].access != true) {
-            location.href = '../index.html'
-            return;
-        }
-    } else {
-        location.href = '../index.html'
+    if(!user){
+        location.href = '../../index.html';
         return;
     }
 
@@ -18,16 +10,8 @@ onload = () => {
 }
 
 const logout = () => {
-    let users = {
-        'user_login': [{
-            'firstname': '',
-            'email': '',
-            'passwd': '',
-            'access': false
-        }]
-    }
-    localStorage.setItem('user_login', JSON.stringify(users));
-    location.href = '../index.html';
+    sessionStorage.removeItem('user');
+    location.href = '../../index.html';
 }
 
 function executaPesquisa() {

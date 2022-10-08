@@ -1,6 +1,10 @@
 const email = document.getElementById('email');
 const passwd = document.getElementById('passwd');
 
+onload = () => {
+    sessionStorage.removeItem('user');
+}
+
 document.getElementById('login').addEventListener('submit', e => {e.preventDefault()});
 
 document.getElementById('btn_submit').onclick = () => {
@@ -9,7 +13,7 @@ document.getElementById('btn_submit').onclick = () => {
     }
 }
 
-const generateToken = (n) => {
+const generateToken = n => {
     const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
 
@@ -26,12 +30,9 @@ const postUser = (e, p) => {
     xhr.open('POST', `http://localhost:5678/usuario/login/${e}/${token}`, true);
 
     xhr.onload = () => {
-        console.log(xhr.responseText)
-
         let user = {
             id: JSON.parse(xhr.responseText).Usuario[0].id,
-            token: token,
-            logged: true
+            token: token
         }
 
         sessionStorage.setItem('user', JSON.stringify(user));
