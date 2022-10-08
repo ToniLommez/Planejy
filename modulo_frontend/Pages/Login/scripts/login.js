@@ -34,13 +34,17 @@ const postUser = (e, p) => {
     xhr.open('POST', `http://localhost:5678/usuario/login/${e}/${token}`, true);
 
     xhr.onload = () => {
-        let user = {
+        const user = {
             id: JSON.parse(xhr.responseText).Usuario[0].id,
             token: token
         }
 
-        sessionStorage.setItem('user', JSON.stringify(user));
-        location.href = '/Pages/Calendario/Calendario.html';
+        if(user.id === -1){
+            alert('Email e/ou senha inválidos');
+        }else{
+            sessionStorage.setItem('user', JSON.stringify(user));
+            location.href = '/Pages/Calendario/Calendario.html';
+        }
     }
 
     xhr.onerror = () => {
