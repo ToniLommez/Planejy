@@ -1,71 +1,20 @@
 const back_box = document.querySelector('.back-box'),
     user_firstname = document.querySelector('#firstname'),
-    user_lastname = document.querySelector('#lastname'),
     user_email = document.querySelector('#email'),
     user_confirmemail = document.querySelector('#confirmemail'),
+    user_nick = document.querySelector('#nickname'),
+    user_birthday = document.querySelector('#birthDate'),
     user_passwd = document.querySelector('#passwd'),
     user_confirmpasswd = document.querySelector('#confirmpasswd'),
     form_element = document.querySelector('#register'),
-    btn_login = document.querySelector('.btn-login'),
     show_passwd = document.querySelector('#show-passwd'),
     hide_passwd = document.querySelector('#hide-passwd');
-
-let objUsers = {
-    'user_registered': []
-}
-
-let localStorageData = localStorage.getItem('users')
-
-if (localStorageData) {
-    objUsers = JSON.parse(localStorageData)
-}
-
-var btn_submit = document.querySelector('.btn-submit'),
-    valid_email = false,
-    valid_passwd = false,
-    obj = objUsers.user_registered
-
+    
+let btn_submit = document.querySelector('.btn-submit');
 
 // Back Box Event Listener
 back_box.addEventListener('click', () => {
-    history.back();
-})
-
-// User First Name Event Listener
-user_firstname.addEventListener('blur', () => {
-    user_firstname.value = user_firstname.value.toLowerCase();
-    user_firstname.value = user_firstname.value[0].toUpperCase() + user_firstname.value.slice(1);
-})
-
-// User Last Name Event Listener
-user_lastname.addEventListener('blur', () => {
-    user_lastname.value = user_lastname.value.toLowerCase();
-    user_lastname.value = user_lastname.value[0].toUpperCase() + user_lastname.value.slice(1);
-})
-
-// User Email Event Listeners
-user_email.addEventListener('input', () => {
-    user_email.value = user_email.value.toLowerCase();
-})
-
-user_email.addEventListener('change', () => {
-    Object.keys(obj).forEach(function(id) {
-        if (obj[id].email == user_email.value) {
-            alert('Email já cadastrado, tente realizar o login!')
-            user_email.style.backgroundColor = '#f1343499';
-            btn_submit.setAttribute('disabled', 'true');
-            user_confirmemail.setAttribute('disabled', 'true');
-            valid_email = false;
-        } else {
-            btn_submit.removeAttribute('disabled');
-            user_confirmemail.removeAttribute('disabled');
-        }
-    })
-})
-
-// User Confirm Email Event Listeners
-user_confirmemail.addEventListener('input', () => {
-    user_confirmemail.value = user_confirmemail.value.toLowerCase();
+    location.href = '../../index.html';
 })
 
 user_confirmemail.addEventListener('blur', () => {
@@ -80,7 +29,7 @@ user_confirmemail.addEventListener('blur', () => {
             btn_submit.removeAttribute('disabled');
         }
     }
-})
+});
 
 // User Confirm Password Event Listener
 user_confirmpasswd.addEventListener('blur', () => {
@@ -95,47 +44,60 @@ user_confirmpasswd.addEventListener('blur', () => {
             btn_submit.removeAttribute('disabled');
         }
     }
-})
-
-
-// Form Element Event Listener
-form_element.addEventListener('submit', evento => {
-    var users = {
-        'firstname': user_firstname.value,
-        'lastname': user_lastname.value,
-        'email': user_email.value,
-        'passwd': user_passwd.value,
-        'phone': '',
-        'age': '',
-    }
-
-    objUsers.user_registered.push(users)
-    localStorage.setItem('users', JSON.stringify(objUsers));
-    location.href = '../../index.html';
-    evento.preventDefault();
-})
-
-btn_login.addEventListener('click', () => {
-    location.href = '../../index.html';
-})
+});
 
 show_passwd.addEventListener('click', (event) => {
     user_confirmpasswd.setAttribute('type', 'text');
     show_passwd.style.display = 'none';
     hide_passwd.style.display = 'block';
     event.preventDefault();
-})
-
-show_passwd.addEventListener('vmousedown', (event) => {
-    user_confirmpasswd.setAttribute('type', 'text');
-    show_passwd.style.display = 'none';
-    hide_passwd.style.display = 'block';
-    event.preventDefault();
-})
+});
 
 hide_passwd.addEventListener('click', (event) => {
     user_confirmpasswd.setAttribute('type', 'password');
     show_passwd.style.display = 'block';
     hide_passwd.style.display = 'none';
     event.preventDefault();
-})
+});
+
+// Register
+form_element.addEventListener('submit', e => {
+    e.preventDefault();
+});
+
+btn_submit.onclick = () => {
+    let user = {
+        name: user_firstname.value,
+        email: user_email.value,
+        nick: user_nick.value,
+        birth: user_birthday.value,
+        password: user_passwd.value,
+        gender: 'n'
+    }
+    
+    console.log(user)
+
+    postUser(user);
+}
+
+const userToSql = user => {
+    return `INSERT INTO planejy.usuario (nome, nascimento, nick, senha, email, genero)
+            VALUES ('${user.name}', '${user.birth}', '${user.nick}', '${user.password}', '${user.email}', '${user.gender}')`;
+}
+
+const postUser = (user) => {
+    let sql = userToSql(user);
+    
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:5678/usuario/registrar/', true);
+
+    xhr.onload = () => {
+        console.log('yo');
+    }
+
+    xhr.onerror = () => {
+        alert('erro ao criar conta ;-;');
+    }
+
+    xhr.send(sql);
+}
