@@ -37,7 +37,7 @@ public class Aplicacao {
 
         get("/usuario/get/:token_usuario", (request, response) -> usuarioService.get(request, response));
         
-        get("/usuario/login/:email/:token", (request, response) -> usuarioService.login(request, response));
+        post("/usuario/login/:email/:token", (request, response) -> usuarioService.login(request, response));
            
         // get("/usuario/delete/:codigo", (request, response) -> usuarioService.delete(request, response));
 

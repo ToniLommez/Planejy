@@ -23,9 +23,11 @@ const generateToken = (n) => {
 const postUser = (e, p) => {
     let token = generateToken(40);
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', `http://localhost:5678/usuario/login/${e}/${p}/${token}`, true);
+    xhr.open('POST', `http://localhost:5678/usuario/login/${e}/${token}`, true);
 
     xhr.onload = () => {
+        console.log(xhr.responseText)
+
         let user = {
             id: JSON.parse(xhr.responseText).Usuario[0].id,
             token: token,
@@ -40,5 +42,5 @@ const postUser = (e, p) => {
         alert('erro ao efetuar login ;-;');
     }
 
-    xhr.send();
+    xhr.send(p);
 }

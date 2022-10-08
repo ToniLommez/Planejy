@@ -85,7 +85,7 @@ btn_submit.onclick = () => {
 
 const postUser = user => {
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', `http://localhost:5678/usuario/registrar/${user.name}/${user.nick}/${user.password}/${user.email}`, true);
+    xhr.open('POST', `http://localhost:5678/usuario/registrar/${user.name}/${user.nick}/${user.email}`, true);
 
     xhr.onload = () => {
         let response = JSON.parse(xhr.responseText).Usuario[0];
@@ -105,5 +105,5 @@ const postUser = user => {
         alert('erro ao criar conta ;-;');
     }
 
-    xhr.send('');
+    xhr.send(user.password);
 }
