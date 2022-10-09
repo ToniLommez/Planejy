@@ -19,7 +19,7 @@ const noteToString = (note) => {
     return `${user.id};${note.titulo};${note.dia};${note.descricao};${note.horario};${note.categoria};${note.cor}`;
 }
 
-const postNotes = (tmpNote, method) => { //only inserting
+const postNotes = (tmpNote, method) => {
     let note = {};
 
     if (isNaN(tmpNote)) {
@@ -39,15 +39,17 @@ const postNotes = (tmpNote, method) => { //only inserting
         };
     }
 
-    let str;
+    let str = '';
     let xhr = new XMLHttpRequest();
 
     if(method === 'delete'){
-        xhr.open('GET', `http://localhost:5678/nota/delete/${user.token}/${note.id}`)
-        str = '';
-    }else{
+        xhr.open('GET', `http://localhost:5678/nota/delete/${user.token}/${note.id}`, true);
+    }else if(method === 'insert'){
         str = noteToString(note);
         xhr.open('POST', `http://localhost:5678/nota/post/${user.token}`, true);
+    }else if(method === 'update'){
+        str = noteToString(note);
+        xhr.open('POST', `http://localhost:5678/nota/update/${user.token}/${note.id}`, true);
     }
 
     xhr.onload = () => {
