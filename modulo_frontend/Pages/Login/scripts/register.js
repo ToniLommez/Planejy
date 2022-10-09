@@ -72,9 +72,7 @@ form_element.addEventListener('submit', e => {
 
 btn_submit.onclick = () => {
     if(user_passwd.value === 'senha123'){
-        alert('ERRO: senha inválida!\nQue tal `senha1234`?');
-    }else if(user_passwd.value === 'senha1234'){
-        alert('ERRO: esta senha já está sendo usada por `Pedrinho1234`');
+        alert('ERRO: esta senha já está sendo usada por `Pedrinho123`');
     }else{
         let user = {
             name: user_firstname.value.trim(),

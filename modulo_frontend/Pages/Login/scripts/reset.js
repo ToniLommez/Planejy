@@ -1,34 +1,25 @@
 const back_box = document.querySelector('.back-box'),
-    new_passwd = document.querySelector('.new-passwd'),
-    confirm_passwd = document.querySelector('.confirm-passwd'),
-    reset_form = document.querySelector('.reset-form'),
-    form_button = document.querySelector('.form-button'),
-    information = document.querySelector('.information'),
-    show_passwd = document.querySelector('#show-passwd'),
-    hide_passwd = document.querySelector('#hide-passwd'),
-    show_confirmpwd = document.querySelector('#show-confirmpwd'),
-    hide_confirmpwd = document.querySelector('#hide-confirmpwd');
+      new_passwd = document.querySelector('.new-passwd'),
+      confirm_passwd = document.querySelector('.confirm-passwd'),
+      reset_form = document.querySelector('.reset-form'),
+      form_button = document.querySelector('.form-button'),
+      information = document.querySelector('.information'),
+      show_passwd = document.querySelector('#show-passwd'),
+      hide_passwd = document.querySelector('#hide-passwd'),
+      show_confirmpwd = document.querySelector('#show-confirmpwd'),
+      hide_confirmpwd = document.querySelector('#hide-confirmpwd'),
+      tmp = JSON.parse(sessionStorage.getItem('tmp'));
 
+let valid_passwd = true;
 
-var valid_passwd = true;
-
-let userEmailReset = localStorage.getItem('user_email_reset'),
-    localStorageData = localStorage.getItem('users');
-
-if (localStorageData) {
-    var users = JSON.parse(localStorageData),
-        obj = users.user_registered
-} else {
-    location.href = '../index.html';
+onload = () => {
+    if(!tmp) location.href = '../../index.html';
 }
 
-// Back Box Event Listener
 back_box.addEventListener('click', () => {
     history.back();
-})
+});
 
-
-// User Confirm Password Event Listener
 confirm_passwd.addEventListener('input', () => {
     if (confirm_passwd.value != new_passwd.value) {
         confirm_passwd.style.backgroundColor = '#f1343499';
@@ -41,64 +32,64 @@ confirm_passwd.addEventListener('input', () => {
         form_button.removeAttribute('disabled');
         information.innerText = ''
     }
-})
+});
 
+reset_form.addEventListener('submit', e => {
+    e.preventDefault();
 
-reset_form.addEventListener('submit', (event) => {
-    if (valid_passwd) {
-        Object.keys(obj).forEach(function(id) {
-            if (obj[id].email == userEmailReset) {
-                obj[id].passwd = confirm_passwd.value
-                localStorage.setItem('users', JSON.stringify({ 'user_registered': obj }))
-                localStorage.removeItem('user_email_reset');
-                location.href = '../../index.html'
-            }
-        })
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', 'url', true);
+
+    xhr.onload = () => {
+        alert('Senha alterada com sucesso!');
+        location.href = '../../index.html';
     }
 
-    event.preventDefault();
-})
+    xhr.onerror = () => {
+        alert('Ocorreu algum erro ao alterar a senha ;-;');
+    }
 
+    xhr.send(tmp)
+});
 
-// Show and Hide Passwords Event Listeneres
-show_passwd.addEventListener('click', (event) => {
+show_passwd.addEventListener('click', e => {
+    e.preventDefault();
     new_passwd.setAttribute('type', 'text');
     show_passwd.style.display = 'none';
     hide_passwd.style.display = 'block';
-    event.preventDefault();
-})
+});
 
-show_passwd.addEventListener('vmousedown', (event) => {
+show_passwd.addEventListener('vmousedown', e => {
+    e.preventDefault();
     new_passwd.setAttribute('type', 'text');
     show_passwd.style.display = 'none';
     hide_passwd.style.display = 'block';
-    event.preventDefault();
-})
+});
 
-hide_passwd.addEventListener('click', (event) => {
+hide_passwd.addEventListener('click', e => {
+    e.preventDefault();
     new_passwd.setAttribute('type', 'password');
     show_passwd.style.display = 'block';
     hide_passwd.style.display = 'none';
-    event.preventDefault();
-})
+});
 
-show_confirmpwd.addEventListener('click', (event) => {
+show_confirmpwd.addEventListener('click', e => {
+    e.preventDefault();
     confirm_passwd.setAttribute('type', 'text');
     show_confirmpwd.style.display = 'none';
     hide_confirmpwd.style.display = 'block';
-    event.preventDefault();
-})
+});
 
-show_confirmpwd.addEventListener('vmousedown', (event) => {
+show_confirmpwd.addEventListener('vmousedown', e => {
+    e.preventDefault();
     confirm_passwd.setAttribute('type', 'text');
     show_confirmpwd.style.display = 'none';
     hide_confirmpwd.style.display = 'block';
-    event.preventDefault();
-})
+});
 
-hide_confirmpwd.addEventListener('click', (event) => {
+hide_confirmpwd.addEventListener('click', e => {
+    e.preventDefault();
     confirm_passwd.setAttribute('type', 'password');
     show_confirmpwd.style.display = 'block';
     hide_confirmpwd.style.display = 'none';
-    event.preventDefault();
-})
+});

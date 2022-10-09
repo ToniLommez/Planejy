@@ -7,9 +7,7 @@ const back_box = document.querySelector('.back-box'),
     request_code = document.querySelector('.request-code');
 
 
-var code = 0,
-    existEmail = false;
-
+let code = 0;
 
 while (code < 0 || code < 100000) {
     code = Math.floor(Math.random() * 999999) - 100000;
@@ -17,59 +15,39 @@ while (code < 0 || code < 100000) {
 
 console.log(code);
 
-let localStorageData = localStorage.getItem('users');
-
-if (localStorageData) {
-    var users = JSON.parse(localStorageData),
-        obj = users.user_registered
-}
-
 onload = () => {
+    sessionStorage.removeItem('tmp');
     request_code.style.display = 'none';
     request_email.style.display = 'flex';
 }
 
-form_input.addEventListener('input', () => {
-    form_input.value = form_input.value.toLowerCase();
-})
+form_email.addEventListener('submit', e => {
+    e.preventDefault();
 
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'url', true);
 
-form_email.addEventListener('submit', (event) => {
-
-    if (!localStorageData) {
-        alert("Nenhuma conta encontrada.");
-        event.preventDefault();
-        return;
-    }
-
-    Object.keys(obj).forEach(function(id) {
-        if (obj[id].email == form_input.value) {
-            existEmail = true;
-            localStorage.setItem('user_email_reset', obj[id].email);
-        }
-    })
-
-    if (!existEmail) {
-        alert("Nenhuma conta encontrada.");
-    } else {
+    xhr.onload = () => {
         request_email.style.display = 'none';
         request_code.style.display = 'flex';
     }
 
-    event.preventDefault();
-})
+    xhr.onerror = () => {
+        alert('Email não encontrado');
+    }
+});
 
-code_form.addEventListener('submit', (event) => {
-    if (code_input.value == code) {
+code_form.addEventListener('submit', e => {
+    e.preventDefault();
+
+    if (+code_input.value === code) {
+        sessionStorage.setItem('tmp', JSON.stringify({email: form_input.value, codigo: +code_input.value, pass: null}));
         location.href = 'reset-passwd.html';
     } else {
         alert("Código incorreto!");
     }
+});
 
-    event.preventDefault();
-})
-
-// Back Box Event Listener
 back_box.addEventListener('click', () => {
     history.back();
-})
+});

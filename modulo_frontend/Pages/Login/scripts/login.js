@@ -3,6 +3,7 @@ const passwd = document.getElementById('passwd');
 
 onload = () => {
     sessionStorage.removeItem('user');
+    sessionStorage.removeItem('tmp');
 }
 
 document.getElementById('login').addEventListener('submit', e => {e.preventDefault()});
