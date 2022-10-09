@@ -175,6 +175,21 @@ li a {
     float: right;
 }
 
+#btnSenha {
+    background: #5a85c7;
+    color: white;
+    border-color: #325ea1;
+}
+
+#btnSenha:hover {
+    color: #fff;
+    color: var(--fc-button-text-color, #fff);
+    background-color: #325ea1;
+    background-color: var(--fc-button-hover-bg-color, #325ea1);
+    border-color: #325ea1;
+    border-color: var(--fc-button-hover-border-color, #325ea1);
+}
+
 #btnSave {
     background: #a7a486;
     color: white;
@@ -204,6 +219,21 @@ li a {
     background-color: var(--fc-button-hover-bg-color, #0b0b0e);
     border-color: #0b0b0e;
     border-color: var(--fc-button-hover-border-color, #0b0b0e);
+}
+
+#btnPersonalizar {
+    background: #9d69c9;
+    color: white;
+    border-color: #8248b1;
+}
+
+#btnPersonalizar:hover {
+    color: #fff;
+    color: var(--fc-button-text-color, #fff);
+    background-color: #8248b1;
+    background-color: var(--fc-button-hover-bg-color, #8248b1);
+    border-color: #8248b1;
+    border-color: var(--fc-button-hover-border-color, #8248b1);
 }
 
 .float-config {
