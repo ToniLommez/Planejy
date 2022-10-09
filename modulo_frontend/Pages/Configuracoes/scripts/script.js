@@ -62,13 +62,14 @@ const loadUserInfo = info => {
 const infoToString = () => {
     let info = '';
 
-    if(email_input.value.length > 0 && 
-       name_input.value.length > 0 && 
-       birth_input.value.length > 0 && 
-       gender_input.value.length > 0 && 
-       nick_input.value.length > 0){
+    const email = email_input.value.trim(); 
+    const name = name_input.value.trim(); 
+    const birth = birth_input.value.trim(); 
+    const gender = gender_input.value.trim(); 
+    const nick = nick_input.value.trim();
 
-        info = `${email_input.value};${name_input.value};${birth_input.value};${nick_input.value};${gender_input.value}`;
+    if(email.length > 0 && name.length > 0 && birth.length > 0 && gender.length > 0 && nick.length > 0){
+        info = `${email};${name};${birth};${nick};${gender}`;
     }
 
     return info;
