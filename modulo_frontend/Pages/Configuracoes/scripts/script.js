@@ -6,7 +6,8 @@ const id_input = document.querySelector('#inputId'),
       birth_input = document.querySelector('#inputNascimento'),
       gender_input = document.querySelector('#inputGenero'),
       nick_input = document.querySelector('#inputNick'),
-      btn_save = document.querySelector('#btnSave');
+      btn_save = document.querySelector('#btnSave'),
+      btn_delete = document.querySelector('#btnDeletar');
 
 
 onload = () => {
@@ -30,6 +31,22 @@ gender_input.oninput = () => {
 
     gender_input.value = gender_input.value.toUpperCase();
 };
+
+btn_delete.onclick = () => {
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', `url`, true);
+
+    xhr.onload = () => {
+
+    }
+
+    xhr.onerror = () => {
+        alert('Ocorreu um erro ao apagar sua conta!\n:D');
+    }
+
+    xhr.send();
+}
 
 btn_save.onclick = () => {
     updateUserInfo();
