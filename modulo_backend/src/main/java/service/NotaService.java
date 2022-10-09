@@ -95,6 +95,23 @@ public class NotaService {
 		return respostaJSON;
 	}
 
+	public Object update(Request request, Response response) {
+		String token_usuario = request.params(":token_usuario");
+		long chave = Long.parseLong(request.params(":chave"));
+		String body = request.body();
+		boolean result = notaDAO.update(token_usuario, chave, body);
+
+		if (result) {
+			response.status(200); // success
+			respostaJSON = "bem sucedido! :D";
+		} else {
+			response.status(404); // 404 Not found
+			respostaJSON = "mal sucedido! >:(";
+		}
+
+		return respostaJSON;
+	}
+
 	/*
 	 * public Object getToUpdate(Request request, Response response) {
 	 * int codigo = Integer.parseInt(request.params(":codigo"));

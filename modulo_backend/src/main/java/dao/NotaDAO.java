@@ -88,7 +88,27 @@ public class NotaDAO extends DAO {
 		boolean status = false;
 		try {
 			Statement st = conexao.createStatement();
-			st.executeUpdate("DELETE FROM planejy.nota WHERE chave = " + chave + " AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + token_usuario + "')");
+			st.executeUpdate("DELETE FROM planejy.nota WHERE chave = " + chave
+					+ " AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + token_usuario + "')");
+			st.close();
+			status = true;
+		} catch (SQLException u) {
+			throw new RuntimeException(u);
+		}
+		return status;
+	}
+
+	public boolean update(String token, long chave, String body) {
+		boolean status = false;
+		try {
+			Nota nota = new Nota(body, chave);
+			String sql = "UPDATE planejy.nota SET titulo = '" + nota.get_titulo() + "', dia = '"
+					+ nota.get_dia().toString() + "', descricao = '" + nota.get_descricao() + "', horario = '"
+					+ nota.get_horario().toString() + "', categoria = '" + nota.get_categoria() + "', cor = '"
+					+ nota.get_cor() + "' WHERE chave = " + nota.get_chave()
+					+ " AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + token + "')";
+			PreparedStatement st = conexao.prepareStatement(sql);
+			st.executeUpdate();
 			st.close();
 			status = true;
 		} catch (SQLException u) {

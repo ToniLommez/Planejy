@@ -32,6 +32,8 @@ public class Aplicacao {
         post("/nota/post/:token_usuario", (request, response) -> notaService.insert(request, response));
 
         delete("/nota/delete/:token_usuario/:chave", (request, response) -> notaService.delete(request, response));
+
+        post("/nota/update/:token_usuario/:chave", (request, response) -> notaService.update(request, response));
         
         get("/profissional/all/", (request, response) -> profissionalService.getAll(request, response));
         

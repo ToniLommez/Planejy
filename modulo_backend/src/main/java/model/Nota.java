@@ -48,6 +48,22 @@ public class Nota {
         this.next = null;
     }
 
+    public Nota(String body, long chave) {
+        String tmp[] = body.split(";");
+
+        this.chave = chave;
+        this.id_usuario = Integer.parseInt(tmp[0]);
+        this.titulo = tmp[1];
+        try {
+            this.dia = diaFormat.parse(tmp[2]);
+        }catch(ParseException e) {}
+        this.descricao = tmp[3];
+        this.horario = LocalTime.parse(tmp[4], DateTimeFormatter.ofPattern("HH:mm"));
+        this.categoria = tmp[5];
+        this.cor = tmp[6];
+        this.next = null;
+    }
+
     public Nota(long chave, int id_usuario, String titulo, Date dia, String descricao, Time time,
             String categoria, String cor) {
         this.chave = chave;
