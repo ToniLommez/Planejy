@@ -164,6 +164,51 @@ hr {
     width: 50%;
 }
 
+#btn_submit {
+    background: #377ee9;
+    color: white;
+    border-color: #377ee9;
+}
+
+#btn_submit:hover {
+    color: #fff;
+    color: var(--fc-button-text-color, #fff);
+    background-color: #2369d3;
+    background-color: var(--fc-button-hover-bg-color, #2369d3);
+    border-color: #2369d3;
+    border-color: var(--fc-button-hover-border-color, #2369d3);
+}
+
+#btnCriar {
+    background: #689c67;
+    color: white;
+    border-color: #689c67;
+}
+
+#btnCriar:hover {
+    color: #fff;
+    color: var(--fc-button-text-color, #fff);
+    background-color: #437e42;
+    background-color: var(--fc-button-hover-bg-color, #437e42);
+    border-color: #437e42;
+    border-color: var(--fc-button-hover-border-color, #437e42);
+}
+
+#btnMore {
+    background: #377ee9;
+    color: white;
+    border-color: #377ee9;
+}
+
+#btnMore:hover {
+    color: #fff;
+    color: var(--fc-button-text-color, #fff);
+    background-color: #2369d3;
+    background-color: var(--fc-button-hover-bg-color, #2369d3);
+    border-color: #2369d3;
+    border-color: var(--fc-button-hover-border-color, #2369d3);
+}
+
 
 /* Below Login */
 
