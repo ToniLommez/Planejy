@@ -51,8 +51,6 @@ const getUserInfo = () => {
 }
 
 const loadUserInfo = info => {
-    console.log(info)
-    
     id_input.value = info.id;
     email_input.value = info.email;
     name_input.value = info.nome;
@@ -78,6 +76,7 @@ const infoToString = () => {
 
 const updateUserInfo = () => {
     const info = infoToString();
+
     if(info.length === 0){
         alert('Preencha cada um dos campos corretamente!');
         return;
@@ -87,7 +86,6 @@ const updateUserInfo = () => {
     xhr.open('POST', `http://localhost:5678/usuario/Atualizar/${user.token}/${user.id}`, true);
 
     xhr.onload = () => {
-        console.log(xhr.responseText);
         alert('Dados salvos com sucesso!');
     }
 
