@@ -72,6 +72,34 @@ public class UsuarioService {
 		return respostaJSON;
 	}
 
+	public Object confirmarEmail(Request request, Response response) {
+		String token_usuario = request.params(":token_usuario");
+		String email = request.params(":email");
+		int id =  usuarioDAO.confirmarEmail(token_usuario, email);
+
+		response.status(200); // success ??
+		respostaJSON = "";
+		respostaJSON += "{ \"Usuario\": [";
+		respostaJSON += "\"id\": " + id;
+		respostaJSON += " ] }";
+
+		return respostaJSON;
+	}
+
+	public Object mudarSenhaToken(Request request, Response response) {
+		String token_usuario = request.params(":token_usuario");
+		String senha = request.body();
+		int id =  usuarioDAO.mudarSenhaToken(token_usuario, senha);
+
+		response.status(200); // success ??
+		respostaJSON = "";
+		respostaJSON += "{ \"Usuario\": [";
+		respostaJSON += "\"id\": " + id;
+		respostaJSON += " ] }";
+
+		return respostaJSON;
+	}
+
 	/*
 	 * public Object getToUpdate(Request request, Response response) {
 	 * int codigo = Integer.parseInt(request.params(":codigo"));

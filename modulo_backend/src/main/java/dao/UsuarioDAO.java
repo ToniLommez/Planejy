@@ -155,6 +155,57 @@ public class UsuarioDAO extends DAO {
 		return result;
 	}
 
+	public int confirmarEmail(String token, String email) {
+		int id = -1;
+		try {
+			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String sql = "SELECT id FROM planejy.usuario WHERE email = '" + email + "'";
+			ResultSet rs = st.executeQuery(sql);
+			if (rs.next()) {
+				id = (rs.getInt("id"));
+			} else {
+				id = -1;
+			}
+			st.close();
+			if (id != -1) {
+				Statement stToken = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+						ResultSet.CONCUR_READ_ONLY);
+				String sqlToken = "UPDATE planejy.usuario SET token = '" + token + "' WHERE id = " + id;
+				stToken.executeQuery(sqlToken);
+				stToken.close();
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		return id;
+	}
+
+	public int mudarSenhaToken(String token, String senha) {
+		int id = -1;
+		senha = md5(senha);
+		try {
+			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String sql = "SELECT id FROM planejy.usuario WHERE token = '" + token + "'";
+			ResultSet rs = st.executeQuery(sql);
+			if (rs.next()) {
+				id = (rs.getInt("id"));
+			} else {
+				id = -1;
+			}
+			st.close();
+			if (id != -1) {
+				Statement stToken = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+						ResultSet.CONCUR_READ_ONLY);
+				String sqlToken = "UPDATE planejy.usuario SET senha = '" + senha + "' WHERE id = " + id;
+				stToken.executeQuery(sqlToken);
+				stToken.close();
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		return id;
+	}
+
 	/*
 	 * public boolean delete(int codigo) {
 	 * boolean status = false;
