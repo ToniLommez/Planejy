@@ -18,6 +18,17 @@ onload = () => {
     if(!tmp) location.href = '../../index.html';
 }
 
+const generateToken = n => {
+    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+
+    for(let i = 0; i < n; i++){
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+
+    return result;
+}
+
 back_box.addEventListener('click', () => {
     history.back();
 });
@@ -34,10 +45,28 @@ confirm_passwd.addEventListener('input', () => {
     }
 });
 
+const updateUser = (user, p) => {
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', `http://localhost:5678/usuario/login/${user.email}/${user.token}`, true);
+
+    xhr.onload = () => {
+        alert('Senha alterada!');
+        sessionStorage.setItem('user', JSON.stringify(user));
+        location.href = '../../Pages/Configuracoes/index.html';
+    }
+
+    xhr.onerror = () => {
+        alert('Senha alterada!\nProceda com o login para confirmar');
+    }
+
+    xhr.send(p)
+}
+
 reset_form.addEventListener('submit', e => {
     e.preventDefault();
 
     if(confirm_passwd.value === new_passwd.value){
+        const p = new_passwd.value.trim();
         let xhr = new XMLHttpRequest();
         xhr.open('POST', `http://localhost:5678/usuario/recuperarSenha/${tmp.codigo}`, true);
 
@@ -46,9 +75,8 @@ reset_form.addEventListener('submit', e => {
                 alert('Senha alterada!\nProceda com o login para confirmar.');
                 location.href = '../../index.html';
             }else{
-                user.token = tmp.codigo;
-                sessionStorage.setItem('user', JSON.stringify(user));
-                location.href = '../../Pages/Configuracoes/index.html';
+                user.token = generateToken(40);
+                updateUser(user, p);
             }
         }
 
@@ -56,7 +84,7 @@ reset_form.addEventListener('submit', e => {
             alert('Ocorreu um erro ao alterar a senha ;-;');
         }
         
-        xhr.send(new_passwd.value.trim());
+        xhr.send(p);
     }
 });
 

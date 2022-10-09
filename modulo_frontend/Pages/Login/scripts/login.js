@@ -42,6 +42,7 @@ const postUser = (e, p) => {
         }else{
             const user = {
                 id: xhrResponse.id,
+                email: e,
                 token: token
             }
 

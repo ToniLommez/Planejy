@@ -23,6 +23,11 @@ console.log(code);
 
 onload = () => {
     sessionStorage.removeItem('tmp');
+
+    if(sessionStorage.getItem('user')){
+        document.querySelectorAll('.txt-primary').forEach(e => e.innerHTML = 'Redefinir senha');
+    }
+
     request_code.style.display = 'none';
     request_email.style.display = 'flex';
 }

@@ -16,6 +16,7 @@ onload = () => {
         return;
     }
 
+    sessionStorage.removeItem('tmp');
     getUserInfo();
 }
 
@@ -35,10 +36,11 @@ gender_input.oninput = () => {
 btn_delete.onclick = () => {
     let xhr = new XMLHttpRequest();
 
-    xhr.open('GET', `url`, true);
+    xhr.open('GET', `http://localhost:5678/usuario/deletar/${user.token}`, true);
 
     xhr.onload = () => {
-
+        alert('Sua conta foi deletada!\nObrigado por procrastinar conosco!');
+        location.href = '../../index.html';
     }
 
     xhr.onerror = () => {
