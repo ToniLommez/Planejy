@@ -9,41 +9,9 @@ public class UsuarioService {
 
 	private UsuarioDAO usuarioDAO = new UsuarioDAO();
 	private String respostaJSON;
-	// private final int FORM_INSERT = 1;
-	// private final int FORM_DETAIL = 2;
-	// private final int FORM_UPDATE = 3;
-
-	// private final int FORM_ORDERBY_CHAVE = 1;
-	// private final int FORM_ORDERBY_RESUMO = 2;
 
 	public UsuarioService() {
 	}
-
-	/*
-	 * public Object insert(Request request, Response response) {
-	 * String login = request.queryParams("login");
-	 * String senha = request.queryParams("senha");
-	 * String sexo = request.queryParams("sexo");
-	 * 
-	 * String resp = "";
-	 * 
-	 * Usuario usuario = new Usuario(-1, login, senha, sexo);
-	 * 
-	 * if(usuarioDAO.insert(usuario) == true) {
-	 * resp = "Usuario (" + login + ") inserido!";
-	 * response.status(201); // 201 Created
-	 * } else {
-	 * resp = "Usuario (" + login + ") não inserido!";
-	 * response.status(404); // 404 Not found
-	 * }
-	 * 
-	 * makeForm();
-	 * return form.
-	 * replaceFirst("<input type=\"hidden\" codigo=\"msg\" name=\"msg\" value=\"\">"
-	 * , "<input type=\"hidden\" codigo=\"msg\" name=\"msg\" value=\""+ resp
-	 * +"\">");
-	 * }
-	 */
 
 	public Object get(Request request, Response response) {
 		String token_usuario = request.params(":token_usuario");
@@ -70,6 +38,18 @@ public class UsuarioService {
 		String senha = request.body();
 
 		String result = usuarioDAO.insert(nome, nick, senha, email);
+
+		response.status(200); // success ??
+		respostaJSON = result;
+
+		return respostaJSON;
+	}
+
+	public Object update(Request request, Response response) {
+		String token = request.params(":token");
+		int id = Integer.parseInt(request.params(":id"));
+		String body = request.body();
+		String result = usuarioDAO.update(token, id, body);
 
 		response.status(200); // success ??
 		respostaJSON = result;

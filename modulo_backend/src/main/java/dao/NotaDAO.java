@@ -116,40 +116,4 @@ public class NotaDAO extends DAO {
 		}
 		return status;
 	}
-
-	/*
-	 * public int getLastCodigo() {
-	 * Usuario[] usuarios = null;
-	 * 
-	 * try {
-	 * Statement st =
-	 * conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.
-	 * CONCUR_READ_ONLY);
-	 * ResultSet rs = st.executeQuery("SELECT * FROM x");
-	 * if(rs.next()){
-	 * rs.last();
-	 * usuarios = new Usuario[rs.getRow()];
-	 * rs.beforeFirst();
-	 * 
-	 * for(int i = 0; rs.next(); i++) {
-	 * usuarios[i] = new Usuario(rs.getInt("codigo"), rs.getString("login"),
-	 * rs.getString("senha"), rs.getString("sexo"));
-	 * }
-	 * }
-	 * st.close();
-	 * } catch (Exception e) {
-	 * System.err.println(e.getMessage());
-	 * }
-	 * 
-	 * int novoCodigo = 0;
-	 * if (usuarios != null) {
-	 * novoCodigo = usuarios[usuarios.length-1].getCodigo() + 1;
-	 * }
-	 * else {
-	 * novoCodigo = 1;
-	 * }
-	 * 
-	 * return novoCodigo;
-	 * }
-	 */
 }

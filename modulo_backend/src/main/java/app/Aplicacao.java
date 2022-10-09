@@ -23,10 +23,15 @@ public class Aplicacao {
             response.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
         });
         
+        // artigos
         get("/articles/:chave", (request, response) -> artigoService.get(request, response));
         
         get("/articles/all/", (request, response) -> artigoService.getAll(request, response));
         
+        // profissionais
+        get("/profissional/all/", (request, response) -> profissionalService.getAll(request, response));
+
+        // notas
         get("/nota/get/:token_usuario", (request, response) -> notaService.get(request, response));
         
         post("/nota/post/:token_usuario", (request, response) -> notaService.insert(request, response));
@@ -35,9 +40,10 @@ public class Aplicacao {
 
         post("/nota/update/:token_usuario/:chave", (request, response) -> notaService.update(request, response));
         
-        get("/profissional/all/", (request, response) -> profissionalService.getAll(request, response));
-        
+        // usuario
         post("/usuario/registrar/:nome/:nick/:email", (request, response) -> usuarioService.insert(request, response));
+        
+        post("/usuario/Atualizar/:token/:id", (request, response) -> usuarioService.update(request, response));
 
         get("/usuario/get/:token_usuario", (request, response) -> usuarioService.get(request, response));
         

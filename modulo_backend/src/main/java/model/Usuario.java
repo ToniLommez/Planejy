@@ -1,21 +1,24 @@
 package model;
 
-import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Usuario {
     private int id;
     private String nome;
-    private LocalDate nascimento;
+    private Date nascimento;
     private String nick;
     private String senha;
     private String email;
     private String genero;
     private String token;
+    private SimpleDateFormat nascimentoFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public Usuario() {
         this.id = -1;
         this.nome = "";
-        this.nascimento = LocalDate.now();
+        this.nascimento = new Date();
         this.nick = "";
         this.senha = "";
         this.email = "";
@@ -23,7 +26,24 @@ public class Usuario {
         this.token = "";
     }
 
-    public Usuario(int id, String nome, LocalDate nascimento, String nick, String senha, String email, String genero,
+    // email, nome, nascimento, nick, genero
+    public Usuario(String body) {
+        String tmp[] = body.split(";");
+
+        this.id = -1;
+        this.senha = "";
+        this.token = "";
+
+        this.email = tmp[0];
+        this.nome = tmp[1];
+        try {
+            this.nascimento = nascimentoFormat.parse(tmp[2]);
+        } catch (ParseException e) {}
+        this.nick = tmp[3];
+        this.genero = tmp[4];
+    }
+
+    public Usuario(int id, String nome, Date nascimento, String nick, String senha, String email, String genero,
             String token) {
         this.id = id;
         this.nome = nome;
@@ -43,7 +63,7 @@ public class Usuario {
         return this.nome;
     }
 
-    public LocalDate get_nascimento() {
+    public Date get_nascimento() {
         return this.nascimento;
     }
 
