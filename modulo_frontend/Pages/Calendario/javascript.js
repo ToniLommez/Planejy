@@ -15,7 +15,6 @@ const formatDate = (date) => {
     return [year, month, day].join('-');
 }
 
-//id|titulo|dia|descricao|horario|categoria|cor
 const noteToString = (note) => {
     return `${user.id};${note.titulo};${note.dia};${note.descricao};${note.horario};${note.categoria};${note.cor}`;
 }
@@ -40,10 +39,16 @@ const postNotes = (tmpNote, method) => { //only inserting
         };
     }
 
-    let str = noteToString(note);
-
+    let str;
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', `http://localhost:5678/nota/post/${user.token}`, true);
+
+    if(method === 'delete'){
+        xhr.open('GET', `http://localhost:5678/nota/delete/${user.token}/${note.id}`)
+        str = '';
+    }else{
+        str = noteToString(note);
+        xhr.open('POST', `http://localhost:5678/nota/post/${user.token}`, true);
+    }
 
     xhr.onload = () => {
         getNotes();
