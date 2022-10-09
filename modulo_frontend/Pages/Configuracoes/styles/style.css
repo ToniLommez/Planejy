@@ -171,6 +171,41 @@ li a {
     float: right;
 }
 
+.float-config-excluir {
+    float: right;
+}
+
+#btnSave {
+    background: #a7a486;
+    color: white;
+    border-color: #757354;
+}
+
+#btnSave:hover {
+    color: #fff;
+    color: var(--fc-button-text-color, #fff);
+    background-color: #757354;
+    background-color: var(--fc-button-hover-bg-color, #757354);
+    border-color: #757354;
+    border-color: var(--fc-button-hover-border-color, #757354);
+}
+
+#btnExcluir {
+    background: #3a3742;
+    color: white;
+    border-color: #0b0b0e;
+    margin-right: 10px;
+}
+
+#btnExcluir:hover {
+    color: #fff;
+    color: var(--fc-button-text-color, #fff);
+    background-color: #0b0b0e;
+    background-color: var(--fc-button-hover-bg-color, #0b0b0e);
+    border-color: #0b0b0e;
+    border-color: var(--fc-button-hover-border-color, #0b0b0e);
+}
+
 .float-config {
     float: right;
 }
