@@ -53,7 +53,7 @@ public class NotaDAO extends DAO {
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {
 				Nota p = new Nota(rs.getLong("chave"), rs.getInt("id_usuario"), rs.getString("titulo"),
-						rs.getDate("dia").toLocalDate(),
+						rs.getDate("dia"),
 						rs.getString("descricao"), rs.getTime("horario"), rs.getString("categoria"),
 						rs.getString("cor"));
 				notas.add(p);

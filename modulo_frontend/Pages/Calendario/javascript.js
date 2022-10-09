@@ -17,7 +17,7 @@ const formatDate = (date) => {
 
 //id|titulo|dia|descricao|horario|categoria|cor
 const noteToString = (note) => {
-    return `${user.token}|${note.titulo}|${note.dia}|${note.descricao}|${note.horario}|${note.categoria}|${note.cor}`;
+    return `${user.id}|${note.titulo}|${note.dia}|${note.descricao}|${note.horario}|${note.categoria}|${note.cor}`;
 }
 
 const postNotes = (tmpNote, method) => { //only inserting

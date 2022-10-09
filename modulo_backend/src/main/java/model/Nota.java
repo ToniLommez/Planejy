@@ -1,25 +1,30 @@
 package model;
 
 import java.sql.Time;
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+//import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.LocalTime;
+import java.text.ParseException;
 
 public class Nota {
     private long chave;
     private int id_usuario;
     private String titulo;
-    private LocalDate dia;
+    private Date dia;
     private String descricao;
     private LocalTime horario;
     private String categoria;
     private String cor;
     private Nota next;
+    private SimpleDateFormat diaFormat = new SimpleDateFormat("yyyy-mm-dd");
 
     public Nota() {
         this.chave = -1;
         this.id_usuario = -1;
         this.titulo = "";
-        this.dia = LocalDate.now();
+        this.dia = new Date();
         this.descricao = "";
         this.horario = LocalTime.now();
         this.categoria = "";
@@ -33,15 +38,18 @@ public class Nota {
         this.chave = -1;
         this.id_usuario = Integer.parseInt(tmp[0]);
         this.titulo = tmp[1];
-        this.dia = LocalDate.parse(tmp[2]);
+        try {
+            this.dia = diaFormat.parse(tmp[2]);            
+        }catch(ParseException e) {}
         this.descricao = tmp[3];
-        this.horario = LocalTime.parse(tmp[4]);
+        System.out.println(tmp[4]);
+        this.horario = LocalTime.parse(tmp[4], DateTimeFormatter.ofPattern("HH:mm"));;            
         this.categoria = tmp[5];
         this.cor = tmp[6];
         this.next = null;
     }
 
-    public Nota(long chave, int id_usuario, String titulo, LocalDate dia, String descricao, Time time,
+    public Nota(long chave, int id_usuario, String titulo, Date dia, String descricao, Time time,
             String categoria, String cor) {
         this.chave = chave;
         this.id_usuario = id_usuario;
@@ -66,7 +74,7 @@ public class Nota {
         return this.titulo;
     }
 
-    public LocalDate get_dia() {
+    public Date get_dia() {
         return this.dia;
     }
 
