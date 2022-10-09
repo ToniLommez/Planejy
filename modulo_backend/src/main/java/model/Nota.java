@@ -18,7 +18,7 @@ public class Nota {
     private String categoria;
     private String cor;
     private Nota next;
-    private SimpleDateFormat diaFormat = new SimpleDateFormat("yyyy-mm-dd");
+    private SimpleDateFormat diaFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public Nota() {
         this.chave = -1;
@@ -33,17 +33,16 @@ public class Nota {
     }
 
     public Nota(String body) {
-        String[] tmp = body.split("|");
+        String tmp[] = body.split(";");
 
         this.chave = -1;
         this.id_usuario = Integer.parseInt(tmp[0]);
         this.titulo = tmp[1];
         try {
-            this.dia = diaFormat.parse(tmp[2]);            
+            this.dia = diaFormat.parse(tmp[2]);
         }catch(ParseException e) {}
         this.descricao = tmp[3];
-        System.out.println(tmp[4]);
-        this.horario = LocalTime.parse(tmp[4], DateTimeFormatter.ofPattern("HH:mm"));;            
+        this.horario = LocalTime.parse(tmp[4], DateTimeFormatter.ofPattern("HH:mm"));
         this.categoria = tmp[5];
         this.cor = tmp[6];
         this.next = null;

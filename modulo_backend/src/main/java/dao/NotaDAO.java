@@ -49,7 +49,8 @@ public class NotaDAO extends DAO {
 		Nota notas = new Nota();
 		try {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM planejy.nota WHERE id_usuario = ( SELECT id FROM planejy.usuario WHERE token = '" + token_usuario + "' )";
+			String sql = "SELECT * FROM planejy.nota WHERE id_usuario = ( SELECT id FROM planejy.usuario WHERE token = '"
+					+ token_usuario + "' )";
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {
 				Nota p = new Nota(rs.getLong("chave"), rs.getInt("id_usuario"), rs.getString("titulo"),
@@ -69,7 +70,10 @@ public class NotaDAO extends DAO {
 		boolean status = false;
 		try {
 			Nota nota = new Nota(body);
-			String sql = "INSERT INTO planejy.nota (id_usuario, titulo, dia, descricao, horario, categoria, cor) VALUES ((SELECT id FROM planejy.usuario WHERE token = '" + token + "'), '" + nota.get_titulo() + "', '" + nota.get_dia().toString() + "', '" + nota.get_descricao() + "', '" + nota.get_horario().toString() + "', '" + nota.get_categoria() + "','" + nota.get_cor() + "')";
+			String sql = "INSERT INTO planejy.nota (id_usuario, titulo, dia, descricao, horario, categoria, cor) VALUES ((SELECT id FROM planejy.usuario WHERE token = '"
+					+ token + "'), '" + nota.get_titulo() + "', '" + nota.get_dia().toString() + "', '"
+					+ nota.get_descricao() + "', '" + nota.get_horario().toString() + "', '" + nota.get_categoria()
+					+ "','" + nota.get_cor() + "')";
 			PreparedStatement st = conexao.prepareStatement(sql);
 			st.executeUpdate();
 			st.close();
@@ -80,20 +84,18 @@ public class NotaDAO extends DAO {
 		return status;
 	}
 
-	/*
-	 * public boolean delete(int codigo) {
-	 * boolean status = false;
-	 * try {
-	 * Statement st = conexao.createStatement();
-	 * st.executeUpdate("DELETE FROM x WHERE codigo = " + codigo);
-	 * st.close();
-	 * status = true;
-	 * } catch (SQLException u) {
-	 * throw new RuntimeException(u);
-	 * }
-	 * return status;
-	 * }
-	 */
+	public boolean delete(String token_usuario, String chave) {
+		boolean status = false;
+		try {
+			Statement st = conexao.createStatement();
+			st.executeUpdate("DELETE FROM planejy.nota WHERE chave = " + chave + " AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + token_usuario + "')");
+			st.close();
+			status = true;
+		} catch (SQLException u) {
+			throw new RuntimeException(u);
+		}
+		return status;
+	}
 
 	/*
 	 * public int getLastCodigo() {

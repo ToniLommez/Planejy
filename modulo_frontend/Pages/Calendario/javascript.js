@@ -17,13 +17,13 @@ const formatDate = (date) => {
 
 //id|titulo|dia|descricao|horario|categoria|cor
 const noteToString = (note) => {
-    return `${user.id}|${note.titulo}|${note.dia}|${note.descricao}|${note.horario}|${note.categoria}|${note.cor}`;
+    return `${user.id};${note.titulo};${note.dia};${note.descricao};${note.horario};${note.categoria};${note.cor}`;
 }
 
 const postNotes = (tmpNote, method) => { //only inserting
     let note = {};
-    
-    if(isNaN(tmpNote)){
+
+    if (isNaN(tmpNote)) {
         note = {
             id_usuario: user.token,
             titulo: tmpNote.title,
@@ -34,7 +34,7 @@ const postNotes = (tmpNote, method) => { //only inserting
             cor: tmpNote.color,
             id: tmpNote.id
         };
-    }else{
+    } else {
         note = {
             id: tmpNote
         };
@@ -62,12 +62,12 @@ const getNotes = () => {
 
     xhr.onload = () => {
         let tmp = JSON.parse(xhr.responseText);
-        db = {data:[]};
+        db = { data: [] };
 
-        for(let i = 0; i < tmp.Notas.length; i++){
+        for (let i = 0; i < tmp.Notas.length; i++) {
             db.data.push(tmp.Notas[i]);
         }
-        
+
         data.events = db.data;
         calendar = initCalendar();
         calendar.eventDragging = true;
@@ -90,7 +90,7 @@ const initCalendar = () => {
     return calendar;
 }
 
-let db = {data:[]};
+let db = { data: [] };
 getNotes();
 
 const data = {
@@ -126,7 +126,7 @@ const data = {
 }
 
 onload = () => {
-    if(!user) {
+    if (!user) {
         location.href = '../../index.html'
     }
 }
@@ -162,7 +162,7 @@ const init = () => {
             }
         }
 
-        if(campoNome == '' || campoDescricao == '' || campoDia == '' || campoHorario == '' || campoCategoria == '' || categName == ''){
+        if (campoNome == '' || campoDescricao == '' || campoDia == '' || campoHorario == '' || campoCategoria == '' || categName == '') {
             alert('Campos obrigatórios não podem estar vazios!');
             return;
         }
@@ -262,7 +262,7 @@ const updateNotes = (note) => {
 
             postNotes(db.data[index], 'update');
             noteMenu.style.display = 'none';
-            db = {data:[]};
+            db = { data: [] };
             getNotes();
         }
     }
@@ -308,7 +308,7 @@ const openEventList = () => {
     noteList.style.display = 'block';
     listarEventos();
 
-    
+
     // caso clique no botao de fechar...
     $('#btnClose').click(function() {
         noteList.style.display = 'none';

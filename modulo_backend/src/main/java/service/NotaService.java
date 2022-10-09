@@ -66,8 +66,23 @@ public class NotaService {
 	public Object insert(Request request, Response response) {
 		String token_usuario = request.params(":token_usuario");
 		String body = request.body();
-		System.out.printf(body);
 		boolean result = notaDAO.post(token_usuario, body);
+
+		if (result) {
+			response.status(200); // success
+			respostaJSON = "bem sucedido! :D";
+		} else {
+			response.status(404); // 404 Not found
+			respostaJSON = "mal sucedido! >:(";
+		}
+
+		return respostaJSON;
+	}
+
+	public Object delete(Request request, Response response) {
+		String token_usuario = request.params(":token_usuario");
+		String chave = request.params(":chave");
+		boolean result = notaDAO.delete(token_usuario, chave);
 
 		if (result) {
 			response.status(200); // success
