@@ -1,3 +1,5 @@
+// const user = JSON.parse(sessionStorage.getItem('user'));
+
 const back_box = document.querySelector('.back-box'),
     code_form = document.querySelector('.code-form'),
     code_input = document.querySelector('.code-input'),
@@ -14,6 +16,7 @@ while (code < 0 || code < 100000) {
 }
 
 console.log(code);
+// console.log(user);
 
 onload = () => {
     sessionStorage.removeItem('tmp');
@@ -25,9 +28,10 @@ form_email.addEventListener('submit', e => {
     e.preventDefault();
 
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'url', true);
+    xhr.open('GET', `http://localhost:5678/usuario/recuperarSenha/${form_input.value.trim()}/${generateToken(6)}`, true);
 
     xhr.onload = () => {
+        console.log(xhr.responseText);
         request_email.style.display = 'none';
         request_code.style.display = 'flex';
     }
@@ -35,7 +39,20 @@ form_email.addEventListener('submit', e => {
     xhr.onerror = () => {
         alert('Email não encontrado');
     }
+
+    xhr.send();
 });
+
+const generateToken = n => {
+    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+
+    for(let i = 0; i < n; i++){
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+
+    return result;
+}
 
 code_form.addEventListener('submit', e => {
     e.preventDefault();
