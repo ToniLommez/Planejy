@@ -21,10 +21,6 @@ body {
     background-size: cover;
 }
 
-main {
-    background-color: rgba(190, 217, 229, 0.425);
-}
-
 * {
     font-family: 'Poppins', sans-serif;
 }
