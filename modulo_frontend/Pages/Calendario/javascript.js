@@ -1,6 +1,19 @@
 const user = JSON.parse(sessionStorage.getItem('user'));
 let calendar;
 
+const inputArray = [document.getElementById('inputNome'),
+                    document.getElementById('inputNome2'),
+                    document.getElementById('inputDescricao'),
+                    document.getElementById('inputDescricao2')];
+
+inputArray.forEach(element => {
+    element.oninput = e => {
+        if(e.data === ';'){
+            element.value = element.value.substring(0, element.value.length - 1);
+        }
+    };
+});
+
 const formatDate = (date) => {
     let d = new Date(date),
         month = '' + (d.getMonth() + 1),
