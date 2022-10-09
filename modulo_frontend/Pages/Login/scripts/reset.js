@@ -1,3 +1,5 @@
+const user = JSON.parse(sessionStorage.getItem('user'));
+
 const back_box = document.querySelector('.back-box'),
       new_passwd = document.querySelector('.new-passwd'),
       confirm_passwd = document.querySelector('.confirm-passwd'),
@@ -10,7 +12,7 @@ const back_box = document.querySelector('.back-box'),
       hide_confirmpwd = document.querySelector('#hide-confirmpwd'),
       tmp = JSON.parse(sessionStorage.getItem('tmp'));
 
-let valid_passwd = true;
+let valid_passwd = false;
 
 onload = () => {
     if(!tmp) location.href = '../../index.html';
@@ -24,12 +26,10 @@ confirm_passwd.addEventListener('input', () => {
     if (confirm_passwd.value != new_passwd.value) {
         confirm_passwd.style.backgroundColor = '#f1343499';
         valid_passwd = false;
-        form_button.setAttribute('disabled', 'true');
         information.innerText = 'As senhas não se coincidem.'
     } else {
         confirm_passwd.style.backgroundColor = '#fff';
         valid_passwd = true;
-        form_button.removeAttribute('disabled');
         information.innerText = ''
     }
 });
@@ -37,19 +37,27 @@ confirm_passwd.addEventListener('input', () => {
 reset_form.addEventListener('submit', e => {
     e.preventDefault();
 
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'url', true);
+    if(confirm_passwd.value === new_passwd.value){
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', `http://localhost:5678/usuario/recuperarSenha/${tmp.codigo}`, true);
 
-    xhr.onload = () => {
-        alert('Senha alterada com sucesso!');
-        location.href = '../../index.html';
+        xhr.onload = () => {
+            if(!user){
+                alert('Senha alterada!\nProceda com o login para confirmar.');
+                location.href = '../../index.html';
+            }else{
+                user.token = tmp.codigo;
+                sessionStorage.setItem('user', JSON.stringify(user));
+                location.href = '../../Pages/Configuracoes/index.html';
+            }
+        }
+
+        xhr.onerror = () => {
+            alert('Ocorreu um erro ao alterar a senha ;-;');
+        }
+        
+        xhr.send(new_passwd.value.trim());
     }
-
-    xhr.onerror = () => {
-        alert('Ocorreu algum erro ao alterar a senha ;-;');
-    }
-
-    xhr.send(tmp)
 });
 
 show_passwd.addEventListener('click', e => {

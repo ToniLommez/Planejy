@@ -79,9 +79,9 @@ public class UsuarioService {
 
 		response.status(200); // success ??
 		respostaJSON = "";
-		respostaJSON += "{ \"Usuario\": [";
+		respostaJSON += "{ \"Usuario\": [{";
 		respostaJSON += "\"id\": " + id;
-		respostaJSON += " ] }";
+		respostaJSON += "} ] }";
 
 		return respostaJSON;
 	}
