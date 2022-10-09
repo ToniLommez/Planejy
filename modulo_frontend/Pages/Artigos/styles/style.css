@@ -146,6 +146,10 @@ li a {
     max-width: 500px;
 }
 
+.fundoNotas {
+    background-color: white;
+}
+
 .stars {
     margin-top: 15px;
     position: absolute;

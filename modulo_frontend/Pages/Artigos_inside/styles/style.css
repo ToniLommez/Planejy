@@ -16,6 +16,10 @@ h1 {
     color: black;
 }
 
+.fundoNotas {
+    background-color: white;
+}
+
 .card {
     background-color: #f9f7fbd5 !important;
 }

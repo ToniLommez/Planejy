@@ -271,6 +271,10 @@ li a {
     box-shadow: 1px 1px 50px #00000044;
 }
 
+.fundoNotas {
+    background-color: white;
+}
+
 .float-config {
     float: right;
 }

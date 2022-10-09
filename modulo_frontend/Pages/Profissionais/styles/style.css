@@ -81,6 +81,10 @@ h1 {
     border-color: #ffffff3b !important;
 }
 
+.fundoNotas {
+    background-color: white;
+}
+
 .inner_content {
     padding: 20px 2vw;
 }
