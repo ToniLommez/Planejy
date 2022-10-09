@@ -236,6 +236,41 @@ li a {
     border-color: var(--fc-button-hover-border-color, #8248b1);
 }
 
+#btnCancelar {
+    background: #949485;
+    color: white;
+    border-color: #949485;
+}
+
+#btnCancelar:hover {
+    color: #fff;
+    color: var(--fc-button-text-color, #fff);
+    background-color: #70705f;
+    background-color: var(--fc-button-hover-bg-color, #70705f);
+    border-color: #70705f;
+    border-color: var(--fc-button-hover-border-color, #70705f);
+}
+
+#btnDeletar {
+    background: #e46464;
+    color: white;
+    border-color: #e46464;
+}
+
+#btnDeletar:hover {
+    color: #fff;
+    color: var(--fc-button-text-color, #fff);
+    background-color: #b32121;
+    background-color: var(--fc-button-hover-bg-color, #b32121);
+    border-color: #b32121;
+    border-color: var(--fc-button-hover-border-color, #b32121);
+}
+
+.centralizarHeight {
+    margin-top: 30vh;
+    box-shadow: 1px 1px 50px #00000044;
+}
+
 .float-config {
     float: right;
 }

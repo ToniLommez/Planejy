@@ -296,7 +296,27 @@
                                             </div> -->
                                             <div class="col-sm-6 config-box">
                                                 <button type="button" class="btn btn-success fullsizebtn float-config-salvar" id="btnSave">Salvar</button>
-                                                <button type="button" class="btn btn-dark fullsizebtn float-config-excluir" id="btnExcluir">excluir</button>
+                                                <button type="button" class="btn btn-dark fullsizebtn float-config-excluir" id="btnExcluir" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Deletar Conta</button>
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="z-index: 9999;">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content centralizarHeight">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="staticBackdropLabel">Voce tem certeza?</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Nos sentiremos a sua falta :( </br>Voce tem certeza disso?</br>
+                                                                Se sim, tudo bem. Esperamos revê-lo em breve ;)
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnCancelar">Cancelar  :D</button>
+                                                                <button type="button" class="btn btn-primary" id="btnDeletar">Deletar  >:(</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </form>
