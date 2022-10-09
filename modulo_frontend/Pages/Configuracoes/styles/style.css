@@ -287,6 +287,10 @@ li a {
     .fullsizebtn {
         width: 100%;
     }
+    #btnExcluir {
+        margin-right: 0px;
+        margin-top: 20px;
+    }
     #fullsizedropdown {
         width: 100%;
         text-align: center;
