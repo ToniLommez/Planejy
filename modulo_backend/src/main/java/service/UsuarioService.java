@@ -5,17 +5,44 @@ import model.Usuario;
 import spark.Request;
 import spark.Response;
 
+/**
+ * Servico de tratamento de response/request para get/post do objeto Usuario
+ * 
+ * Hierarquia de chamada: Aplicacao -> Service -> DAO -> Model
+ * Aqui sao feitas as chamadas das DAO'S, redirecionamentos dos pedidos e
+ * retorno com status de resposta
+ * 
+ * @method get
+ * @method insert
+ * @method delete
+ * @method update
+ */
 public class UsuarioService {
 
 	private UsuarioDAO usuarioDAO = new UsuarioDAO();
 	private String respostaJSON;
 
+	/**
+	 * Construtor padrao
+	 */
 	public UsuarioService() {
 	}
 
+	/**
+	 * Metodo GET para responder com um JSON contendo a Usuario requisitada
+	 * 
+	 * Utiliza o metodo usuarioDAO.get(tokenUsuario)
+	 * 
+	 * @see Usuario.java
+	 * @see usuarioDAO.java
+	 * @request tokenUsuario
+	 * @response200 JSON (com objeto)
+	 * @response404 nao encontrado
+	 * @return JSON com usuarios ou Erro
+	 */
 	public Object get(Request request, Response response) {
-		String token_usuario = request.params(":token_usuario");
-		Usuario usuario = (Usuario) usuarioDAO.get(token_usuario);
+		String tokenUsuario = request.params(":tokenUsuario");
+		Usuario usuario = (Usuario) usuarioDAO.get(tokenUsuario);
 
 		if (usuario != null) {
 			response.status(200); // success
@@ -25,12 +52,26 @@ public class UsuarioService {
 			respostaJSON += " ] }";
 		} else {
 			response.status(404); // 404 Not found
-			respostaJSON = "Usuario " + token_usuario + " não encontrado.";
+			respostaJSON = "Usuario " + tokenUsuario + " não encontrado.";
 		}
 
 		return respostaJSON;
 	}
 
+	/**
+	 * Metodo POST para inserir um usuario no Banco de Dados
+	 * 
+	 * Utiliza o metodo usuarioDAO.insert(nome, nick, senha, email)
+	 * 
+	 * @see Usuario.java
+	 * @see usuarioDAO.java
+	 * @body senha
+	 * @request nome
+	 * @request nick
+	 * @request email
+	 * @response200 bem sucedido
+	 * @return JSON com status de constraint
+	 */
 	public Object insert(Request request, Response response) {
 		String nome = request.params(":nome");
 		String nick = request.params(":nick");
@@ -45,6 +86,19 @@ public class UsuarioService {
 		return respostaJSON;
 	}
 
+	/**
+	 * Metodo POST para atualizar um usuario no Banco de Dados
+	 * 
+	 * Utiliza o metodo usuarioDAO.update(token, id, body)
+	 * 
+	 * @see Usuario.java
+	 * @see usuarioDAO.java
+	 * @body email;nome;nascimento;nick;genero
+	 * @request token
+	 * @request id
+	 * @response200 bem sucedido
+	 * @return JSON com status de constraint
+	 */
 	public Object update(Request request, Response response) {
 		String token = request.params(":token");
 		int id = Integer.parseInt(request.params(":id"));
@@ -57,6 +111,20 @@ public class UsuarioService {
 		return respostaJSON;
 	}
 
+	/**
+	 * Metodo POST para realizar Login de um usuario e cadastrar seu token de acesso no
+	 * Banco de Dados
+	 * 
+	 * Utiliza o metodo usuarioDAO.login(email, senha, token)
+	 * 
+	 * @see Usuario.java
+	 * @see usuarioDAO.java
+	 * @body senha
+	 * @request email
+	 * @request token
+	 * @response200 bem sucedido
+	 * @return JSON com Id do usuario logado
+	 */
 	public Object login(Request request, Response response) {
 		String email = request.params(":email");
 		String token = request.params(":token");
@@ -72,10 +140,23 @@ public class UsuarioService {
 		return respostaJSON;
 	}
 
+	/**
+	 * Metodo GET para confirmar a existencia do email de um usuario para realizar a
+	 * redefinicao de senha
+	 * 
+	 * Utiliza o metodo usuarioDAO.confirmarEmail(tokenUsuario, email)
+	 * 
+	 * @see Usuario.java
+	 * @see usuarioDAO.java
+	 * @request tokenUsuario
+	 * @request email
+	 * @response200 bem sucedido
+	 * @return JSON com Id do usuario
+	 */
 	public Object confirmarEmail(Request request, Response response) {
-		String token_usuario = request.params(":token_usuario");
+		String tokenUsuario = request.params(":tokenUsuario");
 		String email = request.params(":email");
-		int id =  usuarioDAO.confirmarEmail(token_usuario, email);
+		int id = usuarioDAO.confirmarEmail(tokenUsuario, email);
 
 		response.status(200); // success ??
 		respostaJSON = "";
@@ -86,10 +167,23 @@ public class UsuarioService {
 		return respostaJSON;
 	}
 
+	/**
+	 * Metodo POST para executar a mudanca de senha de um usuario.
+	 * Precisa da execucao do metodo confirmarEmail() para geracao do token
+	 * 
+	 * Utiliza o metodo usuarioDAO.mudarSenhaToken(tokenUsuario, senha)
+	 * 
+	 * @see Usuario.java
+	 * @see usuarioDAO.java
+	 * @body senha
+	 * @request tokenUsuario
+	 * @response200 bem sucedido
+	 * @return JSON com Id do usuario
+	 */
 	public Object mudarSenhaToken(Request request, Response response) {
-		String token_usuario = request.params(":token_usuario");
+		String tokenUsuario = request.params(":tokenUsuario");
 		String senha = request.body();
-		int id =  usuarioDAO.mudarSenhaToken(token_usuario, senha);
+		int id = usuarioDAO.mudarSenhaToken(tokenUsuario, senha);
 
 		response.status(200); // success ??
 		respostaJSON = "";
@@ -99,82 +193,4 @@ public class UsuarioService {
 
 		return respostaJSON;
 	}
-
-	/*
-	 * public Object getToUpdate(Request request, Response response) {
-	 * int codigo = Integer.parseInt(request.params(":codigo"));
-	 * Usuario usuario = (Usuario) usuarioDAO.get(codigo);
-	 * 
-	 * if (usuario != null) {
-	 * response.status(200); // success
-	 * makeForm(FORM_UPDATE, usuario, FORM_ORDERBY_LOGIN);
-	 * } else {
-	 * response.status(404); // 404 Not found
-	 * String resp = "Usuario " + codigo + " não encontrado.";
-	 * makeForm();
-	 * form.
-	 * replaceFirst("<input type=\"hidden\" codigo=\"msg\" name=\"msg\" value=\"\">"
-	 * , "<input type=\"hidden\" codigo=\"msg\" name=\"msg\" value=\""+ resp
-	 * +"\">");
-	 * }
-	 * 
-	 * return form;
-	 * }
-	 */
-
-	/*
-	 * public Object getAll(Request request, Response response) {
-	 * int orderBy = Integer.parseInt(request.params(":orderby"));
-	 * makeForm(orderBy);
-	 * response.header("Content-Type", "text/html");
-	 * response.header("Content-Encoding", "UTF-8");
-	 * return form;
-	 * }
-	 */
-
-	/*
-	 * public Object update(Request request, Response response) {
-	 * int codigo = Integer.parseInt(request.params(":codigo"));
-	 * Usuario usuario = usuarioDAO.get(codigo);
-	 * String resp = "";
-	 * 
-	 * if (usuario != null) {
-	 * usuario.setLogin(request.queryParams("login"));
-	 * usuario.setSenha(request.queryParams("senha"));
-	 * usuario.setSexo(request.queryParams("sexo"));
-	 * usuarioDAO.update(usuario);
-	 * response.status(200); // success
-	 * resp = "Usuario (Codigo " + usuario.getCodigo() + ") atualizado!";
-	 * } else {
-	 * response.status(404); // 404 Not found
-	 * resp = "Usuario (Codigo \" + usuario.getCodigo() + \") não encontrado!";
-	 * }
-	 * makeForm();
-	 * return form.
-	 * replaceFirst("<input type=\"hidden\" codigo=\"msg\" name=\"msg\" value=\"\">"
-	 * , "<input type=\"hidden\" codigo=\"msg\" name=\"msg\" value=\""+ resp
-	 * +"\">");
-	 * }
-	 */
-
-	/*
-	 * public Object delete(Request request, Response response) {
-	 * int codigo = Integer.parseInt(request.params(":codigo"));
-	 * Usuario usuario = usuarioDAO.get(codigo);
-	 * String resp = "";
-	 * if (usuario != null) {
-	 * usuarioDAO.delete(codigo);
-	 * response.status(200); // success
-	 * resp = "Usuario (" + codigo + ") excluído!";
-	 * } else {
-	 * response.status(404); // 404 Not found
-	 * resp = "Usuario (" + codigo + ") não encontrado!";
-	 * }
-	 * makeForm();
-	 * return form.
-	 * replaceFirst("<input type=\"hidden\" codigo=\"msg\" name=\"msg\" value=\"\">"
-	 * , "<input type=\"hidden\" codigo=\"msg\" name=\"msg\" value=\""+ resp
-	 * +"\">");
-	 * }
-	 */
 }

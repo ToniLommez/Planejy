@@ -1,5 +1,17 @@
 package model;
 
+/**
+ * Objeto Profissional para ser usado de referencia para populacao do Banco de
+ * Dados ou para construcao de JSON para o frontend
+ * 
+ * Hierarquia de chamada: Aplicacao -> Service -> DAO -> Model
+ * Aqui sao feitos os gets e construcao de JSON's
+ * 
+ * @method construtor de objeto vazio
+ * @method construtor de objeto preenchido
+ * @method hasnext/add (para pilha simplismente encadeada)
+ * @method toJson
+ */
 public class Profissional {
     private int registro;
     private String nome;
@@ -12,6 +24,9 @@ public class Profissional {
     private String linkedin;
     private Profissional next;
 
+    /**
+     * Construtor padrao
+     */
     public Profissional() {
         this.registro = -1;
         this.nome = "";
@@ -25,6 +40,19 @@ public class Profissional {
         this.next = null;
     }
 
+    /**
+     * Construtor populado
+     * 
+     * @param registro
+     * @param nome
+     * @param servico
+     * @param preco
+     * @param foto
+     * @param facebook
+     * @param twitter
+     * @param instagram
+     * @param linkedin
+     */
     public Profissional(int registro, String nome, String servico, Float preco, String foto, String facebook,
             String twitter, String instagram, String linkedin) {
         this.registro = registro;
@@ -39,47 +67,52 @@ public class Profissional {
         this.next = null;
     }
 
-    public int get_registro() {
+    public int getRegistro() {
         return this.registro;
     }
 
-    public String get_nome() {
+    public String getNome() {
         return this.nome;
     }
 
-    public String get_servico() {
+    public String getServico() {
         return this.servico;
     }
 
-    public Float get_preco() {
+    public Float getPreco() {
         return this.preco;
     }
 
-    public String get_foto() {
+    public String getFoto() {
         return this.foto;
     }
 
-    public String get_facebook() {
+    public String getFacebook() {
         return this.facebook;
     }
 
-    public String get_twitter() {
+    public String getTwitter() {
         return this.twitter;
     }
 
-    public String get_instagram() {
+    public String getInstagram() {
         return this.instagram;
     }
 
-    public String get_linkedin() {
+    public String getLinkedin() {
         return this.linkedin;
     }
 
-    public Profissional get_next() {
+    public Profissional getNext() {
         return this.next;
     }
 
-    public boolean hasNext() {
+    /**
+     * Metodo para lista encadeada
+     * 
+     * @return true se next nao for null
+     */
+    private boolean hasNext() {
         boolean has = true;
         if (this.next == null) {
             has = false;
@@ -87,18 +120,35 @@ public class Profissional {
         return has;
     }
 
+    /**
+     * Metodo para construcao da Pilha encadeada
+     * 
+     * @param novo Artigo a ser inserido
+     */
     public void add(Profissional novo) {
         novo.next = this.next;
         this.next = novo;
     }
 
+    /**
+     * Metodo recursivo para gerar o arquivo JSON da pilha encadeada em ordem
+     * correta, afinal os valores sao adicionados de forma inversa, apenas
+     * desempilhar ira gerar uma ordem invertida
+     * 
+     * @param artigo primeiro artigo da lista
+     * @return String JSON com os dados da pilha
+     */
     public String toJsonRec(Profissional tmp) {
         String Json = "";
         if (tmp != null) {
+            // empilhamento recursivo
             Json += toJsonRec(tmp.next);
+            // construcao da string apos empilhamento
             Json += "{ ";
-            Json += "\"registro\":" + tmp.registro + ",\"nome\":\"" + tmp.nome + "\",\"servico\":\"" + tmp.servico + "\",\"preco\":" + tmp.preco
-                    + ",\"foto\":\"" + tmp.foto + "\",\"facebook\":\"" + tmp.facebook + "\",\"twitter\":\"" + tmp.twitter + "\",\"instagram\":\""
+            Json += "\"registro\":" + tmp.registro + ",\"nome\":\"" + tmp.nome + "\",\"servico\":\"" + tmp.servico
+                    + "\",\"preco\":" + tmp.preco
+                    + ",\"foto\":\"" + tmp.foto + "\",\"facebook\":\"" + tmp.facebook + "\",\"twitter\":\""
+                    + tmp.twitter + "\",\"instagram\":\""
                     + tmp.instagram + "\",\"linkedin\":\"" + tmp.linkedin + "\"";
             Json += "}";
             Json += ",";
@@ -106,17 +156,29 @@ public class Profissional {
         return Json;
     }
 
+    /**
+     * Gerador padrao de JSON
+     * 
+     * Primeiro se analisa se e uma pilha ou um registro unico, caso seja uma pilha
+     * sera chamado o metodo toJsonRec
+     * 
+     * @return JSON sem objeto pai
+     */
     public String toJson() {
         String Json = "";
+        // Se for pilha, chamar toJsonRec
         if (this.hasNext()) {
             Profissional last = this.next;
             Json += toJsonRec(last);
             Json = Json.substring(0, Json.length() - 1);
+            // limpeza da variavel
             last = null;
         } else {
             Json += "{ ";
-            Json += "\"registro\":" + registro + ",\"nome\":\"" + nome + "\",\"servico\":\"" + servico + "\",\"preco\":" + preco
-                    + ",\"foto\":\"" + foto + "\",\"facebook\":\"" + facebook + "\",\"twitter\":\"" + twitter + "\",\"instagram\":"
+            Json += "\"registro\":" + registro + ",\"nome\":\"" + nome + "\",\"servico\":\"" + servico + "\",\"preco\":"
+                    + preco
+                    + ",\"foto\":\"" + foto + "\",\"facebook\":\"" + facebook + "\",\"twitter\":\"" + twitter
+                    + "\",\"instagram\":"
                     + instagram + "\",\"linkedin\":\"" + linkedin + "\"";
             Json += "}";
         }

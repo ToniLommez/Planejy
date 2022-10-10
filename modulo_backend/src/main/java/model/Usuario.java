@@ -4,6 +4,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Objeto Usuario para ser usado de referencia para populacao do Banco de Dados
+ * ou para construcao de JSON para o frontend
+ * 
+ * Hierarquia de chamada: Aplicacao -> Service -> DAO -> Model
+ * Aqui sao feitos os gets e construcao de JSON's
+ * 
+ * @method construtor de objeto vazio
+ * @method construtor de objeto atraves de parse
+ * @method construtor de objeto preenchido
+ * @method toJson
+ */
 public class Usuario {
     private int id;
     private String nome;
@@ -15,6 +27,9 @@ public class Usuario {
     private String token;
     private SimpleDateFormat nascimentoFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+    /**
+     * Construtor padrao
+     */
     public Usuario() {
         this.id = -1;
         this.nome = "";
@@ -26,23 +41,44 @@ public class Usuario {
         this.token = "";
     }
 
-    // email, nome, nascimento, nick, genero
+    /**
+     * Construtor atraves de parse
+     * Este construtor nao salva id/senha/token
+     * 
+     * @param body corpo sem id/senha/token
+     */
     public Usuario(String body) {
+        // Split do corpo
         String tmp[] = body.split(";");
 
+        // Construcao vazia
         this.id = -1;
         this.senha = "";
         this.token = "";
 
+        // Devida atribuicao do parse
         this.email = tmp[0];
         this.nome = tmp[1];
         try {
             this.nascimento = nascimentoFormat.parse(tmp[2]);
-        } catch (ParseException e) {}
+        } catch (ParseException e) {
+        }
         this.nick = tmp[3];
         this.genero = tmp[4];
     }
 
+    /**
+     * Construtor populado
+     * 
+     * @param id
+     * @param nome
+     * @param nascimento
+     * @param nick
+     * @param senha
+     * @param email
+     * @param genero
+     * @param token
+     */
     public Usuario(int id, String nome, Date nascimento, String nick, String senha, String email, String genero,
             String token) {
         this.id = id;
@@ -55,44 +91,50 @@ public class Usuario {
         this.token = token;
     }
 
-    public int get_id() {
+    public int getId() {
         return this.id;
     }
 
-    public String get_nome() {
+    public String getNome() {
         return this.nome;
     }
 
-    public Date get_nascimento() {
+    public Date getNascimento() {
         return this.nascimento;
     }
 
-    public String get_nick() {
+    public String getNick() {
         return this.nick;
     }
 
-    public String get_senha() {
+    public String getSenha() {
         return this.senha;
     }
 
-    public String get_email() {
+    public String getEmail() {
         return this.email;
     }
 
-    public String get_genero() {
+    public String getGenero() {
         return this.genero;
     }
 
-    public String get_token() {
+    public String getToken() {
         return this.token;
     }
 
+    /**
+     * Metodo para geracao de arquivo JSON contendo os dados do usuario
+     * 
+     * @return JSON sem o objeto pai
+     */
     public String toJson() {
         String Json = "";
         Json += "{ ";
-        Json +=  "\"id\":" + this.id + ", \"nome\":\"" + this.nome + "\", \"nascimento\":\"" + this.nascimento + "\", \"nick\":\"" + this.nick + "\", \"email\":\"" + this.email + "\", \"genero\":\"" + this.genero + "\"";
+        Json += "\"id\":" + this.id + ", \"nome\":\"" + this.nome + "\", \"nascimento\":\"" + this.nascimento
+                + "\", \"nick\":\"" + this.nick + "\", \"email\":\"" + this.email + "\", \"genero\":\"" + this.genero
+                + "\"";
         Json += "}";
         return Json;
     }
-
 }

@@ -5,49 +5,44 @@ import model.Nota;
 import spark.Request;
 import spark.Response;
 
+/**
+ * Servico de tratamento de response/request para get/post do objeto Artigo
+ * 
+ * Hierarquia de chamada: Aplicacao -> Service -> DAO -> Model
+ * Aqui sao feitas as chamadas das DAO'S, redirecionamentos dos pedidos e
+ * retorno com status de resposta
+ * 
+ * @method get
+ * @method insert
+ * @method delete
+ * @method update
+ */
 public class NotaService {
 
 	private NotaDAO notaDAO = new NotaDAO();
 	private String respostaJSON;
-	// private final int FORM_INSERT = 1;
-	// private final int FORM_DETAIL = 2;
-	// private final int FORM_UPDATE = 3;
 
-	// private final int FORM_ORDERBY_CHAVE = 1;
-	// private final int FORM_ORDERBY_RESUMO = 2;
-
+	/**
+	 * Construtor padrao
+	 */
 	public NotaService() {
 	}
 
-	/*
-	 * public Object insert(Request request, Response response) {
-	 * String login = request.queryParams("login");
-	 * String senha = request.queryParams("senha");
-	 * String sexo = request.queryParams("sexo");
+	/**
+	 * Metodo GET para responder com um JSON contendo a Nota requisitada
 	 * 
-	 * String resp = "";
+	 * Utiliza o metodo notaDAO.get(tokenUsuario)
 	 * 
-	 * Nota nota = new Nota(-1, login, senha, sexo);
-	 * 
-	 * if(notaDAO.insert(nota) == true) {
-	 * resp = "Nota (" + login + ") inserido!";
-	 * response.status(201); // 201 Created
-	 * } else {
-	 * resp = "Nota (" + login + ") não inserido!";
-	 * response.status(404); // 404 Not found
-	 * }
-	 * 
-	 * makeForm();
-	 * return form.
-	 * replaceFirst("<input type=\"hidden\" codigo=\"msg\" name=\"msg\" value=\"\">"
-	 * , "<input type=\"hidden\" codigo=\"msg\" name=\"msg\" value=\""+ resp
-	 * +"\">");
-	 * }
+	 * @see Nota.java
+	 * @see notaDAO.java
+	 * @request tokenUsuario
+	 * @response200 JSON (com objeto)
+	 * @response404 nao encontrado
+	 * @return JSON com notas ou Erro
 	 */
-
 	public Object get(Request request, Response response) {
-		String token_usuario = request.params(":token_usuario");
-		Nota nota = (Nota) notaDAO.get(token_usuario);
+		String tokenUsuario = request.params(":tokenUsuario");
+		Nota nota = (Nota) notaDAO.get(tokenUsuario);
 
 		if (nota != null) {
 			response.status(200); // success
@@ -57,16 +52,30 @@ public class NotaService {
 			respostaJSON += " ] }";
 		} else {
 			response.status(404); // 404 Not found
-			respostaJSON = "Usuario " + token_usuario + " não encontrado.";
+			respostaJSON = "Usuario " + tokenUsuario + " não encontrado.";
 		}
 
 		return respostaJSON;
 	}
 
+	/**
+	 * Metodo POST para inserir uma nota no Banco de Dados
+	 * 
+	 * Utiliza o metodo notaDAO.post(tokenUsuario, body)
+	 * 
+	 * @see Nota.java
+	 * @see notaDAO.java
+	 * @body idUsuario;titulo;dia;descricao;horario;categoria;cor
+	 * @request tokenUsuario
+	 * @request body
+	 * @response200 bem sucedido
+	 * @response404 mal sucedido
+	 * @return String com resposta
+	 */
 	public Object insert(Request request, Response response) {
-		String token_usuario = request.params(":token_usuario");
+		String tokenUsuario = request.params(":tokenUsuario");
 		String body = request.body();
-		boolean result = notaDAO.post(token_usuario, body);
+		boolean result = notaDAO.post(tokenUsuario, body);
 
 		if (result) {
 			response.status(200); // success
@@ -79,10 +88,23 @@ public class NotaService {
 		return respostaJSON;
 	}
 
+	/**
+	 * Metodo GET para deletar uma nota no Banco de Dados
+	 * 
+	 * Utiliza o metodo notaDAO.delete(tokenUsuario, chave)
+	 * 
+	 * @see Nota.java
+	 * @see notaDAO.java
+	 * @request tokenUsuario
+	 * @request chave
+	 * @response200 bem sucedido
+	 * @response404 mal sucedido
+	 * @return String com resposta
+	 */
 	public Object delete(Request request, Response response) {
-		String token_usuario = request.params(":token_usuario");
+		String tokenUsuario = request.params(":tokenUsuario");
 		String chave = request.params(":chave");
-		boolean result = notaDAO.delete(token_usuario, chave);
+		boolean result = notaDAO.delete(tokenUsuario, chave);
 
 		if (result) {
 			response.status(200); // success
@@ -95,11 +117,25 @@ public class NotaService {
 		return respostaJSON;
 	}
 
+	/**
+	 * Metodo POST para atualizar uma nota no Banco de Dados
+	 * 
+	 * Utiliza o metodo notaDAO.update(tokenUsuario, chave, body)
+	 * 
+	 * @see Nota.java
+	 * @see notaDAO.java
+	 * @body idUsuario;titulo;dia;descricao;horario;categoria;cor
+	 * @request tokenUsuario
+	 * @request chave
+	 * @response200 bem sucedido
+	 * @response404 mal sucedido
+	 * @return String com resposta
+	 */
 	public Object update(Request request, Response response) {
-		String token_usuario = request.params(":token_usuario");
+		String tokenUsuario = request.params(":tokenUsuario");
 		long chave = Long.parseLong(request.params(":chave"));
 		String body = request.body();
-		boolean result = notaDAO.update(token_usuario, chave, body);
+		boolean result = notaDAO.update(tokenUsuario, chave, body);
 
 		if (result) {
 			response.status(200); // success
@@ -111,82 +147,4 @@ public class NotaService {
 
 		return respostaJSON;
 	}
-
-	/*
-	 * public Object getToUpdate(Request request, Response response) {
-	 * int codigo = Integer.parseInt(request.params(":codigo"));
-	 * Nota nota = (Nota) notaDAO.get(codigo);
-	 * 
-	 * if (nota != null) {
-	 * response.status(200); // success
-	 * makeForm(FORM_UPDATE, nota, FORM_ORDERBY_LOGIN);
-	 * } else {
-	 * response.status(404); // 404 Not found
-	 * String resp = "Nota " + codigo + " não encontrado.";
-	 * makeForm();
-	 * form.
-	 * replaceFirst("<input type=\"hidden\" codigo=\"msg\" name=\"msg\" value=\"\">"
-	 * , "<input type=\"hidden\" codigo=\"msg\" name=\"msg\" value=\""+ resp
-	 * +"\">");
-	 * }
-	 * 
-	 * return form;
-	 * }
-	 */
-
-	/*
-	 * public Object getAll(Request request, Response response) {
-	 * int orderBy = Integer.parseInt(request.params(":orderby"));
-	 * makeForm(orderBy);
-	 * response.header("Content-Type", "text/html");
-	 * response.header("Content-Encoding", "UTF-8");
-	 * return form;
-	 * }
-	 */
-
-	/*
-	 * public Object update(Request request, Response response) {
-	 * int codigo = Integer.parseInt(request.params(":codigo"));
-	 * Nota nota = notaDAO.get(codigo);
-	 * String resp = "";
-	 * 
-	 * if (nota != null) {
-	 * nota.setLogin(request.queryParams("login"));
-	 * nota.setSenha(request.queryParams("senha"));
-	 * nota.setSexo(request.queryParams("sexo"));
-	 * notaDAO.update(nota);
-	 * response.status(200); // success
-	 * resp = "Nota (Codigo " + nota.getCodigo() + ") atualizado!";
-	 * } else {
-	 * response.status(404); // 404 Not found
-	 * resp = "Nota (Codigo \" + nota.getCodigo() + \") não encontrado!";
-	 * }
-	 * makeForm();
-	 * return form.
-	 * replaceFirst("<input type=\"hidden\" codigo=\"msg\" name=\"msg\" value=\"\">"
-	 * , "<input type=\"hidden\" codigo=\"msg\" name=\"msg\" value=\""+ resp
-	 * +"\">");
-	 * }
-	 */
-
-	/*
-	 * public Object delete(Request request, Response response) {
-	 * int codigo = Integer.parseInt(request.params(":codigo"));
-	 * Nota nota = notaDAO.get(codigo);
-	 * String resp = "";
-	 * if (nota != null) {
-	 * notaDAO.delete(codigo);
-	 * response.status(200); // success
-	 * resp = "Nota (" + codigo + ") excluído!";
-	 * } else {
-	 * response.status(404); // 404 Not found
-	 * resp = "Nota (" + codigo + ") não encontrado!";
-	 * }
-	 * makeForm();
-	 * return form.
-	 * replaceFirst("<input type=\"hidden\" codigo=\"msg\" name=\"msg\" value=\"\">"
-	 * , "<input type=\"hidden\" codigo=\"msg\" name=\"msg\" value=\""+ resp
-	 * +"\">");
-	 * }
-	 */
 }

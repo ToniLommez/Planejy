@@ -3,14 +3,27 @@ package model;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-//import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalTime;
 import java.text.ParseException;
 
+/**
+ * Objeto Nota para ser usado de referencia para populacao do Banco de Dados
+ * ou para construcao de JSON para o frontend
+ * 
+ * Hierarquia de chamada: Aplicacao -> Service -> DAO -> Model
+ * Aqui sao feitos os gets e construcao de JSON's
+ * 
+ * @method construtor de objeto vazio
+ * @method construtor de objeto atraves de parse
+ * @method construtor de objeto atraves de parse + chave
+ * @method construtor de objeto preenchido
+ * @method hasnext/add (para pilha simplismente encadeada)
+ * @method toJson
+ */
 public class Nota {
     private long chave;
-    private int id_usuario;
+    private int idUsuario;
     private String titulo;
     private Date dia;
     private String descricao;
@@ -20,9 +33,12 @@ public class Nota {
     private Nota next;
     private SimpleDateFormat diaFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+    /**
+     * Construtor padrao
+     */
     public Nota() {
         this.chave = -1;
-        this.id_usuario = -1;
+        this.idUsuario = -1;
         this.titulo = "";
         this.dia = new Date();
         this.descricao = "";
@@ -32,15 +48,22 @@ public class Nota {
         this.next = null;
     }
 
+    /**
+     * Construtor atraves de parse
+     * Este construtor nao salva a chave da nota
+     * 
+     * @param body corpo sem a chave
+     */
     public Nota(String body) {
         String tmp[] = body.split(";");
 
         this.chave = -1;
-        this.id_usuario = Integer.parseInt(tmp[0]);
+        this.idUsuario = Integer.parseInt(tmp[0]);
         this.titulo = tmp[1];
         try {
             this.dia = diaFormat.parse(tmp[2]);
-        }catch(ParseException e) {}
+        } catch (ParseException e) {
+        }
         this.descricao = tmp[3];
         this.horario = LocalTime.parse(tmp[4], DateTimeFormatter.ofPattern("HH:mm"));
         this.categoria = tmp[5];
@@ -48,15 +71,23 @@ public class Nota {
         this.next = null;
     }
 
+    /**
+     * Construtor atraves de parse
+     * Chave deve ser enviada separadamente
+     * 
+     * @param body  corpo sem a chave
+     * @param chave primary key
+     */
     public Nota(String body, long chave) {
         String tmp[] = body.split(";");
 
         this.chave = chave;
-        this.id_usuario = Integer.parseInt(tmp[0]);
+        this.idUsuario = Integer.parseInt(tmp[0]);
         this.titulo = tmp[1];
         try {
             this.dia = diaFormat.parse(tmp[2]);
-        }catch(ParseException e) {}
+        } catch (ParseException e) {
+        }
         this.descricao = tmp[3];
         this.horario = LocalTime.parse(tmp[4], DateTimeFormatter.ofPattern("HH:mm"));
         this.categoria = tmp[5];
@@ -64,10 +95,22 @@ public class Nota {
         this.next = null;
     }
 
-    public Nota(long chave, int id_usuario, String titulo, Date dia, String descricao, Time time,
+    /**
+     * Construtor populado
+     * 
+     * @param chave
+     * @param idUsuario
+     * @param titulo
+     * @param dia
+     * @param descricao
+     * @param time
+     * @param categoria
+     * @param cor
+     */
+    public Nota(long chave, int idUsuario, String titulo, Date dia, String descricao, Time time,
             String categoria, String cor) {
         this.chave = chave;
-        this.id_usuario = id_usuario;
+        this.idUsuario = idUsuario;
         this.titulo = titulo;
         this.dia = dia;
         this.descricao = descricao;
@@ -77,69 +120,87 @@ public class Nota {
         this.next = null;
     }
 
-    public long get_chave() {
+    public long getChave() {
         return this.chave;
     }
 
-    public int get_id_usuario() {
-        return this.id_usuario;
+    public int getIdUsuario() {
+        return this.idUsuario;
     }
 
-    public String get_titulo() {
+    public String getTitulo() {
         return this.titulo;
     }
 
-    public Date get_dia() {
+    public Date getDia() {
         return this.dia;
     }
 
-    public String get_descricao() {
+    public String getDescricao() {
         return this.descricao;
     }
 
-    public LocalTime get_horario() {
+    public LocalTime getHorario() {
         return this.horario;
     }
 
-    public String get_categoria() {
+    public String getCategoria() {
         return this.categoria;
     }
 
-    public String get_cor() {
+    public String getCor() {
         return this.cor;
     }
 
-    public Nota get_next() {
+    public Nota getNext() {
         return this.next;
     }
 
-    public boolean hasNext() {
+    /**
+     * Metodo para lista encadeada
+     * 
+     * @return true se next nao for null
+     */
+    private boolean hasNext() {
         boolean has = true;
-        if (this.next == null){
+        if (this.next == null) {
             has = false;
         }
         return has;
     }
 
+    /**
+     * Metodo para construcao da Pilha encadeada
+     * 
+     * @param novo Artigo a ser inserido
+     */
     public void add(Nota nova) {
         nova.next = this.next;
         this.next = nova;
     }
 
+    /**
+     * Metodo para geracao de arquivo JSON contendo os dados da nota
+     * 
+     * @return JSON sem o objeto pai
+     */
     public String toJson() {
         String Json = "";
         Nota last = this;
-        
-        while(last.hasNext()) {
+
+        while (last.hasNext()) {
             last = last.next;
             Json += "{ ";
-            Json += "\"id\":" + last.chave + ", \"id_usuario\":" + last.id_usuario + ", \"title\":\"" + last.titulo + "\", \"start\":\"" + last.dia + "\", \"description\":\"" + last.descricao + "\", \"horario\":\"" + last.horario + "\", \"categoria\":\"" + last.categoria + "\", \"color\":\"" + last.cor + "\"";
+            Json += "\"id\":" + last.chave + ", \"idUsuario\":" + last.idUsuario + ", \"title\":\"" + last.titulo
+                    + "\", \"start\":\"" + last.dia + "\", \"description\":\"" + last.descricao + "\", \"horario\":\""
+                    + last.horario + "\", \"categoria\":\"" + last.categoria + "\", \"color\":\"" + last.cor + "\"";
             Json += "}";
-            if(last.hasNext()) {
-                Json += ",";                
+            if (last.hasNext()) {
+                Json += ",";
             }
         }
-        
+
+        // limpeza da variavel
         last = null;
         return Json;
     }
