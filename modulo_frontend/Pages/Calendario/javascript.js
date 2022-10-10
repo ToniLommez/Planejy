@@ -1,4 +1,5 @@
 const user = JSON.parse(sessionStorage.getItem('user'));
+if(!user) console.log('yo');
 let calendar;
 
 const inputArray = [document.getElementById('inputNome'),
@@ -111,7 +112,6 @@ const initCalendar = () => {
 }
 
 let db = { data: [] };
-getNotes();
 
 const data = {
     headerToolbar: {
@@ -147,8 +147,12 @@ const data = {
 
 onload = () => {
     if (!user) {
-        location.href = '../../index.html'
+        location.href = '../../index.html';
+        return;
     }
+
+    getNotes();
+
 }
 
 const logout = () => {

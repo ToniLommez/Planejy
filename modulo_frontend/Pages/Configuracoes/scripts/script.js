@@ -6,7 +6,8 @@ const id_input = document.querySelector('#inputId'),
       birth_input = document.querySelector('#inputNascimento'),
       gender_input = document.querySelector('#inputGenero'),
       nick_input = document.querySelector('#inputNick'),
-      btn_save = document.querySelector('#btnSave');
+      btn_save = document.querySelector('#btnSave'),
+      btn_delete = document.querySelector('#btnDeletar');
 
 
 onload = () => {
@@ -15,6 +16,7 @@ onload = () => {
         return;
     }
 
+    sessionStorage.removeItem('tmp');
     getUserInfo();
 }
 
@@ -30,6 +32,23 @@ gender_input.oninput = () => {
 
     gender_input.value = gender_input.value.toUpperCase();
 };
+
+btn_delete.onclick = () => {
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', `http://localhost:5678/usuario/deletar/${user.token}`, true);
+
+    xhr.onload = () => {
+        alert('Sua conta foi deletada!\nObrigado por procrastinar conosco!');
+        location.href = '../../index.html';
+    }
+
+    xhr.onerror = () => {
+        alert('Ocorreu um erro ao apagar sua conta!\n:D');
+    }
+
+    xhr.send();
+}
 
 btn_save.onclick = () => {
     updateUserInfo();
