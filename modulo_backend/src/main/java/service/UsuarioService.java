@@ -132,10 +132,10 @@ public class UsuarioService {
 
 		if (status) {
 			response.status(200); // success
-			respostaJSON = "\"deletado\": true";
+			respostaJSON = "{ \"Usuario\": [ { \"deletado\": true } ] }";
 		} else {
 			response.status(404); // 404 Not found
-			respostaJSON = "\"deletado\": false";
+			respostaJSON = "{ \"Usuario\": [ { \"deletado\": false } ] }";
 		}
 
 		return respostaJSON;
@@ -218,9 +218,9 @@ public class UsuarioService {
 
 		response.status(200); // success ??
 		respostaJSON = "";
-		respostaJSON += "{ \"Usuario\": [";
+		respostaJSON += "{ \"Usuario\": [{";
 		respostaJSON += "\"id\": " + id;
-		respostaJSON += " ] }";
+		respostaJSON += " } ] }";
 
 		return respostaJSON;
 	}
