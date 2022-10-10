@@ -36,7 +36,7 @@ gender_input.oninput = () => {
 btn_delete.onclick = () => {
     let xhr = new XMLHttpRequest();
 
-    xhr.open('GET', `http://localhost:5678/usuario/deletar/${user.token}`, true);
+    xhr.open('GET', `http://localhost:5678/usuario/Excluir/${user.token}/${user.id}`, true);
 
     xhr.onload = () => {
         alert('Sua conta foi deletada!\nObrigado por procrastinar conosco!');
