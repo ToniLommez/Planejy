@@ -94,6 +94,32 @@ public class UsuarioDAO extends DAO {
 	}
 
 	/**
+	 * Metodo GET para excluir um usuario atraves do seu token e id
+	 * 
+	 * @print erro se existir
+	 * @param token token unico de acesso do usuario
+	 * @param id    primary key do usuario
+	 * @return objeto Usuario construido
+	 */
+	public boolean delete(String token, String id) {
+		// false ate se provar o contrario
+		boolean status = false;
+		try {
+			// Conexao
+			Statement st = conexao.createStatement();
+			String sql = "DELETE FROM planejy.usuario WHERE token = '" + token + "' AND id = " + id;
+			st.executeUpdate(sql);
+			// Fim de conexao
+			st.close();
+			// Deu tudo certo!
+			status = true;
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		return status;
+	}
+
+	/**
 	 * Metodo LOGIN para comparar se email e senha estao corretos e em seguida
 	 * registrar um token de acesso unico no banco de dados
 	 * A senha sera criptografada em md5

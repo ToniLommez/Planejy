@@ -73,10 +73,11 @@ public class Aplicacao {
         post("/usuario/login/:email/:token", (request, response) -> usuarioService.login(request, response));
         // Confirmar se email e' valido, retorna ID caso seja e registra token no BD
         get("/usuario/recuperarSenha/:email/:tokenUsuario",
-                (request, response) -> usuarioService.confirmarEmail(request, response));
+        (request, response) -> usuarioService.confirmarEmail(request, response));
         // Muda a senha atraves do novo token gerado para mudanca de senha
         post("/usuario/recuperarSenha/:tokenUsuario",
-                (request, response) -> usuarioService.mudarSenhaToken(request, response));
-
+        (request, response) -> usuarioService.mudarSenhaToken(request, response));
+        // Excluir um usuario a partir do seu ID e Token
+        get("/usuario/Excluir/:token/:id", (request, response) -> usuarioService.delete(request, response));
     }
 }

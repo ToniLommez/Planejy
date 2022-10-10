@@ -112,7 +112,38 @@ public class UsuarioService {
 	}
 
 	/**
-	 * Metodo POST para realizar Login de um usuario e cadastrar seu token de acesso no
+	 * Metodo GET deletar a conta de um usuario do Banco de Dados.
+	 * Lembrar que ao deletar uma conta as notas serao deletadas em cascata
+	 * 
+	 * Utiliza o metodo usuarioDAO.delete(token, id)
+	 * 
+	 * @see Usuario.java
+	 * @see usuarioDAO.java
+	 * @request token
+	 * @request id
+	 * @response200 bem sucedido
+	 * @response404 usuario nao encontrado
+	 * @return JSON com status de sucesso
+	 */
+	public Object delete(Request request, Response response) {
+		String token = request.params(":token");
+		String id = request.params(":id");
+		boolean status = usuarioDAO.delete(token, id);
+
+		if (status) {
+			response.status(200); // success
+			respostaJSON = "\"deletado\": true";
+		} else {
+			response.status(404); // 404 Not found
+			respostaJSON = "\"deletado\": false";
+		}
+
+		return respostaJSON;
+	}
+
+	/**
+	 * Metodo POST para realizar Login de um usuario e cadastrar seu token de acesso
+	 * no
 	 * Banco de Dados
 	 * 
 	 * Utiliza o metodo usuarioDAO.login(email, senha, token)
