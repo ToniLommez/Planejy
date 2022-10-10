@@ -15,7 +15,7 @@ inputArray.forEach(element => {
     };
 });
 
-const formatDate = (date) => {
+const formatDate = date => {
     let d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -29,7 +29,7 @@ const formatDate = (date) => {
     return [year, month, day].join('-');
 }
 
-const noteToString = (note) => {
+const noteToString = note => {
     return `${user.id};${note.titulo};${note.dia};${note.descricao};${note.horario};${note.categoria};${note.cor}`;
 }
 
@@ -228,7 +228,7 @@ const addNotes = () => {
     init();
 }
 
-const updateNotes = (note) => {
+const updateNotes = note => {
     let noteMenu = document.querySelector('.updateNotes');
     noteMenu.style.display = 'block';
 
@@ -312,7 +312,7 @@ const updateNotes = (note) => {
     }
 }
 
-const insertPostit = (postit) => {
+const insertPostit = postit => {
     let novoPostit = {
         "title": postit.nome,
         "description": postit.descricao,
@@ -357,7 +357,7 @@ const listarEventos = () => {
     }
 }
 
-const trashcanFunc = (id) => {
+const trashcanFunc = id => {
     postNotes(id, 'delete');
     $("#table-events").empty();
 }
@@ -365,7 +365,7 @@ const trashcanFunc = (id) => {
 let bufferArray = [];
 let code = ['f', '4', '4', '3', '6', 'f'];
 
-window.addEventListener('keyup', (e) => {
+window.addEventListener('keyup', e => {
     const key = e.key.toLowerCase();
     bufferArray.push(key);
 

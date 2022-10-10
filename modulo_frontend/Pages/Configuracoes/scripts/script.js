@@ -39,8 +39,12 @@ btn_delete.onclick = () => {
     xhr.open('GET', `http://localhost:5678/usuario/Excluir/${user.token}/${user.id}`, true);
 
     xhr.onload = () => {
-        alert('Sua conta foi deletada!\nObrigado por procrastinar com Planejy!');
-        location.href = '../../index.html';
+        if(JSON.parse(xhr.responseText).Usuario[0].deletado){
+            alert('Sua conta foi deletada!\nObrigado por procrastinar com Planejy!');
+            location.href = '../../index.html';
+        }else{
+            alert('Ocorreu um erro ao apagar sua conta!\n:D');
+        }
     }
 
     xhr.onerror = () => {
