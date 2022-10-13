@@ -50,9 +50,14 @@ const updateUser = (user, p) => {
     xhr.open('POST', `http://localhost:5678/usuario/login/${user.email}/${user.token}`, true);
 
     xhr.onload = () => {
-        alert('Senha alterada!');
-        sessionStorage.setItem('user', JSON.stringify(user));
-        location.href = '../../Pages/Configuracoes/index.html';
+        if(JSON.parse(xhr.responseText).Usuario[0].id === -1){
+            alert('Ocorreu um erro ao retornar à pagina ;-;\nPor favor, efetue o login novamente.');
+            location.href = '../../index.html';
+        }else{
+            alert('Senha alterada!');
+            sessionStorage.setItem('user', JSON.stringify(user));
+            location.href = '../../Pages/Configuracoes/index.html';
+        }
     }
 
     xhr.onerror = () => {
@@ -71,12 +76,16 @@ reset_form.addEventListener('submit', e => {
         xhr.open('POST', `http://localhost:5678/usuario/recuperarSenha/${tmp.codigo}`, true);
 
         xhr.onload = () => {
-            if(!user){
-                alert('Senha alterada!\nProceda com o login para confirmar.');
-                location.href = '../../index.html';
+            if(JSON.parse(xhr.responseText).Usuario[0].id === -1){
+                alert('Ocorreu um erro ao redefinir senha ;-;');
             }else{
-                user.token = generateToken(40);
-                updateUser(user, p);
+                if(!user){
+                    alert('Senha alterada!\nProceda com o login para confirmar.');
+                    location.href = '../../index.html';
+                }else{
+                    user.token = generateToken(40);
+                    updateUser(user, p);
+                }
             }
         }
 
