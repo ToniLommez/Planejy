@@ -4,7 +4,7 @@ const foo = strs => {
     let str = '';
     
     for(let i = 0; i < strs.length - 1; i++){
-        if(!(strs[i].includes('!') || strs[i] === 'outros')){
+        if(!(strs[i].includes('!') || strs[i] === 'Outros')){
             str += strs[i].toLowerCase().replace(/ |-/g, '_') + ';';
         }
     }
