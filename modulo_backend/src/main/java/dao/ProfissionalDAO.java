@@ -65,4 +65,35 @@ public class ProfissionalDAO extends DAO {
 		}
 		return profissional;
 	}
+
+	/**
+	 * Metodo POST para inserir a avaliacao de um profissional no banco de dados
+	 * 
+	 * @print erro de existir
+	 * @return sucesso da operacao
+	 */
+	/* public boolean avaliar(String tokenUsuario, int nota) {
+		// False ate se provar o contrario
+		boolean status = false;
+		try {
+			// Id selecionado atraves do token de validacao
+			String sql = "UPDATE planejy.nota SET titulo = '" + nota.getTitulo() + "', dia = '"
+					+ nota.getDia().toString() + "', descricao = '" + nota.getDescricao() + "', horario = '"
+					+ nota.getHorario().toString() + "', categoria = '" + nota.getCategoria() + "', cor = '"
+					+ nota.getCor() + "' WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '"
+					+ tokenUsuario + "')";
+			// conexao
+			PreparedStatement st = conexao.prepareStatement(sql);
+			st.executeUpdate();
+			// fechar conexao
+			st.close();
+			// Deu tudo certo!
+			status = true;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		// limpeza da variavel
+		nota = null;
+		return status;
+	} */
 }

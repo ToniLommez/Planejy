@@ -48,6 +48,8 @@ public class Aplicacao {
         get("/articles/all/", (request, response) -> artigoService.getAll(request, response));
         // Receber todos os profissionais - Profissionais.html
         get("/profissional/all/", (request, response) -> profissionalService.getAll(request, response));
+        // avaliar profissional
+        post("/profissional/avaliar/:tokenUsuario/:nota", (request, response) -> profissionalService.avaliar(request, response));
 
         /* ------------------------ CALENDARIO ------------------------ */
         // Todas as validacoes sao feitas pelo token do usuario

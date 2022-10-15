@@ -56,4 +56,33 @@ public class ProfissionalService {
 		return respostaJSON;
 	}
 
+	/**
+	 * Metodo POST para avaliar a classificacao de um profissional
+	 * 
+	 * Utiliza o metodo profissionalDAO.avaliar()
+	 * 
+	 * @see ProfissionalDAO.java
+	 * @request tokenUsuario
+	 * @request nota
+	 * @response200 avaliado
+	 * @response404 erro encontrado
+	 * @return Mensagem a ser exibida
+	 */
+	/* public Object avaliar(Request request, Response response) {
+		// :tokenUsuario/:nota
+		String tokenUsuario = request.params(":tokenUsuario");
+		int nota = Integer.parseInt(request.params(":nota"));
+
+		boolean result = profissionalDAO.avaliar(tokenUsuario, nota);
+
+		if (result) {
+			response.status(200); // success
+			respostaJSON = "avaliado com sucesso";
+		} else {
+			response.status(404); // 404 Not found
+			respostaJSON = "erro ao avaliar";
+		}
+
+		return respostaJSON;
+	} */
 }
