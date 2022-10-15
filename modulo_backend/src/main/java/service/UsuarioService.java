@@ -224,4 +224,33 @@ public class UsuarioService {
 
 		return respostaJSON;
 	}
+
+	
+	/**
+	 * Metodo POST para atualizar a classificacao de um usuario
+	 * 
+	 * Utiliza o metodo usuarioDAO.addCategoria(tokenUsuario, categorias)
+	 * 
+	 * @see usuarioDAO.java
+	 * @body categorias a serem atualizadas
+	 * @request tokenUsuario
+	 * @response200 atualizado
+	 * @response404 nao atualizado
+	 * @return response
+	 */
+	public Object addCategoria(Request request, Response response) {
+		String tokenUsuario = request.params(":tokenUsuario");
+		String categorias[] = request.body().split(";");
+		boolean result = usuarioDAO.addCategoria(tokenUsuario, categorias);
+
+		if (result) {
+			response.status(200); // success
+			respostaJSON = "categoria atualizada";
+		} else {
+			response.status(404); // success ??
+			respostaJSON = "erro ao atualizar";
+		}
+
+		return respostaJSON;
+	}
 }

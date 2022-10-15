@@ -217,6 +217,11 @@ public class UsuarioDAO extends DAO {
 			st.execute(sql);
 			result += ("\"sucesso\":true } ] }");
 
+			// Cdastro na tabela de classificacao
+			sql = "INSERT INTO planejy.classificacao_usuario (id_usuario) VALUES ((SELECT id FROM planejy.usuario WHERE email = '"
+					+ email + "'))";
+			st.execute(sql);
+
 			// Fim de conexao
 			st.close();
 		} catch (Exception e) {
@@ -383,5 +388,60 @@ public class UsuarioDAO extends DAO {
 			System.err.println(e.getMessage());
 		}
 		return id;
+	}
+
+	/**
+	 * Metodo para incrementar a categoria de um usuario
+	 * 
+	 * O metodo fara o incremento no banco de dados de todas as categorias enviadas
+	 * 
+	 * @print erro se existir
+	 * @param token token de recuperacao de senha
+	 * @param categorias categorias a serem incrementadas
+	 * @return true se bem sucedido
+	 */
+	public boolean addCategoria(String token, String[] categorias) {
+		// False ate se provar o contrario
+		boolean result = false;
+		try {
+			// Recuperacao do ID atraves do token gerado e conexao
+			int id = -1;
+			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String sql = "SELECT id FROM planejy.usuario WHERE token = '" + token + "'";
+			ResultSet rs = st.executeQuery(sql);
+			if (rs.next()) {
+				id = (rs.getInt("id"));
+			} else {
+				id = -1;
+			}
+			// Fim de conexao
+			st.close();
+
+			// Efetivar a atualizacao dos dados
+			if (id != -1) {
+				// Conexao, construcao e execucao
+				Statement stToken = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+						ResultSet.CONCUR_READ_ONLY);
+				String sqlToken = "UPDATE planejy.classificacao_usuario ";
+				for (int i = 0; i < categorias.length; i++) {
+					sqlToken += categorias[i];
+					sqlToken += " = ";
+					sqlToken += categorias[i];
+					sqlToken += " +1";
+					if (i < categorias.length) {
+						sqlToken += ", ";
+					}
+				}
+				sqlToken += " WHERE id = " + id;
+				System.out.printf(sqlToken);
+				stToken.executeQuery(sqlToken);
+				// Fim de conexao
+				stToken.close();
+				result = true;
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		return result;
 	}
 }
