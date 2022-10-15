@@ -43,13 +43,17 @@ public class Aplicacao {
 
         /* ----------------------- RECOMENDACOES ----------------------- */
         // Receber artigo pela chave - Artigos_inside.html
-        get("/articles/:chave", (request, response) -> artigoService.get(request, response));
+        get("/articles/:chave/:tokenUsuario", (request, response) -> artigoService.get(request, response));
         // Receber todos os artigos - Artigos.html
         get("/articles/all/", (request, response) -> artigoService.getAll(request, response));
         // Receber todos os profissionais - Profissionais.html
-        get("/profissional/all/", (request, response) -> profissionalService.getAll(request, response));
-        // avaliar profissional
-        post("/profissional/avaliar/:tokenUsuario/:nota", (request, response) -> profissionalService.avaliar(request, response));
+        get("/profissional/all/:tokenUsuario", (request, response) -> profissionalService.getAll(request, response));
+        // Avaliar profissional
+        post("/profissional/avaliar/:tokenUsuario/:registro_profissional/:nota",
+                (request, response) -> profissionalService.avaliar(request, response));
+        // Recuperar avaliacoes de profissionais
+        get("/profissional/avaliar/:registro_profissional",
+                (request, response) -> profissionalService.getAvaliacao(request, response));
 
         /* ------------------------ CALENDARIO ------------------------ */
         // Todas as validacoes sao feitas pelo token do usuario
@@ -74,10 +78,10 @@ public class Aplicacao {
         post("/usuario/login/:email/:token", (request, response) -> usuarioService.login(request, response));
         // Confirmar se email e' valido, retorna ID caso seja e registra token no BD
         get("/usuario/recuperarSenha/:email/:tokenUsuario",
-        (request, response) -> usuarioService.confirmarEmail(request, response));
+                (request, response) -> usuarioService.confirmarEmail(request, response));
         // Muda a senha atraves do novo token gerado para mudanca de senha
         post("/usuario/recuperarSenha/:tokenUsuario",
-        (request, response) -> usuarioService.mudarSenhaToken(request, response));
+                (request, response) -> usuarioService.mudarSenhaToken(request, response));
         // Excluir um usuario a partir do seu ID e Token
         get("/usuario/Excluir/:token/:id", (request, response) -> usuarioService.delete(request, response));
 

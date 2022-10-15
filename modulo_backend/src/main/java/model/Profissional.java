@@ -22,6 +22,8 @@ public class Profissional {
     private String twitter;
     private String instagram;
     private String linkedin;
+    private double nota;
+    private int notaUsuario;
     private Profissional next;
 
     /**
@@ -37,6 +39,8 @@ public class Profissional {
         this.twitter = "";
         this.instagram = "";
         this.linkedin = "";
+        this.nota = 0;
+        this.notaUsuario = 0;
         this.next = null;
     }
 
@@ -52,9 +56,11 @@ public class Profissional {
      * @param twitter
      * @param instagram
      * @param linkedin
+     * @param nota
+     * @param notaUsuario
      */
     public Profissional(int registro, String nome, String servico, Float preco, String foto, String facebook,
-            String twitter, String instagram, String linkedin) {
+            String twitter, String instagram, String linkedin, double nota, int notaUsuario) {
         this.registro = registro;
         this.nome = nome;
         this.servico = servico;
@@ -64,6 +70,8 @@ public class Profissional {
         this.twitter = twitter;
         this.instagram = instagram;
         this.linkedin = linkedin;
+        this.nota = nota;
+        this.notaUsuario = notaUsuario;
         this.next = null;
     }
 
@@ -101,6 +109,14 @@ public class Profissional {
 
     public String getLinkedin() {
         return this.linkedin;
+    }
+
+    public Double getNota() {
+        return this.nota;
+    }
+
+    public int getNotaUsuario() {
+        return this.notaUsuario;
     }
 
     public Profissional getNext() {
@@ -146,10 +162,9 @@ public class Profissional {
             // construcao da string apos empilhamento
             Json += "{ ";
             Json += "\"registro\":" + tmp.registro + ",\"nome\":\"" + tmp.nome + "\",\"servico\":\"" + tmp.servico
-                    + "\",\"preco\":" + tmp.preco
-                    + ",\"foto\":\"" + tmp.foto + "\",\"facebook\":\"" + tmp.facebook + "\",\"twitter\":\""
-                    + tmp.twitter + "\",\"instagram\":\""
-                    + tmp.instagram + "\",\"linkedin\":\"" + tmp.linkedin + "\"";
+                    + "\",\"preco\":" + tmp.preco + ",\"foto\":\"" + tmp.foto + "\",\"facebook\":\"" + tmp.facebook
+                    + "\",\"twitter\":\"" + tmp.twitter + "\",\"instagram\":\"" + tmp.instagram + "\",\"linkedin\":\""
+                    + tmp.linkedin + "\",\"nota\":\"" + tmp.nota + "\",\"notaUsuario\":\"" + tmp.notaUsuario + "\"";
             Json += "}";
             Json += ",";
         }
@@ -179,7 +194,7 @@ public class Profissional {
                     + preco
                     + ",\"foto\":\"" + foto + "\",\"facebook\":\"" + facebook + "\",\"twitter\":\"" + twitter
                     + "\",\"instagram\":"
-                    + instagram + "\",\"linkedin\":\"" + linkedin + "\"";
+                    + instagram + "\",\"linkedin\":\"" + linkedin + "\",\"nota\":\"" + nota + "\",\"notaUsuario\":\"" + notaUsuario + "\"";
             Json += "}";
         }
         return Json;

@@ -26,21 +26,10 @@ public class ArtigoService {
 	public ArtigoService() {
 	}
 
-	/**
-	 * Metodo GET para responder com um JSON contendo o artigos requisitado
-	 * 
-	 * Utiliza o metodo artigoDAO.get(chave)
-	 * 
-	 * @see Artigo.java
-	 * @see ArtigoDAO.java
-	 * @request chave
-	 * @response200 JSON (com objeto)
-	 * @response404 nao encontrado
-	 * @return Json com artigo ou erro
-	 */
 	public Object get(Request request, Response response) {
 		int chave = Integer.parseInt(request.params(":chave"));
-		Artigo artigo = (Artigo) artigoDAO.get(chave);
+		String tokenUsuario = request.params(":tokenUsuario");
+		Artigo artigo = (Artigo) artigoDAO.get(chave, tokenUsuario);
 
 		if (artigo != null) {
 			response.status(200); // success
@@ -56,19 +45,6 @@ public class ArtigoService {
 		return respostaJSON;
 	}
 
-	/**
-	 * Metodo GET para responder com um JSON contendo todos os artigos encontrados
-	 * no Banco de Dados
-	 * 
-	 * Utiliza o metodo artigoDAO.getAll()
-	 * 
-	 * @see Artigo.java
-	 * @see ArtigoDAO.java
-	 * @request vazio
-	 * @response200 JSON (com objeto)
-	 * @response404 nada encontrado
-	 * @return Json com artigos ou erro
-	 */
 	public Object getAll(Request request, Response response) {
 		Artigo artigo = (Artigo) artigoDAO.getAll();
 

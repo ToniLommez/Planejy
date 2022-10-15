@@ -26,21 +26,9 @@ public class ProfissionalService {
 	public ProfissionalService() {
 	}
 
-	/**
-	 * Metodo GET para responder com um JSON contendo todos os profissionais
-	 * encontrados no Banco de Dados
-	 * 
-	 * Utiliza o metodo profissionalDAO.getAll()
-	 * 
-	 * @see Profissional.java
-	 * @see ProfissionalDAO.java
-	 * @request vazio
-	 * @response200 JSON (com objeto)
-	 * @response404 nada encontrado
-	 * @return JSON com profissionais ou Erro
-	 */
 	public Object getAll(Request request, Response response) {
-		Profissional profissional = (Profissional) profissionalDAO.getAll();
+		String tokenUsuario = request.params(":tokenUsuario");
+		Profissional profissional = (Profissional) profissionalDAO.getAll(tokenUsuario);
 
 		if (profissional != null) {
 			response.status(200); // success
@@ -63,17 +51,18 @@ public class ProfissionalService {
 	 * 
 	 * @see ProfissionalDAO.java
 	 * @request tokenUsuario
+	 * @request registro_profissional
 	 * @request nota
 	 * @response200 avaliado
 	 * @response404 erro encontrado
 	 * @return Mensagem a ser exibida
 	 */
-	/* public Object avaliar(Request request, Response response) {
-		// :tokenUsuario/:nota
+	public Object avaliar(Request request, Response response) {
 		String tokenUsuario = request.params(":tokenUsuario");
+		int registro_profissional = Integer.parseInt(request.params(":registro_profissional"));
 		int nota = Integer.parseInt(request.params(":nota"));
 
-		boolean result = profissionalDAO.avaliar(tokenUsuario, nota);
+		boolean result = profissionalDAO.avaliar(tokenUsuario, registro_profissional, nota);
 
 		if (result) {
 			response.status(200); // success
@@ -84,5 +73,26 @@ public class ProfissionalService {
 		}
 
 		return respostaJSON;
-	} */
+	}
+
+	public Object getAvaliacao(Request request, Response response) {
+		int registro_profissional = Integer.parseInt(request.params(":registro_profissional"));
+		double nota = profissionalDAO.getAvaliacao(registro_profissional);
+
+		if (nota > 0) {
+			response.status(200); // success
+			respostaJSON = "";
+			respostaJSON += " { \"Profissional\": [";
+			respostaJSON += " { ";
+			respostaJSON += " \"registro_profissional\": " + registro_profissional + ", ";
+			respostaJSON += " \"nota\": " + nota;
+			respostaJSON += " } ";
+			respostaJSON += " ] }";
+		} else {
+			response.status(404); // 404 Not found
+			respostaJSON = "Profissional não encontrados.";
+		}
+
+		return respostaJSON;
+	}
 }

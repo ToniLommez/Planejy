@@ -23,6 +23,8 @@ public class Artigo {
     private String resumo;
     private String autor;
     private LocalDate dataFabricacao;
+    private double nota;
+    private int notaUsuario;
     private Artigo next;
 
     /**
@@ -37,23 +39,13 @@ public class Artigo {
         this.resumo = "";
         this.autor = "";
         this.dataFabricacao = LocalDate.now();
+        this.nota = 0;
+        this.notaUsuario = 0;
         this.next = null;
     }
 
-    /**
-     * Construtor populado
-     * 
-     * @param chave
-     * @param imagem
-     * @param imagemAlt
-     * @param titulo
-     * @param conteudo
-     * @param resumo
-     * @param autor
-     * @param dataFabricacao
-     */
     public Artigo(int chave, String imagem, String imagemAlt, String titulo, String conteudo, String resumo,
-            String autor, LocalDate dataFabricacao) {
+            String autor, LocalDate dataFabricacao, double nota, int notaUsuario) {
         this.chave = chave;
         this.imagem = imagem;
         this.imagemAlt = imagemAlt;
@@ -62,6 +54,23 @@ public class Artigo {
         this.resumo = resumo;
         this.autor = autor;
         this.dataFabricacao = dataFabricacao;
+        this.nota = nota;
+        this.notaUsuario = notaUsuario;
+        this.next = null;
+    }
+
+    public Artigo(int chave, String imagem, String imagemAlt, String titulo, String conteudo, String resumo,
+            String autor, LocalDate dataFabricacao, double nota) {
+        this.chave = chave;
+        this.imagem = imagem;
+        this.imagemAlt = imagemAlt;
+        this.titulo = titulo;
+        this.conteudo = conteudo;
+        this.resumo = resumo;
+        this.autor = autor;
+        this.dataFabricacao = dataFabricacao;
+        this.nota = nota;
+        this.notaUsuario = 0;
         this.next = null;
     }
 
@@ -95,6 +104,10 @@ public class Artigo {
 
     public LocalDate getDataFabricacao() {
         return this.dataFabricacao;
+    }
+
+    public Double getNota() {
+        return this.nota;
     }
 
     public Artigo getNext() {
@@ -144,7 +157,8 @@ public class Artigo {
                     + "\", \"titulo\":\"" + artigo.titulo + "\", \"conteudo\":\"" + artigo.conteudo
                     + "\", \"resumo\":\""
                     + artigo.resumo
-                    + "\", \"autor\":\"" + artigo.autor + "\", \"dataFabricacao\":\"" + artigo.dataFabricacao + "\"";
+                    + "\", \"autor\":\"" + artigo.autor + "\", \"dataFabricacao\":\"" + artigo.dataFabricacao
+                    + "\", \"nota\":\"" + artigo.nota + "\", \"notaUsuario\":\"" + artigo.notaUsuario + "\"";
             Json += "}";
             Json += ",";
         }
@@ -172,7 +186,8 @@ public class Artigo {
             Json += "{ ";
             Json += "\"chave\":" + chave + ", \"imagem\":\"" + imagem + "\", \"imagemAlt\":\"" + imagemAlt
                     + "\", \"titulo\":\"" + titulo + "\", \"conteudo\":\"" + conteudo + "\", \"resumo\":\"" + resumo
-                    + "\", \"autor\":\"" + autor + "\", \"dataFabricacao\":\"" + dataFabricacao + "\"";
+                    + "\", \"autor\":\"" + autor + "\", \"dataFabricacao\":\"" + dataFabricacao + "\", \"nota\":\""
+                    + nota + "\", \"notaUsuario\":\"" + notaUsuario + "\"";
             Json += "}";
         }
         return Json;

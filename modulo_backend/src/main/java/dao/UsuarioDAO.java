@@ -215,14 +215,15 @@ public class UsuarioDAO extends DAO {
 			sql = "INSERT INTO planejy.usuario (nome, nick, senha, email) VALUES ('" + nome + "', '" + nick + "', '"
 					+ senha + "', '" + email + "')";
 			st.execute(sql);
-			result += ("\"sucesso\":true } ] }");
-
-			// Cdastro na tabela de classificacao
+			
+			// Cadastros subsequentes
+			// Cadastro na tabela de classificacao
 			sql = "INSERT INTO planejy.classificacao_usuario (id_usuario) VALUES ((SELECT id FROM planejy.usuario WHERE email = '"
-					+ email + "'))";
+			+ email + "'))";
 			st.execute(sql);
-
+			
 			// Fim de conexao
+			result += ("\"sucesso\":true } ] }");
 			st.close();
 		} catch (Exception e) {
 			result += ("\"sucesso\":false } ] }");

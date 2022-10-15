@@ -2,6 +2,7 @@ package dao;
 
 import model.Profissional;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
@@ -42,7 +43,7 @@ public class ProfissionalDAO extends DAO {
 	 * @print erro de existir
 	 * @return Topo da Pilha
 	 */
-	public Profissional getAll() {
+	public Profissional getAll(String tokenUsuario) {
 		// Objeto vazio para ser populado
 		Profissional profissional = new Profissional();
 		try {
@@ -55,7 +56,9 @@ public class ProfissionalDAO extends DAO {
 				Profissional p = new Profissional(rs.getInt("registro"), rs.getString("nome"), rs.getString("servico"),
 						rs.getFloat("preco"),
 						rs.getString("foto"), rs.getString("facebook"), rs.getString("twitter"),
-						rs.getString("instagram"), rs.getString("linkedin"));
+						rs.getString("instagram"), rs.getString("linkedin"),
+						getAvaliacao(rs.getInt("registro")),
+						getNotaUsuario(tokenUsuario, rs.getInt("registro")));
 				profissional.add(p);
 			}
 			// Fechar conexao
@@ -72,19 +75,42 @@ public class ProfissionalDAO extends DAO {
 	 * @print erro de existir
 	 * @return sucesso da operacao
 	 */
-	/* public boolean avaliar(String tokenUsuario, int nota) {
+	public boolean avaliar(String tokenUsuario, int registro_profissional, int nota) {
 		// False ate se provar o contrario
 		boolean status = false;
 		try {
-			// Id selecionado atraves do token de validacao
-			String sql = "UPDATE planejy.nota SET titulo = '" + nota.getTitulo() + "', dia = '"
-					+ nota.getDia().toString() + "', descricao = '" + nota.getDescricao() + "', horario = '"
-					+ nota.getHorario().toString() + "', categoria = '" + nota.getCategoria() + "', cor = '"
-					+ nota.getCor() + "' WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '"
-					+ tokenUsuario + "')";
-			// conexao
-			PreparedStatement st = conexao.prepareStatement(sql);
-			st.executeUpdate();
+			// objetos de conexao
+			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String sql;
+			ResultSet rs;
+
+			// Testar se ja existe avaliacao
+			boolean existe = true;
+			sql = "SELECT * FROM planejy.recomendacao_profissional ";
+			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
+			sql += "AND registro_profissional = " + registro_profissional;
+			System.out.printf("1 > " + sql + "\n");
+			rs = st.executeQuery(sql);
+			if (!rs.next()) {
+				existe = false;
+			}
+
+			// se existir UPDATE, se nao INSERT
+			if (existe) {
+				sql = "UPDATE Planejy.Recomendacao_Profissional";
+				sql += "SET avaliacao = " + nota + ", cliques = (cliques + 1) ";
+				sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
+				sql += "AND registro_profissional = " + registro_profissional;
+				System.out.printf("2 > " + sql + "\n");
+			} else {
+				sql = "INSERT INTO Planejy.Recomendacao_Profissional (id_usuario, registro_profissional, cliques, avaliacao)";
+				sql += "VALUES ((SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "'), ";
+				sql += "" + registro_profissional + ", cliques = (cliques + 1), " + nota + ");";
+				System.out.printf("3 > " + sql + "\n");
+			}
+
+			// execucao
+			st.executeUpdate(sql);
 			// fechar conexao
 			st.close();
 			// Deu tudo certo!
@@ -92,8 +118,58 @@ public class ProfissionalDAO extends DAO {
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		}
-		// limpeza da variavel
-		nota = null;
+
 		return status;
-	} */
+	}
+
+	public double getAvaliacao(int registro_profissional) {
+		// Inicializacao de valores
+		int totalNotas = 0;
+		int numNotas = 0;
+		double notaFinal = 0;
+		try {
+			// Conexao
+			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String sql = "SELECT * FROM planejy.Recomendacao_Profissional WHERE registro_profissional = "
+					+ registro_profissional;
+			ResultSet rs = st.executeQuery(sql);
+			// Para cada registro atualizar valores
+			while (rs.next()) {
+				totalNotas += rs.getInt("avaliacao");
+				numNotas++;
+			}
+			// Calcular nota
+			if (numNotas > 0) {
+				notaFinal = totalNotas / numNotas;
+			}
+			// Fechar conexao
+			st.close();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			notaFinal = -1;
+		}
+		return notaFinal;
+	}
+
+	public int getNotaUsuario(String tokenUsuario, int registro_profissional) {
+		// Inicializacao de valores
+		int notaUsuario = 0;
+		try {
+			// Conexao
+			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String sql = "SELECT avaliacao FROM planejy.Recomendacao_Profissional WHERE registro_profissional = "
+					+ registro_profissional + " AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = '"
+					+ tokenUsuario + "') ";
+			ResultSet rs = st.executeQuery(sql);
+			// Para cada registro atualizar valores
+			if (rs.next()) {
+				notaUsuario = rs.getInt("avaliacao");
+			}
+			// Fechar conexao
+			st.close();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		return notaUsuario;
+	}
 }

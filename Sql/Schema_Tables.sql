@@ -79,8 +79,8 @@ CREATE TABLE Planejy.Entrega_Artigo (
     id_usuario    INT,
     chave_artigo  INT,
     cliques       INT        DEFAULT 0,
-    tempo         INTERVAL,
-    avaliacao     SMALLINT,
+    tempo         INT        DEFAULT 0,
+    avaliacao     SMALLINT   DEFAULT 0,
     
     PRIMARY KEY (id_Usuario, chave_Artigo),
 
@@ -133,12 +133,12 @@ CREATE TABLE Planejy.Profissional (
     PRIMARY KEY (registro)
 );
 
-CREATE TABLE Planejy.Recomendação_Profissional (
+CREATE TABLE Planejy.Recomendacao_Profissional (
     id_usuario             INT,
     registro_profissional  INT,
     cliques                INT       DEFAULT 0,
-    tempo                  INTERVAL,
-    avaliacao              SMALLINT,
+    tempo                  INTEGER   DEFAULT 0,
+    avaliacao              SMALLINT  DEFAULT NULL,
     
     PRIMARY KEY (id_usuario, registro_profissional),
 
