@@ -152,7 +152,6 @@ onload = () => {
     }
 
     getNotes();
-
 }
 
 const logout = () => {
@@ -212,7 +211,6 @@ const init = () => {
     $("#btnClear").click(function() {
         $("#form-postit")[0].reset();
     });
-
 }
 
 const addNotes = () => {
@@ -324,6 +322,9 @@ const insertPostit = postit => {
     };
 
     postNotes(novoPostit, 'insert');
+    
+    const categ = foo(novoPostit.categoria);
+    console.log(categ);
 }
 
 const openEventList = () => {
@@ -362,8 +363,8 @@ const trashcanFunc = id => {
     $("#table-events").empty();
 }
 
+const code = ['f', '4', '4', '3', '6', 'f'];
 let bufferArray = [];
-let code = ['f', '4', '4', '3', '6', 'f'];
 
 window.addEventListener('keyup', e => {
     const key = e.key.toLowerCase();

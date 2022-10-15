@@ -1,0 +1,21 @@
+const foo = strs => {
+    if(strs.length === 0) return;
+    
+    let str = '';
+    
+    for(let i = 0; i < strs.length - 1; i++){
+        if(strs[i].includes('!') || strs[i] === 'outros'){
+            str += strs[i].toLowerCase() + ';';
+        }else{
+            str += strs[i].toLowerCase().replace(/ |-/g, '_') + ';';
+        }
+    }
+
+    if(strs[strs.length - 1].includes('!') || strs[strs.length - 1] === 'outros'){
+        str += strs[strs.length - 1].toLowerCase();
+    }else{
+        str += strs[strs.length - 1].toLowerCase().replace(/ |-/g, '_');
+    }
+
+    return str;
+}

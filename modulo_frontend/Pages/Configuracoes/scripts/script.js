@@ -9,10 +9,17 @@ const id_input = document.querySelector('#inputId'),
       btn_save = document.querySelector('#btnSave'),
       btn_delete = document.querySelector('#btnDeletar');
 
+[email_input, name_input, birth_input, gender_input, nick_input].forEach(elem => {
+    elem.oninput = e => {
+        if(e.data === ';'){
+            elem.value = elem.value.substring(0, elem.value.length - 1);
+        }
+    };
+});
 
 onload = () => {
     if(!user) {
-        location.href = '../../index.html'
+        location.href = '../../index.html';
         return;
     }
 

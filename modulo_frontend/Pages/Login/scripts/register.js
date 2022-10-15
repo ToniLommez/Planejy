@@ -1,16 +1,18 @@
 const back_box = document.querySelector('.back-box'),
-    user_firstname = document.querySelector('#firstname'),
-    user_email = document.querySelector('#email'),
-    user_confirmemail = document.querySelector('#confirmemail'),
-    user_nick = document.querySelector('#nickname'),
-    user_birthday = document.querySelector('#birthDate'),
-    user_passwd = document.querySelector('#passwd'),
-    user_confirmpasswd = document.querySelector('#confirmpasswd'),
-    form_element = document.querySelector('#register'),
-    show_passwd = document.querySelector('#show-passwd'),
-    hide_passwd = document.querySelector('#hide-passwd');
+      user_firstname = document.querySelector('#firstname'),
+      user_email = document.querySelector('#email'),
+      user_confirmemail = document.querySelector('#confirmemail'),
+      user_nick = document.querySelector('#nickname'),
+      user_birthday = document.querySelector('#birthDate'),
+      user_passwd = document.querySelector('#passwd'),
+      user_confirmpasswd = document.querySelector('#confirmpasswd'),
+      form_element = document.querySelector('#register'),
+      show_passwd = document.querySelector('#show-passwd'),
+      hide_passwd = document.querySelector('#hide-passwd');
 
 let btn_submit = document.querySelector('.btn-submit');
+let valid_passwd = true;
+let valid_email = true;
 
 onload = () => {
     sessionStorage.removeItem('user');

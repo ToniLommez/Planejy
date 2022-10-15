@@ -21,7 +21,7 @@ const getArticleId = () => {
     return articleId;
 }
 
-const updatePage = (html) => {
+const updatePage = html => {
     let date = new Date(html.dataFabricacao); //for some reason new Date is parsing the date 1 day behind (no clue why that is)
     date.setDate(date.getDate() + 1); //this line adds that one day back
 
