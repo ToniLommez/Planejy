@@ -151,7 +151,6 @@ const data = {
             if (db.data[i].id == info.event.id) {
                 db.data[i].start = formatDate(info.event.start);
                 postNotes(db.data[i], 'update');
-                postCateg([db.data[i].categoria]);
             }
         }
     }
