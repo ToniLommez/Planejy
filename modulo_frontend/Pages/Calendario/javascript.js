@@ -36,7 +36,7 @@ const postCateg = categories => {
         }
     }
 
-    if(categories.length === 0) return;
+    if(categories.length === 0) return; 
 
     let xhr = new XMLHttpRequest();
     xhr.open('POST', `http://localhost:5678/categoria/add/${user.token}`, true);
