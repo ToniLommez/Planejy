@@ -31,7 +31,8 @@ const formatDate = date => {
 
 const postCateg = categories => {
     for(let i = 0; i < categories.length; i++){
-        if(categories[i].includes('!') || categories[i] === 'outros'){
+        if(categories[i].includes('!') || categories[i] === 'Outros'){
+            console.log(categories[i])
             categories.splice(i--, 1);
         }
     }
