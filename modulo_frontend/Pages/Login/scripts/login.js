@@ -1,5 +1,7 @@
 const email = document.getElementById('email');
 const passwd = document.getElementById('passwd');
+const show_passwd = document.querySelector('#show-passwd');
+const hide_passwd = document.querySelector('#hide-passwd');
 
 onload = () => {
     sessionStorage.removeItem('user');
@@ -17,6 +19,20 @@ document.getElementById('btn_submit').onclick = () => {
         postUser(email.value, passwd.value);
     }
 }
+
+show_passwd.addEventListener('click', e => {
+    passwd.setAttribute('type', 'text');
+    show_passwd.style.display = 'none';
+    hide_passwd.style.display = 'block';
+    e.preventDefault();
+});
+
+hide_passwd.addEventListener('click', e => {
+    passwd.setAttribute('type', 'password');
+    show_passwd.style.display = 'block';
+    hide_passwd.style.display = 'none';
+    e.preventDefault();
+});
 
 const generateToken = n => {
     const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
