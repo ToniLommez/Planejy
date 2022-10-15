@@ -422,7 +422,7 @@ public class UsuarioDAO extends DAO {
 				// Conexao, construcao e execucao
 				Statement stToken = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 						ResultSet.CONCUR_READ_ONLY);
-				String sqlToken = "UPDATE planejy.classificacao_usuario ";
+				String sqlToken = "UPDATE planejy.classificacao_usuario SET ";
 				for (int i = 0; i < categorias.length; i++) {
 					sqlToken += categorias[i];
 					sqlToken += " = ";
@@ -432,7 +432,7 @@ public class UsuarioDAO extends DAO {
 						sqlToken += ", ";
 					}
 				}
-				sqlToken += " WHERE id = " + id;
+				sqlToken += " WHERE id_usuario = " + id;
 				System.out.printf(sqlToken);
 				stToken.executeQuery(sqlToken);
 				// Fim de conexao
