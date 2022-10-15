@@ -216,7 +216,7 @@ public class UsuarioDAO extends DAO {
 					+ senha + "', '" + email + "')";
 			st.execute(sql);
 			result += ("\"sucesso\":true } ] }");
-			
+
 			// Cdastro na tabela de classificacao
 			sql = "INSERT INTO planejy.classificacao_usuario (id_usuario) VALUES ((SELECT id FROM planejy.usuario WHERE email = '"
 					+ email + "'))";
@@ -390,6 +390,16 @@ public class UsuarioDAO extends DAO {
 		return id;
 	}
 
+	/**
+	 * Metodo para incrementar a categoria de um usuario
+	 * 
+	 * O metodo fara o incremento no banco de dados de todas as categorias enviadas
+	 * 
+	 * @print erro se existir
+	 * @param token token de recuperacao de senha
+	 * @param categorias categorias a serem incrementadas
+	 * @return true se bem sucedido
+	 */
 	public boolean addCategoria(String token, String[] categorias) {
 		// False ate se provar o contrario
 		boolean result = false;
