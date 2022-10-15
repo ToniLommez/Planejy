@@ -29,6 +29,17 @@ const formatDate = date => {
     return [year, month, day].join('-');
 }
 
+const postCateg = categories => {
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', `http://localhost:5678/categoria/add/${user.token}`, true);
+
+    xhr.onerror = () => {/* do nothing */}
+
+    xhr.onload = () => {/* do nothing as well*/}
+
+    xhr.send(foo(categories));
+}
+
 const noteToString = note => {
     return `${user.id};${note.titulo};${note.dia};${note.descricao};${note.horario};${note.categoria};${note.cor}`;
 }
@@ -140,6 +151,7 @@ const data = {
             if (db.data[i].id == info.event.id) {
                 db.data[i].start = formatDate(info.event.start);
                 postNotes(db.data[i], 'update');
+                postCateg([db.data[i].categoria]);
             }
         }
     }
@@ -283,6 +295,7 @@ const updateNotes = note => {
             noteMenu.style.display = 'none';
 
             postNotes(db.data[index], 'update');
+            postCateg([db.data[index].categoria]);
             noteMenu.style.display = 'none';
             db = { data: [] };
             getNotes();
@@ -322,9 +335,7 @@ const insertPostit = postit => {
     };
 
     postNotes(novoPostit, 'insert');
-    
-    const categ = foo(novoPostit.categoria);
-    console.log(categ);
+    postCateg([novoPostit.categoria]);
 }
 
 const openEventList = () => {

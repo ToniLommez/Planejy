@@ -428,7 +428,7 @@ public class UsuarioDAO extends DAO {
 					sqlToken += " = ";
 					sqlToken += categorias[i];
 					sqlToken += " +1";
-					if (i < categorias.length) {
+					if (i < categorias.length - 1) {
 						sqlToken += ", ";
 					}
 				}
