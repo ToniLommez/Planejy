@@ -30,6 +30,14 @@ const formatDate = date => {
 }
 
 const postCateg = categories => {
+    for(let i = 0; i < categories.length; i++){
+        if(categories[i].includes('!') || categories[i] === 'outros'){
+            categories.splice(i--, 1);
+        }
+    }
+
+    if(categories.length === 0) return;
+
     let xhr = new XMLHttpRequest();
     xhr.open('POST', `http://localhost:5678/categoria/add/${user.token}`, true);
 
