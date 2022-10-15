@@ -61,8 +61,7 @@ public class Aplicacao {
         get("/nota/delete/:tokenUsuario/:chave", (request, response) -> notaService.delete(request, response));
 
         /* ------------------------- USUARIO ------------------------- */
-        // Registrar usuario, senha e enviados pelo body e em seguida criptografada em
-        // md5
+        // Registrar usuario, senha e' enviados pelo body e criptografada em md5
         post("/usuario/registrar/:nome/:nick/:email", (request, response) -> usuarioService.insert(request, response));
         // Atualizar dados do usuario, dados sao enviados pelo body (nao atualiza senha)
         post("/usuario/Atualizar/:token/:id", (request, response) -> usuarioService.update(request, response));
