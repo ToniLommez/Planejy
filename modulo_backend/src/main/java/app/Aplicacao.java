@@ -79,5 +79,9 @@ public class Aplicacao {
         (request, response) -> usuarioService.mudarSenhaToken(request, response));
         // Excluir um usuario a partir do seu ID e Token
         get("/usuario/Excluir/:token/:id", (request, response) -> usuarioService.delete(request, response));
+
+        /* ---------------------- CLASSIFICACAO ---------------------- */
+        // Atualizar categoria do usuario
+        post("/categoria/add/:tokenUsuario", (request, response) -> usuarioService.addCategoria(request, response));
     }
 }

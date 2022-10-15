@@ -14,10 +14,17 @@ CREATE TABLE Planejy.Usuario (
 );
 
 CREATE TABLE Planejy.Classificacao_Usuario (
-    id_usuario     INT,
-    classificacao  VARCHAR(40),
-    
-    PRIMARY KEY (id_usuario, classificacao),
+    id_usuario           INTEGER,
+    trabalho             INTEGER DEFAULT 0, 
+    estudo               INTEGER DEFAULT 0, 
+    faculdade            INTEGER DEFAULT 0, 
+    curso                INTEGER DEFAULT 0, 
+    vida_noturna         INTEGER DEFAULT 0, 
+    descanso             INTEGER DEFAULT 0, 
+    dia_a_dia            INTEGER DEFAULT 0, 
+    social               INTEGER DEFAULT 0, 
+    social_profissional  INTEGER DEFAULT 0, 
+    saude                INTEGER DEFAULT 0, 
 
     FOREIGN KEY (id_usuario)
     REFERENCES Planejy.Usuario (id)
