@@ -23,6 +23,7 @@ public class Profissional {
     private String instagram;
     private String linkedin;
     private double nota;
+    private int numNotas;
     private int notaUsuario;
     private Profissional next;
 
@@ -40,6 +41,7 @@ public class Profissional {
         this.instagram = "";
         this.linkedin = "";
         this.nota = 0;
+        this.numNotas = 0;
         this.notaUsuario = 0;
         this.next = null;
     }
@@ -60,7 +62,7 @@ public class Profissional {
      * @param notaUsuario
      */
     public Profissional(int registro, String nome, String servico, Float preco, String foto, String facebook,
-            String twitter, String instagram, String linkedin, double nota, int notaUsuario) {
+            String twitter, String instagram, String linkedin, double nota, int numNotas, int notaUsuario) {
         this.registro = registro;
         this.nome = nome;
         this.servico = servico;
@@ -71,6 +73,7 @@ public class Profissional {
         this.instagram = instagram;
         this.linkedin = linkedin;
         this.nota = nota;
+        this.numNotas = numNotas;
         this.notaUsuario = notaUsuario;
         this.next = null;
     }
@@ -113,6 +116,10 @@ public class Profissional {
 
     public Double getNota() {
         return this.nota;
+    }
+
+    public int getNumNotas() {
+        return this.numNotas;
     }
 
     public int getNotaUsuario() {
@@ -164,7 +171,8 @@ public class Profissional {
             Json += "\"registro\":" + tmp.registro + ",\"nome\":\"" + tmp.nome + "\",\"servico\":\"" + tmp.servico
                     + "\",\"preco\":" + tmp.preco + ",\"foto\":\"" + tmp.foto + "\",\"facebook\":\"" + tmp.facebook
                     + "\",\"twitter\":\"" + tmp.twitter + "\",\"instagram\":\"" + tmp.instagram + "\",\"linkedin\":\""
-                    + tmp.linkedin + "\",\"nota\":\"" + tmp.nota + "\",\"notaUsuario\":\"" + tmp.notaUsuario + "\"";
+                    + tmp.linkedin + "\",\"nota\":\"" + tmp.nota + "\",\"notaUsuario\":\"" + tmp.notaUsuario
+                    + "\",\"numNotas\":\"" + tmp.numNotas + "\"";
             Json += "}";
             Json += ",";
         }
@@ -191,10 +199,9 @@ public class Profissional {
         } else {
             Json += "{ ";
             Json += "\"registro\":" + registro + ",\"nome\":\"" + nome + "\",\"servico\":\"" + servico + "\",\"preco\":"
-                    + preco
-                    + ",\"foto\":\"" + foto + "\",\"facebook\":\"" + facebook + "\",\"twitter\":\"" + twitter
-                    + "\",\"instagram\":"
-                    + instagram + "\",\"linkedin\":\"" + linkedin + "\",\"nota\":\"" + nota + "\",\"notaUsuario\":\"" + notaUsuario + "\"";
+                    + preco + ",\"foto\":\"" + foto + "\",\"facebook\":\"" + facebook + "\",\"twitter\":\"" + twitter
+                    + "\",\"instagram\":" + instagram + "\",\"linkedin\":\"" + linkedin + "\",\"nota\":\"" + nota
+                    + "\",\"notaUsuario\":\"" + notaUsuario + "\",\"numNotas\":\"" + numNotas + "\"";
             Json += "}";
         }
         return Json;

@@ -53,11 +53,11 @@ public class ProfissionalDAO extends DAO {
 			ResultSet rs = st.executeQuery(sql);
 			// Para cada registro adicionar a pilha
 			while (rs.next()) {
+				double notas[] = getAvaliacao(rs.getInt("registro"));
 				Profissional p = new Profissional(rs.getInt("registro"), rs.getString("nome"), rs.getString("servico"),
-						rs.getFloat("preco"),
-						rs.getString("foto"), rs.getString("facebook"), rs.getString("twitter"),
+						rs.getFloat("preco"), rs.getString("foto"), rs.getString("facebook"), rs.getString("twitter"),
 						rs.getString("instagram"), rs.getString("linkedin"),
-						getAvaliacao(rs.getInt("registro")),
+						notas[0], (int) notas[1],
 						getNotaUsuario(tokenUsuario, rs.getInt("registro")));
 				profissional.add(p);
 			}
@@ -89,7 +89,6 @@ public class ProfissionalDAO extends DAO {
 			sql = "SELECT * FROM planejy.recomendacao_profissional ";
 			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
 			sql += "AND registro_profissional = " + registro_profissional;
-			System.out.printf("1 > " + sql + "\n");
 			rs = st.executeQuery(sql);
 			if (!rs.next()) {
 				existe = false;
@@ -97,16 +96,14 @@ public class ProfissionalDAO extends DAO {
 
 			// se existir UPDATE, se nao INSERT
 			if (existe) {
-				sql = "UPDATE Planejy.Recomendacao_Profissional";
+				sql = "UPDATE Planejy.Recomendacao_Profissional ";
 				sql += "SET avaliacao = " + nota + ", cliques = (cliques + 1) ";
 				sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
 				sql += "AND registro_profissional = " + registro_profissional;
-				System.out.printf("2 > " + sql + "\n");
 			} else {
-				sql = "INSERT INTO Planejy.Recomendacao_Profissional (id_usuario, registro_profissional, cliques, avaliacao)";
+				sql = "INSERT INTO Planejy.Recomendacao_Profissional (id_usuario, registro_profissional, cliques, avaliacao) ";
 				sql += "VALUES ((SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "'), ";
-				sql += "" + registro_profissional + ", cliques = (cliques + 1), " + nota + ");";
-				System.out.printf("3 > " + sql + "\n");
+				sql += registro_profissional + ", 1, " + nota + ");";
 			}
 
 			// execucao
@@ -122,10 +119,10 @@ public class ProfissionalDAO extends DAO {
 		return status;
 	}
 
-	public double getAvaliacao(int registro_profissional) {
+	public double[] getAvaliacao(int registro_profissional) {
 		// Inicializacao de valores
-		int totalNotas = 0;
-		int numNotas = 0;
+		double totalNotas = 0;
+		double numNotas = 0;
 		double notaFinal = 0;
 		try {
 			// Conexao
@@ -148,7 +145,10 @@ public class ProfissionalDAO extends DAO {
 			System.err.println(e.getMessage());
 			notaFinal = -1;
 		}
-		return notaFinal;
+		double result[] = new double[2];
+		result[0] = notaFinal;
+		result[1] = numNotas;
+		return result;
 	}
 
 	public int getNotaUsuario(String tokenUsuario, int registro_profissional) {

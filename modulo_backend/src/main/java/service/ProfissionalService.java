@@ -77,7 +77,7 @@ public class ProfissionalService {
 
 	public Object getAvaliacao(Request request, Response response) {
 		int registro_profissional = Integer.parseInt(request.params(":registro_profissional"));
-		double nota = profissionalDAO.getAvaliacao(registro_profissional);
+		double nota = profissionalDAO.getAvaliacao(registro_profissional)[0];
 
 		if (nota > 0) {
 			response.status(200); // success
