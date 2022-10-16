@@ -36,7 +36,7 @@ const updatePage = html => {
 const getArticles = () => {
     let xhr = new XMLHttpRequest();
     let id = getArticleId();
-    xhr.open("GET", `http://localhost:5678/articles/${id}`, true);
+    xhr.open("GET", `http://localhost:5678/articles/${id}/${user.token}`, true);
 
     xhr.onload = () => {
         updatePage(JSON.parse(xhr.responseText).Articles[0]);

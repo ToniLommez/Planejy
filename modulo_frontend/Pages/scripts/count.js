@@ -9,7 +9,7 @@ const foo = strs => {
         }
     }
 
-    if(!(strs[strs.length - 1].includes('!') || strs[strs.length - 1] === 'outros')){
+    if(!(strs[strs.length - 1].includes('!') || strs[strs.length - 1] === 'Outros')){
         str += strs[strs.length - 1].toLowerCase().replace(/ |-/g, '_');
     }
 
