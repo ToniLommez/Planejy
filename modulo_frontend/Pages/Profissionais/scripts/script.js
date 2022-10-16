@@ -30,7 +30,7 @@ const getPro = () => {
 
 const loadPro = profissionals => { //to-do: fix when pro doesnt have x social media
     pros = profissionals.Profissional;
-    console.log(pros)
+    // console.log(pros)
     
     let cards = '';
 
