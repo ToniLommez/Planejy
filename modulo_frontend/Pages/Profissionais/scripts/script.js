@@ -49,7 +49,11 @@ const loadPro = profissionals => { //to-do: fix when pro doesnt have x social me
         }
 
         while(j < 5){
-            ratings += `<input class="star" type="radio" name="rating" value="pro-${profissionals.Profissional[i].registro}-${j}" id="pro-${profissionals.Profissional[i].registro}-${j}"><label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}"><img src="images/star0.png" class="img-star"></label>`;
+            if(j < profissionals.Profissional[i].notaUsuario){
+                ratings += `<input class="star" type="radio" name="rating" value="pro-${profissionals.Profissional[i].registro}-${j}" id="pro-${profissionals.Profissional[i].registro}-${j}"><label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}"><img src="images/star1.png" class="img-star starActive clicked"></label>`;
+            }else{
+                ratings += `<input class="star" type="radio" name="rating" value="pro-${profissionals.Profissional[i].registro}-${j}" id="pro-${profissionals.Profissional[i].registro}-${j}"><label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}"><img src="images/star0.png" class="img-star"></label>`;
+            }
             j++;
         }
 
