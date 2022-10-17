@@ -1,5 +1,12 @@
 SELECT * FROM planejy.profissional;
 
+SELECT B.registro, B.nome, B.preco, B.foto, B.facebook, B.twitter, B.instagram, B.linkedin, B.servico, string_agg(A.tipo_usuario, ', ') FROM planejy.tipo_de_usuario_do_profissional AS A
+INNER JOIN planejy.profissional AS B
+ON B.registro = A.registro_profissional
+GROUP BY B.registro
+ORDER BY B.registro
+-- HAVING B.registro = 3
+
 INSERT INTO planejy.profissional (nome, servico, preco, foto, facebook, twitter, instagram, linkedin)
 VALUES ()
 
