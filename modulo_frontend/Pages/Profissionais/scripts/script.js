@@ -30,7 +30,7 @@ const getPro = () => {
 
 const loadPro = profissionals => { //to-do: fix when pro doesnt have x social media
     pros = profissionals.Profissional;
-    console.log(pros)
+    // console.log(pros)
     
     let cards = '';
 
@@ -76,7 +76,7 @@ const loadPro = profissionals => { //to-do: fix when pro doesnt have x social me
                                       <div class="rating" id="pro-id-${profissionals.Profissional[i].registro}">
                                           ${ratings}
                                       </div>
-                                      <p class="small text-muted n_votos">${profissionals.Profissional[i].nota}/5 - ${profissionals.Profissional[i].numNotas} avaliações</p>
+                                      <p id="pro-nota-${profissionals.Profissional[i].registro}" class="small text-muted n_votos">${profissionals.Profissional[i].nota}/5 - ${profissionals.Profissional[i].numNotas} avaliações</p>
                                   </div>
                               </div>
                           </div>

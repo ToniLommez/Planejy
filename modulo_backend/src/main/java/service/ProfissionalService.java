@@ -44,6 +44,25 @@ public class ProfissionalService {
 		return respostaJSON;
 	}
 
+	public Object getNth(Request request, Response response){
+		String tokenUsuario = request.params(":tokenUsuario");
+		int chave = Integer.parseInt(request.params(":chave"));
+		Profissional profissional = (Profissional) profissionalDAO.getNth(tokenUsuario, chave);
+
+		if(profissional != null){
+			response.status(200);
+			respostaJSON = "";
+			respostaJSON += "{ \"Profissional\": [";
+			respostaJSON += profissional.toJson();
+			respostaJSON += " ] }";
+		}else{
+			response.status(404);
+			respostaJSON = "Profissional não encontrado";
+		}
+
+		return respostaJSON;
+	}
+
 	/**
 	 * Metodo POST para avaliar a classificacao de um profissional
 	 * 

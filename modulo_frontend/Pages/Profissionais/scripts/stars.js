@@ -72,8 +72,30 @@ const rate = (proId, rating) => {
     let xhr = new XMLHttpRequest();
     xhr.open('POST', `http://localhost:5678/profissional/avaliar/${user.token}/${proId}/${rating}`, true);
 
-    xhr.onload = () => {/* do nothing */}
-    xhr.onerror = () => {/* do nothing yet again */}
+    xhr.onload = () => {
+        updateRating(proId);
+    }
+
+    xhr.onerror = () => {
+        alert('Ocorreu um erro ao avaliar ;-;');
+    }
 
     xhr.send('');
+}
+
+const updateRating = proId => {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', `http://localhost:5678/profissional/${proId}/${user.token}`);
+
+    xhr.onload = () => {
+        const response = JSON.parse(xhr.responseText).Profissional[0];
+
+        document.querySelector(`#pro-nota-${response.registro}`).innerHTML = `${response.nota}/5 - ${response.numNotas} avaliações`;
+    }
+
+    xhr.onerror = () => {
+        location.reload();
+    }
+
+    xhr.send();
 }

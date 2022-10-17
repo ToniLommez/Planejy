@@ -55,6 +55,8 @@ public class Aplicacao {
         get("/profissional/avaliar/:registro_profissional",
                 (request, response) -> profissionalService.getAvaliacao(request, response));
 
+        get("/profissional/:chave/:tokenUsuario", (request, response) -> profissionalService.getNth(request, response));
+
         /* ------------------------ CALENDARIO ------------------------ */
         // Todas as validacoes sao feitas pelo token do usuario
         // Receber todas as notas, validadas pelo token de usuario

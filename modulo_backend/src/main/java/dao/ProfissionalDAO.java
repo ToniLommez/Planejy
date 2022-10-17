@@ -69,6 +69,33 @@ public class ProfissionalDAO extends DAO {
 		return profissional;
 	}
 
+	public Profissional getNth(String tokenUsuario, int registro){
+		Profissional profissional = new Profissional();
+
+		try{
+			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String sql = "SELECT * FROM planejy.profissional " + 
+			             "WHERE profissional.registro = " + registro;
+			ResultSet rs = st.executeQuery(sql);
+
+			while (rs.next()) {
+				double notas[] = getAvaliacao(rs.getInt("registro"));
+
+				Profissional p = new Profissional(rs.getInt("registro"), rs.getString("nome"), rs.getString("servico"),
+												rs.getFloat("preco"), rs.getString("foto"), rs.getString("facebook"), rs.getString("twitter"),
+												rs.getString("instagram"), rs.getString("linkedin"), notas[0], (int) notas[1], 
+												getNotaUsuario(tokenUsuario, rs.getInt("registro")));
+				profissional.add(p);
+			}
+			
+			st.close();
+		}catch(SQLException e){
+			System.err.println(e.getMessage());
+		}
+
+		return profissional;
+	}
+
 	/**
 	 * Metodo POST para inserir a avaliacao de um profissional no banco de dados
 	 * 
