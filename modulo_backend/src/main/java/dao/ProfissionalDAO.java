@@ -69,39 +69,33 @@ public class ProfissionalDAO extends DAO {
 		return profissional;
 	}
 
-	public Profissional getNth(String tokenUsuario, int registro){
+	public Profissional getNth(String tokenUsuario, int registro) {
 		Profissional profissional = new Profissional();
 
-		try{
+		try {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM planejy.profissional " + 
-			             "WHERE profissional.registro = " + registro;
+			String sql = "SELECT * FROM planejy.profissional " +
+					"WHERE profissional.registro = " + registro;
 			ResultSet rs = st.executeQuery(sql);
 
 			while (rs.next()) {
 				double notas[] = getAvaliacao(rs.getInt("registro"));
 
 				Profissional p = new Profissional(rs.getInt("registro"), rs.getString("nome"), rs.getString("servico"),
-												rs.getFloat("preco"), rs.getString("foto"), rs.getString("facebook"), rs.getString("twitter"),
-												rs.getString("instagram"), rs.getString("linkedin"), notas[0], (int) notas[1], 
-												getNotaUsuario(tokenUsuario, rs.getInt("registro")));
+						rs.getFloat("preco"), rs.getString("foto"), rs.getString("facebook"), rs.getString("twitter"),
+						rs.getString("instagram"), rs.getString("linkedin"), notas[0], (int) notas[1],
+						getNotaUsuario(tokenUsuario, rs.getInt("registro")));
 				profissional.add(p);
 			}
-			
+
 			st.close();
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		}
 
 		return profissional;
 	}
 
-	/**
-	 * Metodo POST para inserir a avaliacao de um profissional no banco de dados
-	 * 
-	 * @print erro de existir
-	 * @return sucesso da operacao
-	 */
 	public boolean avaliar(String tokenUsuario, int registro_profissional, int nota) {
 		// False ate se provar o contrario
 		boolean status = false;
@@ -121,7 +115,7 @@ public class ProfissionalDAO extends DAO {
 				existe = false;
 			}
 
-			// se existir UPDATE, se nao INSERT
+			// Se existir UPDATE, se nao INSERT
 			if (existe) {
 				sql = "UPDATE Planejy.Recomendacao_Profissional ";
 				sql += "SET avaliacao = " + nota + ", cliques = (cliques + 1) ";
@@ -132,17 +126,85 @@ public class ProfissionalDAO extends DAO {
 				sql += "VALUES ((SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "'), ";
 				sql += registro_profissional + ", 1, " + nota + ");";
 			}
-
-			// execucao
+			// Execucao
 			st.executeUpdate(sql);
-			// fechar conexao
+
+			// Fechar conexao
+			st.close();
+			// Deu tudo certo!
+			status = atualizarClassificacaoUsuario(tokenUsuario, registro_profissional);
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+
+		return status;
+	}
+
+	public boolean atualizarClassificacaoUsuario(String tokenUsuario, int registro_profissional) {
+		// False ate se provar o contrario
+		boolean status = false;
+		try {
+			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String sql;
+			ResultSet rs;
+
+			// Recuperar a quantidade de classificacoes do profissional
+			sql = "SELECT count(registro_profissional) FROM planejy.tipo_de_usuario_do_profissional ";
+			sql += "WHERE registro_profissional = " + registro_profissional;
+			System.out.printf(sql + "\n");
+			rs = st.executeQuery(sql);
+			rs.next();
+			int numClassificacoes = rs.getInt("count");
+
+			// Recuperar a classe das classificacoes/* */
+			sql = "SELECT tipo_usuario FROM planejy.tipo_de_usuario_do_profissional ";
+			sql += "WHERE registro_profissional = " + registro_profissional;
+			System.out.printf(sql + "\n");
+			rs = st.executeQuery(sql);
+			String classificacoes[] = new String[numClassificacoes];
+			int i = 0;
+			String tmp;
+			while (rs.next()) {
+				classificacoes[i] = rs.getString("tipo_usuario");
+				tmp = "";
+				for (int j = 0; j < classificacoes[i].length(); j++) {
+					if (classificacoes[i].charAt(j) == '-') {
+						tmp += "_";
+					} else if (classificacoes[i].charAt(j) == ' ') {
+						tmp += "_";
+					} else {
+						tmp += classificacoes[i].charAt(j);
+					}
+				}
+				classificacoes[i] = tmp;
+				i++;
+			}
+
+				
+
+			// Atualizar a classificacao do usuario
+			sql = "UPDATE planejy.classificacao_usuario ";
+			sql += "SET ";
+			for (i = 0; i < numClassificacoes; i++) {
+				sql += classificacoes[i] + " = (" + classificacoes[i] + " + 1)";
+				if (i < (numClassificacoes - 1)) {
+					sql += ", ";
+				} else {
+					sql += " ";
+				}
+			}
+			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
+			System.out.printf(sql + "\n");
+			// Execucao
+			st.executeUpdate(sql);
+
+			// Fechar conexao
 			st.close();
 			// Deu tudo certo!
 			status = true;
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		}
-
 		return status;
 	}
 
