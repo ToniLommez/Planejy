@@ -93,7 +93,7 @@ const updateRating = proId => {
         document.querySelector(`#pro-nota-${response.registro}`).innerHTML = `${response.nota}/5 - ${response.numNotas} avaliações`;
     }
 
-    xhr.onerror = () => {
+    xhr.onerror = () => { 
         location.reload();
     }
 
