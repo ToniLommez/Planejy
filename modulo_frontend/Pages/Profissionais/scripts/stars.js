@@ -31,28 +31,15 @@ const setStarEvents = () => {
             for(let i = 0; i < 5; i++){
                 const img = array[index - starId + i].nextSibling.childNodes[0];
 
-                if(i <= starId){
-                    if(img.classList.contains('clicked')){
-                        img.src = 'images/star1.png';
-                        img.style.opacity = 1;
-                    }else if(img.classList.contains('starActive')){
-                        img.src = 'images/star1.png';
-                        img.style.opacity = .4;
-                    }else{
-                        img.src = 'images/star0.png';
-                        img.style.opacity = .4;
-                    }
+                if(img.classList.contains('clicked')){
+                    img.src = 'images/star1.png';
+                    img.style.opacity = 1;
+                }else if(img.classList.contains('starActive')){
+                    img.src = 'images/star1.png';
+                    img.style.opacity = .4;
                 }else{
-                    if(img.classList.contains('clicked')){
-                        img.src = 'images/star1.png';
-                        img.style.opacity = 1;
-                    }else if(img.classList.contains('starActive')){
-                        img.src = 'images/star1.png';
-                        img.style.opacity = .4;
-                    }else{
-                        img.src = 'images/star0.png';
-                        img.style.opacity = .4;
-                    }
+                    img.src = 'images/star0.png';
+                    img.style.opacity = .4;
                 }
             }
         });
