@@ -91,6 +91,23 @@ const updateRating = proId => {
         const response = JSON.parse(xhr.responseText).Profissional[0];
 
         document.querySelector(`#pro-nota-${response.registro}`).innerHTML = `${response.nota}/5 - ${response.numNotas} avaliações`;
+
+        document.querySelectorAll(`*[id^="pro-${proId}"]`).forEach((e, i) => {
+            const img = e.nextSibling.childNodes[0];
+
+            if(i <= +response.notaUsuario - 1){
+                img.src = 'images/star1.png';
+                img.classList.contains('clicked');
+                img.style.opacity = 1;
+            }else if(i <= Math.round(+response.nota) - 1){
+                img.src = 'images/star1.png';
+                img.classList.contains('starActive');
+                img.style.opacity = .4;
+            }else{
+                img.src = 'images/star0.png';
+                img.style.opacity = .4;
+            }
+        });
     }
 
     xhr.onerror = () => { 
