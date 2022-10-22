@@ -17,7 +17,7 @@ h1 {
 }
 
 .premium-shadow {
-    box-shadow: 0 0 15px #9b7b376c;
+    box-shadow: 0 0 15px #9b7b3759;
     animation: glowing 4s infinite;
 }
 
@@ -26,7 +26,7 @@ h1 {
 
 @-webkit-keyframes glowing {
     50% {
-        box-shadow: 0px 0px 20px #e2b728cc;
+        box-shadow: 0px 0px 20px #e2b728b0;
     }
 }
 
@@ -35,7 +35,7 @@ h1 {
 
 @keyframes glowing {
     50% {
-        box-shadow: 0px 0px 20px #e2b728cc;
+        box-shadow: 0px 0px 20px #e2b728ab;
     }
 }
 
