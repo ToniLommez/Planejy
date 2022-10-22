@@ -53,11 +53,12 @@ public class ArtigoDAO extends DAO {
 			ResultSet rs = st.executeQuery(sql);
 			// se algo for retornado, chamar o construtor
 			if (rs.next()) {
+				clique(tokenUsuario, chave);
 				double notas[] = getAvaliacao(rs.getInt("chave"));
 
 				artigo = new Artigo(rs.getInt("chave"), rs.getString("imagem"), rs.getString("imagem_alt"),
 						rs.getString("titulo"), rs.getString("conteudo"), rs.getString("resumo"),
-						rs.getString("autor"), rs.getDate("dia").toLocalDate(), 
+						rs.getString("autor"), rs.getDate("dia").toLocalDate(),
 						notas[0], (int) notas[1],
 						getNotaUsuario(tokenUsuario, rs.getInt("chave")));
 			}
@@ -82,18 +83,19 @@ public class ArtigoDAO extends DAO {
 			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "')";
 			rs = st.executeQuery(sql);
 			rs.next();
-			String nome[] = {"Trabalho", "Estudo", "Faculdade", "Curso", "Vida noturna", "Descanso", "Dia-a-dia", "Social", "Social Profissional", "saude"};
+			String nome[] = { "Trabalho", "Estudo", "Faculdade", "Curso", "Vida noturna", "Descanso", "Dia-a-dia",
+					"Social", "Social Profissional", "saude" };
 			int nota[] = {
-				rs.getInt("trabalho"),
-				rs.getInt("estudo"),
-				rs.getInt("faculdade"),
-				rs.getInt("curso"),
-				rs.getInt("vida_noturna"),
-				rs.getInt("descanso"),
-				rs.getInt("dia_a_dia"),
-				rs.getInt("social"),
-				rs.getInt("social_profissional"),
-				rs.getInt("saude")
+					rs.getInt("trabalho"),
+					rs.getInt("estudo"),
+					rs.getInt("faculdade"),
+					rs.getInt("curso"),
+					rs.getInt("vida_noturna"),
+					rs.getInt("descanso"),
+					rs.getInt("dia_a_dia"),
+					rs.getInt("social"),
+					rs.getInt("social_profissional"),
+					rs.getInt("saude")
 			};
 			Artigo.normalizarNotas(nota, nome);
 
@@ -137,7 +139,7 @@ public class ArtigoDAO extends DAO {
 			// Conexao
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			String sql = "SELECT * FROM planejy.Entrega_Artigo WHERE chave_artigo = "
-					+ chave_artigo;
+					+ chave_artigo + " AND avaliacao IS NOT NULL";
 			ResultSet rs = st.executeQuery(sql);
 			// Para cada registro atualizar valores
 			while (rs.next()) {
@@ -168,7 +170,7 @@ public class ArtigoDAO extends DAO {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			String sql = "SELECT avaliacao FROM planejy.Entrega_Artigo WHERE chave_artigo = "
 					+ chave_artigo + " AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = '"
-					+ tokenUsuario + "') ";
+					+ tokenUsuario + "' AND NOT NULL ) ";
 			ResultSet rs = st.executeQuery(sql);
 			// Para cada registro atualizar valores
 			if (rs.next()) {
@@ -183,6 +185,60 @@ public class ArtigoDAO extends DAO {
 	}
 
 	public boolean avaliar(String tokenUsuario, int chave, int nota) {
+		// False ate se provar o contrario
+		boolean status = false;
+		try {
+			// objetos de conexao
+			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String sql;
+
+			sql = "UPDATE Planejy.Entrega_artigo ";
+			sql += "SET avaliacao = " + nota + ", cliques = (cliques + 1) ";
+			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
+			sql += "AND chave_artigo = " + chave;
+
+			// Execucao
+			st.executeUpdate(sql);
+
+			// Fechar conexao
+			st.close();
+			// Deu tudo certo!
+			status = atualizarClassificacaoUsuario(tokenUsuario, chave);
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+
+		return status;
+	}
+
+	public boolean tempo(String tokenUsuario, int chave) {
+		// False ate se provar o contrario
+		boolean status = false;
+		try {
+			// objetos de conexao
+			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String sql;
+
+			sql = "UPDATE Planejy.Entrega_artigo ";
+			sql += "SET tempo = (tempo + 1) ";
+			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
+			sql += "AND chave_artigo = " + chave;
+
+			// Execucao
+			st.executeUpdate(sql);
+
+			// Fechar conexao
+			st.close();
+			// Deu tudo certo!
+			status = atualizarClassificacaoUsuario(tokenUsuario, chave);
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+
+		return status;
+	}
+
+	public boolean clique(String tokenUsuario, int chave) {
 		// False ate se provar o contrario
 		boolean status = false;
 		try {
@@ -204,14 +260,15 @@ public class ArtigoDAO extends DAO {
 			// Se existir UPDATE, se nao INSERT
 			if (existe) {
 				sql = "UPDATE Planejy.Entrega_artigo ";
-				sql += "SET avaliacao = " + nota + ", cliques = (cliques + 1) ";
+				sql += "SET cliques = (cliques + 1) ";
 				sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
 				sql += "AND chave_artigo = " + chave;
 			} else {
-				sql = "INSERT INTO Planejy.Entrega_artigo (id_usuario, chave_artigo, cliques, avaliacao) ";
+				sql = "INSERT INTO Planejy.Entrega_artigo (id_usuario, chave_artigo, cliques) ";
 				sql += "VALUES ((SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "'), ";
-				sql += chave + ", 1, " + nota + ");";
+				sql += chave + ", 1 );";
 			}
+
 			// Execucao
 			st.executeUpdate(sql);
 

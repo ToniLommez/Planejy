@@ -80,4 +80,21 @@ public class ArtigoService {
 
 		return respostaJSON;
 	}
+
+	public Object tempo(Request request, Response response) {
+		String tokenUsuario = request.params(":tokenUsuario");
+		int chave = Integer.parseInt(request.params(":chave"));
+
+		boolean result = artigoDAO.tempo(tokenUsuario, chave);
+
+		if (result) {
+			response.status(200); // success
+			respostaJSON = "Hehe seus dados foram roubados";
+		} else {
+			response.status(404); // 404 Not found
+			respostaJSON = "Nao roubamos seus dados :(";
+		}
+
+		return respostaJSON;
+	}
 }

@@ -51,6 +51,9 @@ public class Aplicacao {
                 // Avaliar artigo
                 post("/articles/avaliar/:tokenUsuario/:chave/:nota",
                                 (request, response) -> artigoService.avaliar(request, response));
+                // Tempo de consumo do artigo
+                post("/articles/tempo/:tokenUsuario/:chave",
+                                (request, response) -> artigoService.tempo(request, response));
                 // Receber todos os profissionais - Profissionais.html
                 get("/profissional/all/:tokenUsuario",
                                 (request, response) -> profissionalService.getAll(request, response));
