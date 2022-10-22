@@ -96,22 +96,24 @@ const updateRating = proId => {
     xhr.onload = () => {
         const response = JSON.parse(xhr.responseText).Profissional[0];
 
-        document.querySelector(`#pro-nota-${response.registro}`).innerHTML = `${response.nota.toFixed(2)}/5 - ${response.numNotas} avaliações`;
+        document.querySelector(`#pro-nota-${response.registro}`).innerHTML = `${Number(response.nota).toFixed(1)}/5 - ${response.numNotas} avaliações`;
 
         document.querySelectorAll(`*[id^="pro-${proId}"]`).forEach((e, i) => {
             const img = e.nextSibling.childNodes[0];
 
             if(i <= +response.notaUsuario - 1){
                 img.src = 'images/star1.png';
-                img.classList.contains('clicked');
+                img.classList.add('clicked');
                 img.style.opacity = 1;
             }else if(i <= Math.round(+response.nota) - 1){
                 img.src = 'images/star1.png';
-                img.classList.contains('starActive');
+                img.classList.add('starActive');
                 img.style.opacity = .4;
             }else{
                 img.src = 'images/star0.png';
                 img.style.opacity = .4;
+                img.classList.remove('starActive');
+                img.classList.remove('clicked');
             }
         });
     }
