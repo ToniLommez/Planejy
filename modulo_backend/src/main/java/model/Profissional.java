@@ -338,13 +338,19 @@ public class Profissional {
         Random gerador = new Random();
         long seed = (long) array[8].registro;
         gerador.setSeed(seed);
-        int numeroDePremiums = gerador.nextInt() % 3;
+        int numeroDePremiums = gerador.nextInt(3);
+        System.out.printf("numero de premiums = %d\n", numeroDePremiums);
         int posicaoPremium[] = new int[numeroDePremiums];
         for (int i = 0; i < numeroDePremiums; i++) {
-            posicaoPremium[i] = gerador.nextInt() % 3;
+            posicaoPremium[i] = gerador.nextInt(3);
+            System.out.printf("posicao %d = %d\n", i, posicaoPremium[i]);
         }
         for (int i = 0; i < numeroDePremiums; i++) {
             array[posicaoPremium[i]].premium = true;
+        }
+
+        for (int i = 0; i < n; i++) {
+            System.out.printf("Profissional = %s\nPremium = %b\n\n", array[i].nome, array[i].premium);
         }
 
         // Empilhar
