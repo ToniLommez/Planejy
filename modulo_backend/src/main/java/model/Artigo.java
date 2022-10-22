@@ -327,12 +327,6 @@ public class Artigo {
         for (int i = 0; i < n; i++) {
             this.add(array[i]);
         }
-
-        // mostrar no console
-        for (int i = 0; i < n; i++) {
-            System.out.printf("chave = %d\n", array[i].chave);
-            System.out.printf("nota = %f\n\n", array[i].classificacaoFinal);
-        }
     }
 
     /**

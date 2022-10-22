@@ -202,7 +202,7 @@ public class ArtigoDAO extends DAO {
 				sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
 				sql += "AND chave_artigo = " + chave;
 			} else {
-				sql = "INSERT INTO Planejy.Entrega_artigo (id_usuario, chave, cliques, avaliacao) ";
+				sql = "INSERT INTO Planejy.Entrega_artigo (id_usuario, chave_artigo, cliques, avaliacao) ";
 				sql += "VALUES ((SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "'), ";
 				sql += chave + ", 1, " + nota + ");";
 			}
@@ -236,14 +236,14 @@ public class ArtigoDAO extends DAO {
 			int numClassificacoes = rs.getInt("count");
 
 			// Recuperar a classe das classificacoes/* */
-			sql = "SELECT tipo_usuario FROM planejy.tipo_de_usuario_do_artigo ";
+			sql = "SELECT tipo FROM planejy.tipo_de_usuario_do_artigo ";
 			sql += "WHERE chave_artigo = " + chave_artigo;
 			rs = st.executeQuery(sql);
 			String classificacoes[] = new String[numClassificacoes];
 			int i = 0;
 			String tmp;
 			while (rs.next()) {
-				classificacoes[i] = rs.getString("tipo_usuario");
+				classificacoes[i] = rs.getString("tipo");
 				tmp = "";
 				for (int j = 0; j < classificacoes[i].length(); j++) {
 					if (classificacoes[i].charAt(j) == '-') {
