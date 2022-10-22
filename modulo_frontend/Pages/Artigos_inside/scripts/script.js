@@ -16,8 +16,21 @@ const logout = () => {
 }
 
 const viewTime = () => {
-    setInterval(() => {
-        console.log('yo')
+    let times = 0;
+    
+    const id = getArticleId();
+    let xhr = new XMLHttpRequest();
+
+    xhr.onload = () => { console.log(xhr.responseText); }
+
+    xhr.onerror = () => { console.log(xhr.responseText); }
+    
+    const interval = setInterval(() => {
+        xhr.open('POST', `http://localhost:5678/articles/tempo/${user.token}/${id}`, true);
+        xhr.send('');
+        times++;
+
+        if(times === 3) clearInterval(interval);
     }, 5000);
 }
 
