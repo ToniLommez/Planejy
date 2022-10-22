@@ -40,28 +40,45 @@ const loadPro = profissionals => { //to-do: fix when pro doesnt have x social me
         let j = 0;
         while(j < Math.round(profissionals.Profissional[i].nota)){
             if(j < profissionals.Profissional[i].notaUsuario){
-                ratings += `<input class="star" type="radio" name="rating" value="pro-${profissionals.Profissional[i].registro}-${j}" id="pro-${profissionals.Profissional[i].registro}-${j}"><label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}"><img src="images/star1.png" class="img-star starActive clicked"></label>`;
+                ratings += `<input class="star" type="radio" name="rating" 
+                             value="pro-${profissionals.Profissional[i].registro}-${j}" 
+                             id="pro-${profissionals.Profissional[i].registro}-${j}">
+                             <label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}">
+                             <img src="images/star1.png" class="img-star starActive clicked"></label>`;
             }else{
-                ratings += `<input class="star" type="radio" name="rating" value="pro-${profissionals.Profissional[i].registro}-${j}" id="pro-${profissionals.Profissional[i].registro}-${j}"><label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}"><img src="images/star1.png" class="img-star starActive"></label>`;
+                ratings += `<input class="star" type="radio" name="rating" 
+                             value="pro-${profissionals.Profissional[i].registro}-${j}" 
+                             id="pro-${profissionals.Profissional[i].registro}-${j}">
+                             <label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}">
+                             <img src="images/star1.png" class="img-star starActive"></label>`;
             }
             j++;
         }
 
         while(j < 5){
             if(j < profissionals.Profissional[i].notaUsuario){
-                ratings += `<input class="star" type="radio" name="rating" value="pro-${profissionals.Profissional[i].registro}-${j}" id="pro-${profissionals.Profissional[i].registro}-${j}"><label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}"><img src="images/star1.png" class="img-star starActive clicked"></label>`;
+                ratings += `<input class="star" type="radio" name="rating" 
+                             value="pro-${profissionals.Profissional[i].registro}-${j}" 
+                             id="pro-${profissionals.Profissional[i].registro}-${j}">
+                             <label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}">
+                             <img src="images/star1.png" class="img-star starActive clicked"></label>`;
             }else{
-                ratings += `<input class="star" type="radio" name="rating" value="pro-${profissionals.Profissional[i].registro}-${j}" id="pro-${profissionals.Profissional[i].registro}-${j}"><label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}"><img src="images/star0.png" class="img-star"></label>`;
+                ratings += `<input class="star" type="radio" name="rating" 
+                             value="pro-${profissionals.Profissional[i].registro}-${j}" 
+                             id="pro-${profissionals.Profissional[i].registro}-${j}">
+                             <label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}">
+                             <img src="images/star0.png" class="img-star"></label>`;
             }
             j++;
         }
 
-        let categories = profissionals.Profissional[i].servico.split(',').join('<br>');
+        const categories = profissionals.Profissional[i].servico.split(',').join('<br>');
         const rating = Number(profissionals.Profissional[i].nota).toFixed(1);
+        const brilhinho = profissionals.Profissional[i].brilhinho ? 'brilhinho' : '';
 
         cards += `<div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3 pro-margin">
                       <!-- Card-->
-                      <div class="card shadow border-0 rounded">
+                      <div class="card shadow border-0 rounded ${brilhinho}">
                           <div class="card-body p-0">
                               <img src="images/pro-${profissionals.Profissional[i].registro}.jpg" alt="" class="w-100 card-img-top">
                               <div class="p-4">
