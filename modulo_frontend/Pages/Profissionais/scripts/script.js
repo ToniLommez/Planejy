@@ -56,7 +56,7 @@ const loadPro = profissionals => { //to-do: fix when pro doesnt have x social me
             j++;
         }
 
-        const categories = profissionals.Profissional[i].servico.split(',').join('<br>');
+        let categories = profissionals.Profissional[i].servico.split(',').join('<br>');
         const rating = Number(profissionals.Profissional[i].nota).toFixed(1);
 
         cards += `<div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3 pro-margin">
@@ -67,7 +67,7 @@ const loadPro = profissionals => { //to-do: fix when pro doesnt have x social me
                               <div class="p-4">
                                   <h5 class="mb-0 nome">${profissionals.Profissional[i].nome}</h5>
                                   <p class="small text-muted preco">${profissionals.Profissional[i].preco}/h</p>
-                                  <p class="small text-muted area">${categories}</p>
+                                  <p class="small text-muted area">${categories}</p>${categories.indexOf('<br>') === -1 ? '<br>' : ''}
                                   <ul class="social mb-0 list-inline mt-3">
                                       <li class="list-inline-item m-0"><a href="https://${profissionals.Profissional[i].facebook}" class="social-link"><i class="fa fa-facebook-f"></i></a></li>
                                       <li class="list-inline-item m-0"><a href="https://${profissionals.Profissional[i].twitter}" class="social-link"><i class="fa fa-twitter"></i></a></li>
