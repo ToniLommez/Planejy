@@ -100,7 +100,7 @@ public class ArtigoDAO extends DAO {
 			sql += "SELECT A.*, string_agg(B.tipo, ',') AS classificacao ";
 			sql += "FROM planejy.artigo AS A ";
 			sql += "INNER JOIN planejy.tipo_de_usuario_do_artigo AS B ";
-			sql += "ON A.chave = B.chave_artigo";
+			sql += "ON A.chave = B.chave_artigo ";
 			sql += "GROUP BY A.chave ";
 			sql += "ORDER BY A.chave";
 			rs = st.executeQuery(sql);

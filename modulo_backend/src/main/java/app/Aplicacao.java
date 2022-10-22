@@ -43,7 +43,7 @@ public class Aplicacao {
 
                 /* ----------------------- RECOMENDACOES ----------------------- */
                 // Receber artigo pela chave - Artigos_inside.html
-                get("/articles/:chave/:tokenUsuario", (request, response) -> artigoService.get(request, response));
+                get("/articles/receive/:chave/:tokenUsuario", (request, response) -> artigoService.get(request, response));
                 // Receber todos os artigos - Artigos.html
                 get("/articles/all/:tokenUsuario", (request, response) -> artigoService.getAll(request, response));
                 // Avaliar artigo

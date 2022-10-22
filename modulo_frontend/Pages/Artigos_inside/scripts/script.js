@@ -1,7 +1,7 @@
 const user = JSON.parse(sessionStorage.getItem('user'));
 
 onload = () => {
-    if(!user){
+    if (!user) {
         location.href = '../../index.html';
         return;
     }
@@ -44,7 +44,7 @@ const updatePage = html => {
 const getArticles = () => {
     let xhr = new XMLHttpRequest();
     let id = getArticleId();
-    xhr.open("GET", `http://localhost:5678/articles/${id}/${user.token}`, true);
+    xhr.open("GET", `http://localhost:5678/articles/receive/${id}/${user.token}`, true);
 
     xhr.onload = () => {
         updatePage(JSON.parse(xhr.responseText).Articles[0]);
