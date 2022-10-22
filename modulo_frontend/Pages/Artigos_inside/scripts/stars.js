@@ -70,8 +70,7 @@ const rate = rating => {
     xhr.open('POST', `http://localhost:5678/articles/avaliar/${user.token}/${getArticleId()}/${rating}`, true);
 
     xhr.onload = () => {
-        // updateRating(proId);
-        console.log(xhr.responseText);
+        updateRating();
     }
 
     xhr.onerror = () => {
@@ -81,18 +80,18 @@ const rate = rating => {
     xhr.send('');
 }
 
-//to do
-const updateRating = rating => {
+const updateRating = () => {
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', `http://localhost:5678/profissional/${proId}/${user.token}`);
+    xhr.open('GET', `http://localhost:5678/articles/receive/${getArticleId()}/${user.token}`);
 
     xhr.onload = () => {
-        const response = JSON.parse(xhr.responseText).Profissional[0];
+        const response = JSON.parse(xhr.responseText).Articles[0];
+        console.log(response)
 
-        document.querySelector('.n_votos').innerHTML = `${response.nota}/5 - ${response.numNotas} avaliações`;
+        document.querySelector('.n_votos').innerHTML = `${Number(response.nota).toFixed(1)}/5 - ${response.numNotas} avaliações`;
 
-        document.querySelectorAll(`*[id^="pro-${proId}"]`).forEach((e, i) => {
-            const img = e.nextSibling.childNodes[0];
+        document.querySelectorAll('.star').forEach((e, i) => {
+            const img = e.nextSibling.childNodes[1];
 
             if(i <= +response.notaUsuario - 1){
                 img.src = 'images/star1.png';
@@ -142,5 +141,6 @@ const loadStars = article => {
         }
     });
 
+    document.querySelector('.n_votos').innerHTML = `${Number(article.nota).toFixed(1)}/5 - ${article.numNotas} avaliações`;
     setStarEvents();
 }

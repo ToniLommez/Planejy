@@ -42,8 +42,8 @@ const updatePage = html => {
 }
 
 const getArticles = () => {
+    const id = getArticleId();
     let xhr = new XMLHttpRequest();
-    let id = getArticleId();
     xhr.open("GET", `http://localhost:5678/articles/receive/${id}/${user.token}`, true);
 
     xhr.onload = () => {
