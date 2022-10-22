@@ -170,7 +170,7 @@ public class ArtigoDAO extends DAO {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			String sql = "SELECT avaliacao FROM planejy.Entrega_Artigo WHERE chave_artigo = "
 					+ chave_artigo + " AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = '"
-					+ tokenUsuario + "' AND NOT NULL ) ";
+					+ tokenUsuario + "' AND avaliacao is NOT NULL ) ";
 			ResultSet rs = st.executeQuery(sql);
 			// Para cada registro atualizar valores
 			if (rs.next()) {
