@@ -199,65 +199,67 @@ public class Profissional {
             }
         }
 
-        // Normalizando
-        for (int i = 0; i < n; i++) {
-            nota[i] = (int) ((nota[i] / maior) * 100);
-        }
+        if (maior > 0) {
+            // Normalizando
+            for (int i = 0; i < n; i++) {
+                nota[i] = (int) ((nota[i] / maior) * 100);
+            }
 
-        // CountingSort!!!
-        // Array para contar o numero de ocorrencias de cada elemento
-        int[] count = new int[101];
-        int[] ordenado = new int[n];
-        String[] nomeOrd = new String[n];
+            // CountingSort!!!
+            // Array para contar o numero de ocorrencias de cada elemento
+            int[] count = new int[101];
+            int[] ordenado = new int[n];
+            String[] nomeOrd = new String[n];
 
-        // Inicializar cada posicao do array de contagem
-        for (int i = 0; i < count.length; i++) {
-            count[i] = 0;
-        }
+            // Inicializar cada posicao do array de contagem
+            for (int i = 0; i < count.length; i++) {
+                count[i] = 0;
+            }
 
-        // Agora, o count[i] contem o numero de elemento iguais a i
-        for (int i = 0; i < n; i++) {
-            count[nota[i]]++;
-        }
+            // Agora, o count[i] contem o numero de elemento iguais a i
+            for (int i = 0; i < n; i++) {
+                count[nota[i]]++;
+            }
 
-        // Agora, o count[i] contem o numero de elemento menores ou iguais a i
-        for (int i = 1; i < count.length; i++) {
-            count[i] += count[i - 1];
-        }
+            // Agora, o count[i] contem o numero de elemento menores ou iguais a i
+            for (int i = 1; i < count.length; i++) {
+                count[i] += count[i - 1];
+            }
 
-        // Ordenando
-        for (int i = n - 1; i >= 0; i--) {
-            nomeOrd[count[nota[i]] - 1] = nome[i];
-            ordenado[count[nota[i]] - 1] = nota[i];
-            count[nota[i]]--;
-        }
+            // Ordenando
+            for (int i = n - 1; i >= 0; i--) {
+                nomeOrd[count[nota[i]] - 1] = nome[i];
+                ordenado[count[nota[i]] - 1] = nota[i];
+                count[nota[i]]--;
+            }
 
-        // Copiando para o array original
-        for (int i = 0; i < n; i++) {
-            nome[i] = nomeOrd[i];
-            nota[i] = ordenado[i];
-        }
+            // Copiando para o array original
+            for (int i = 0; i < n; i++) {
+                nome[i] = nomeOrd[i];
+                nota[i] = ordenado[i];
+            }
 
-        // Normalizando denovo!
-        int inicio = 0;
-        for (inicio = 0; nota[inicio] < 1;) {
-            inicio++;
-        }
+            // Normalizando denovo!
+            int inicio = 0;
+            for (inicio = 0; nota[inicio] < 1;) {
+                inicio++;
+            }
 
-        for (int i = 1; inicio < n;) {
-            if (inicio < n - 1) {
-                if (nota[inicio] == nota[inicio + 1]) {
-                    nota[inicio] = i;
-                    inicio++;
+            for (int i = 1; inicio < n;) {
+                if (inicio < n - 1) {
+                    if (nota[inicio] == nota[inicio + 1]) {
+                        nota[inicio] = i;
+                        inicio++;
+                    } else {
+                        nota[inicio] = i;
+                        inicio++;
+                        i++;
+                    }
                 } else {
                     nota[inicio] = i;
                     inicio++;
                     i++;
                 }
-            } else {
-                nota[inicio] = i;
-                inicio++;
-                i++;
             }
         }
     }

@@ -72,6 +72,7 @@ public class ProfissionalDAO extends DAO {
 			sql += "GROUP BY A.registro ";
 			sql += "ORDER BY A.registro";
 			rs = st.executeQuery(sql);
+			
 			// Para cada registro adicionar a pilha
 			while (rs.next()) {
 				double notas[] = getAvaliacao(rs.getInt("registro"));
