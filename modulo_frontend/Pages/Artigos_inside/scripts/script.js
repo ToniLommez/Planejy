@@ -21,9 +21,9 @@ const viewTime = () => {
     const id = getArticleId();
     let xhr = new XMLHttpRequest();
 
-    xhr.onload = () => { console.log(xhr.responseText); }
-
-    xhr.onerror = () => { console.log(xhr.responseText); }
+    xhr.onerror = () => { /* do nothing at last */ }
+    
+    xhr.onload = () => { /* do nothing once more */ }
     
     const interval = setInterval(() => {
         xhr.open('POST', `http://localhost:5678/articles/tempo/${user.token}/${id}`, true);
@@ -31,7 +31,7 @@ const viewTime = () => {
         times++;
 
         if(times === 3) clearInterval(interval);
-    }, 5000);
+    }, 180000);
 }
 
 const getArticleId = () => {

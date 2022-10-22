@@ -93,13 +93,11 @@ const updateRating = () => {
         document.querySelectorAll('.star').forEach((e, i) => {
             const img = e.nextSibling.childNodes[1];
 
-            if(i <= +response.notaUsuario - 1){
+            if(img.classList.contains('clicked')){
                 img.src = 'images/star1.png';
-                img.classList.contains('clicked');
                 img.style.opacity = 1;
-            }else if(i <= Math.round(+response.nota) - 1){
+            }else if(img.classList.contains('starActive')){
                 img.src = 'images/star1.png';
-                img.classList.contains('starActive');
                 img.style.opacity = .4;
             }else{
                 img.src = 'images/star0.png';
