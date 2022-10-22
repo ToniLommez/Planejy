@@ -338,10 +338,10 @@ public class Profissional {
         Random gerador = new Random();
         long seed = (long) array[8].registro;
         gerador.setSeed(seed);
-        int numeroDePremiums = gerador.nextInt() % 3;
+        int numeroDePremiums = gerador.nextInt(3);
         int posicaoPremium[] = new int[numeroDePremiums];
         for (int i = 0; i < numeroDePremiums; i++) {
-            posicaoPremium[i] = gerador.nextInt() % 3;
+            posicaoPremium[i] = gerador.nextInt(3);
         }
         for (int i = 0; i < numeroDePremiums; i++) {
             array[posicaoPremium[i]].premium = true;
