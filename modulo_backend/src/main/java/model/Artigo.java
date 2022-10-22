@@ -25,6 +25,8 @@ public class Artigo {
     private LocalDate dataFabricacao;
     private double nota;
     private int notaUsuario;
+    private String classificacao[];
+    private double classificacaoFinal;
     private Artigo next;
 
     /**
@@ -41,6 +43,8 @@ public class Artigo {
         this.dataFabricacao = LocalDate.now();
         this.nota = 0;
         this.notaUsuario = 0;
+        this.classificacao = null;
+        this.classificacaoFinal = 0;
         this.next = null;
     }
 
@@ -60,7 +64,7 @@ public class Artigo {
     }
 
     public Artigo(int chave, String imagem, String imagemAlt, String titulo, String conteudo, String resumo,
-            String autor, LocalDate dataFabricacao, double nota) {
+            String autor, LocalDate dataFabricacao, double nota, String classificacao) {
         this.chave = chave;
         this.imagem = imagem;
         this.imagemAlt = imagemAlt;
@@ -71,6 +75,8 @@ public class Artigo {
         this.dataFabricacao = dataFabricacao;
         this.nota = nota;
         this.notaUsuario = 0;
+        this.classificacao = classificacao.split(",");
+        this.classificacaoFinal = 0;
         this.next = null;
     }
 
@@ -110,6 +116,14 @@ public class Artigo {
         return this.nota;
     }
 
+    public String[] getClassificacao() {
+        return this.classificacao;
+    }
+
+    public double getClassificacaoFinal() {
+        return this.classificacaoFinal;
+    }
+
     public Artigo getNext() {
         return this.next;
     }
@@ -135,6 +149,184 @@ public class Artigo {
     public void add(Artigo novo) {
         novo.next = this.next;
         this.next = novo;
+    }
+
+    public void notaFinal(String nome[], int nota[]) {
+        int n = this.classificacao.length;
+        // Parse para correcao de padrao ortografico
+        for (int i = 0; i < n; i++) {
+            String tmp = "";
+
+            for (int k = 0; k < nome.length; k++) {
+                if (this.classificacao[i].equalsIgnoreCase(nome[k])) {
+                    tmp = String.valueOf(nota[k]);
+                    k = nome.length;
+                }
+            }
+            this.classificacao[i] = tmp;
+        }
+
+        // insertion sort
+        for (int i = 1; i < n; i++) {
+            String tmp = this.classificacao[i];
+            int j = i - 1;
+
+            while ((j >= 0) && (this.classificacao[j].compareTo(tmp) < 0)) {
+                this.classificacao[j + 1] = this.classificacao[j];
+                j--;
+            }
+            this.classificacao[j + 1] = tmp;
+        }
+
+        String tmp = this.classificacao[0] + ".";
+        for (int i = 1; i < n; i++) {
+            tmp += this.classificacao[i];
+        }
+        tmp += "0";
+        this.classificacaoFinal = Double.parseDouble(tmp);
+    }
+
+    public static void normalizarNotas(int nota[], String nome[]) {
+        int n = nota.length;
+
+        // Diminuir a extensao para otimizar a ordenacao
+        float maior = nota[0];
+        for (int i = 1; i < n; i++) {
+            if (nota[i] > maior) {
+                maior = nota[i];
+            }
+        }
+
+        if (maior > 0) {
+            // Normalizando
+            for (int i = 0; i < n; i++) {
+                nota[i] = (int) ((nota[i] / maior) * 100);
+            }
+
+            // CountingSort!!!
+            // Array para contar o numero de ocorrencias de cada elemento
+            int[] count = new int[101];
+            int[] ordenado = new int[n];
+            String[] nomeOrd = new String[n];
+
+            // Inicializar cada posicao do array de contagem
+            for (int i = 0; i < count.length; i++) {
+                count[i] = 0;
+            }
+
+            // Agora, o count[i] contem o numero de elemento iguais a i
+            for (int i = 0; i < n; i++) {
+                count[nota[i]]++;
+            }
+
+            // Agora, o count[i] contem o numero de elemento menores ou iguais a i
+            for (int i = 1; i < count.length; i++) {
+                count[i] += count[i - 1];
+            }
+
+            // Ordenando
+            for (int i = n - 1; i >= 0; i--) {
+                nomeOrd[count[nota[i]] - 1] = nome[i];
+                ordenado[count[nota[i]] - 1] = nota[i];
+                count[nota[i]]--;
+            }
+
+            // Copiando para o array original
+            for (int i = 0; i < n; i++) {
+                nome[i] = nomeOrd[i];
+                nota[i] = ordenado[i];
+            }
+
+            // Normalizando denovo!
+            int inicio = 0;
+            for (inicio = 0; nota[inicio] < 1;) {
+                inicio++;
+            }
+
+            for (int i = 1; inicio < n;) {
+                if (inicio < n - 1) {
+                    if (nota[inicio] == nota[inicio + 1]) {
+                        nota[inicio] = i;
+                        inicio++;
+                    } else {
+                        nota[inicio] = i;
+                        inicio++;
+                        i++;
+                    }
+                } else {
+                    nota[inicio] = i;
+                    inicio++;
+                    i++;
+                }
+            }
+        }
+    }
+
+    public void ordenar() {
+        // Contar o tamanho da pilha
+        int n = 0;
+        Artigo last = this;
+        while (last.hasNext()) {
+            n++;
+            last = last.getNext();
+        }
+
+        // Desempilhar
+        Artigo array[] = new Artigo[n];
+        last = this.next;
+        for (int i = 0; i < n; i++) {
+            array[i] = last;
+            last = last.getNext();
+            array[i].next = null;
+        }
+        this.next = null;
+
+        // Ordenar
+        // Array para contar o numero de ocorrencias de cada elemento
+        int count[] = new int[101];
+        Artigo ordenado[] = new Artigo[n];
+
+        // Inicializar cada posicao do array de contagem
+        for (int i = 0; i < count.length; i++) {
+            count[i] = 0;
+        }
+
+        // Agora, o count[i] contem o numero de elemento iguais a i
+        for (int i = 0; i < n; i++) {
+            count[(int) (array[i].getClassificacaoFinal() * 10)]++;
+        }
+
+        // Agora, o count[i] contem o numero de elemento menores ou iguais a i
+        for (int i = 1; i < count.length; i++) {
+            count[i] += count[i - 1];
+        }
+
+        // Ordenando
+        for (int i = n - 1; i >= 0; i--) {
+            ordenado[count[(int) (array[i].getClassificacaoFinal() * 10)] - 1] = array[i];
+            count[(int) (array[i].getClassificacaoFinal() * 10)]--;
+        }
+
+        // Copiando para o array original
+        for (int i = 0, j = n - 1; i < n; i++, j--) {
+            array[j] = ordenado[i];
+        }
+
+        for (int i = 1; i < n; i++) {
+            Artigo tmp = array[i];
+            int j = i - 1;
+
+            while ((j >= 0) && (array[j].classificacaoFinal < tmp.classificacaoFinal)) {
+                array[j + 1] = array[j];
+                j--;
+            }
+            array[j + 1] = tmp;
+        }
+
+        // Empilhar
+        for (int i = 0; i < n; i++) {
+            this.add(array[i]);
+        }
     }
 
     /**

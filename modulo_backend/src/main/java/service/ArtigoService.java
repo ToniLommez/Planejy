@@ -46,7 +46,8 @@ public class ArtigoService {
 	}
 
 	public Object getAll(Request request, Response response) {
-		Artigo artigo = (Artigo) artigoDAO.getAll();
+		String tokenUsuario = request.params(":tokenUsuario");
+		Artigo artigo = (Artigo) artigoDAO.getAll(tokenUsuario);
 
 		if (artigo != null) {
 			response.status(200); // success

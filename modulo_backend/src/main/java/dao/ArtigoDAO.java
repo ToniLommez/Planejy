@@ -67,21 +67,56 @@ public class ArtigoDAO extends DAO {
 		return artigo;
 	}
 
-	public Artigo getAll() {
+	public Artigo getAll(String tokenUsuario) {
 		Artigo artigo = new Artigo();
 		try {
 			// Conexao
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM planejy.artigo";
-			ResultSet rs = st.executeQuery(sql);
+			ResultSet rs;
+			String sql = "";
+
+			// Criar dicionario para traducao de classificacao do artigo
+			sql += "SELECT * FROM planejy.classificacao_usuario ";
+			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "')";
+			rs = st.executeQuery(sql);
+			rs.next();
+			String nome[] = {"Trabalho", "Estudo", "Faculdade", "Curso", "Vida noturna", "Descanso", "Dia-a-dia", "Social", "Social Profissional", "saude"};
+			int nota[] = {
+				rs.getInt("trabalho"),
+				rs.getInt("estudo"),
+				rs.getInt("faculdade"),
+				rs.getInt("curso"),
+				rs.getInt("vida_noturna"),
+				rs.getInt("descanso"),
+				rs.getInt("dia_a_dia"),
+				rs.getInt("social"),
+				rs.getInt("social_profissional"),
+				rs.getInt("saude")
+			};
+			Artigo.normalizarNotas(nota, nome);
+
+			// Recuperar registros dos profissionais
+			sql = "";
+			sql += "SELECT A.*, string_agg(B.tipo, ',') AS classificacao ";
+			sql += "FROM planejy.artigo AS A ";
+			sql += "INNER JOIN planejy.tipo_de_usuario_do_artigo AS B ";
+			sql += "ON A.chave = B.chave_artigo";
+			sql += "GROUP BY A.chave ";
+			sql += "ORDER BY A.chave";
+			rs = st.executeQuery(sql);
+
 			// Para cada string retornada, adicionar a pilha
 			while (rs.next()) {
 				Artigo p = new Artigo(rs.getInt("chave"), rs.getString("imagem"), rs.getString("imagem_alt"),
 						rs.getString("titulo"), rs.getString("conteudo"), rs.getString("resumo"),
 						rs.getString("autor"), rs.getDate("dia").toLocalDate(),
-						getAvaliacao(rs.getInt("chave")));
+						getAvaliacao(rs.getInt("chave")), rs.getString("classificacao"));
+				p.notaFinal(nome, nota);
 				artigo.add(p);
 			}
+
+			artigo.ordenar();
+
 			// fechar a conexao
 			st.close();
 		} catch (Exception e) {
