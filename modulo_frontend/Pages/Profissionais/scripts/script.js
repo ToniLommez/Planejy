@@ -40,34 +40,18 @@ const loadPro = profissionals => { //to-do: fix when pro doesnt have x social me
         let j = 0;
         while(j < Math.round(profissionals.Profissional[i].nota)){
             if(j < profissionals.Profissional[i].notaUsuario){
-                ratings += `<input class="star" type="radio" name="rating" 
-                             value="pro-${profissionals.Profissional[i].registro}-${j}" 
-                             id="pro-${profissionals.Profissional[i].registro}-${j}">
-                             <label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}">
-                             <img src="images/star1.png" class="img-star starActive clicked"></label>`;
+                ratings += `<input class="star" type="radio" name="rating" value="pro-${profissionals.Profissional[i].registro}-${j}" id="pro-${profissionals.Profissional[i].registro}-${j}"><label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}"><img src="images/star1.png" class="img-star starActive clicked"></label>`;
             }else{
-                ratings += `<input class="star" type="radio" name="rating" 
-                             value="pro-${profissionals.Profissional[i].registro}-${j}" 
-                             id="pro-${profissionals.Profissional[i].registro}-${j}">
-                             <label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}">
-                             <img src="images/star1.png" class="img-star starActive"></label>`;
+                ratings += `<input class="star" type="radio" name="rating" value="pro-${profissionals.Profissional[i].registro}-${j}" id="pro-${profissionals.Profissional[i].registro}-${j}"><label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}"><img src="images/star1.png" class="img-star starActive"></label>`;
             }
             j++;
         }
 
         while(j < 5){
             if(j < profissionals.Profissional[i].notaUsuario){
-                ratings += `<input class="star" type="radio" name="rating" 
-                             value="pro-${profissionals.Profissional[i].registro}-${j}" 
-                             id="pro-${profissionals.Profissional[i].registro}-${j}">
-                             <label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}">
-                             <img src="images/star1.png" class="img-star starActive clicked"></label>`;
+                ratings += `<input class="star" type="radio" name="rating" value="pro-${profissionals.Profissional[i].registro}-${j}" id="pro-${profissionals.Profissional[i].registro}-${j}"><label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}"><img src="images/star1.png" class="img-star starActive clicked"></label>`;
             }else{
-                ratings += `<input class="star" type="radio" name="rating" 
-                             value="pro-${profissionals.Profissional[i].registro}-${j}" 
-                             id="pro-${profissionals.Profissional[i].registro}-${j}">
-                             <label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}">
-                             <img src="images/star0.png" class="img-star"></label>`;
+                ratings += `<input class="star" type="radio" name="rating" value="pro-${profissionals.Profissional[i].registro}-${j}" id="pro-${profissionals.Profissional[i].registro}-${j}"><label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}"><img src="images/star0.png" class="img-star"></label>`;
             }
             j++;
         }
