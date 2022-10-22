@@ -2,6 +2,7 @@ package dao;
 
 import model.Artigo;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
@@ -138,5 +139,112 @@ public class ArtigoDAO extends DAO {
 			System.err.println(e.getMessage());
 		}
 		return notaUsuario;
+	}
+
+	public boolean avaliar(String tokenUsuario, int chave, int nota) {
+		// False ate se provar o contrario
+		boolean status = false;
+		try {
+			// objetos de conexao
+			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String sql;
+			ResultSet rs;
+
+			// Testar se ja existe avaliacao
+			boolean existe = true;
+			sql = "SELECT * FROM Planejy.Entrega_artigo ";
+			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
+			sql += "AND chave_artigo = " + chave;
+			rs = st.executeQuery(sql);
+			if (!rs.next()) {
+				existe = false;
+			}
+
+			// Se existir UPDATE, se nao INSERT
+			if (existe) {
+				sql = "UPDATE Planejy.Entrega_artigo ";
+				sql += "SET avaliacao = " + nota + ", cliques = (cliques + 1) ";
+				sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
+				sql += "AND chave_artigo = " + chave;
+			} else {
+				sql = "INSERT INTO Planejy.Entrega_artigo (id_usuario, chave, cliques, avaliacao) ";
+				sql += "VALUES ((SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "'), ";
+				sql += chave + ", 1, " + nota + ");";
+			}
+			// Execucao
+			st.executeUpdate(sql);
+
+			// Fechar conexao
+			st.close();
+			// Deu tudo certo!
+			status = atualizarClassificacaoUsuario(tokenUsuario, chave);
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+
+		return status;
+	}
+
+	public boolean atualizarClassificacaoUsuario(String tokenUsuario, int chave_artigo) {
+		// False ate se provar o contrario
+		boolean status = false;
+		try {
+			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String sql;
+			ResultSet rs;
+
+			// Recuperar a quantidade de classificacoes do profissional
+			sql = "SELECT count(chave_artigo) FROM planejy.tipo_de_usuario_do_artigo ";
+			sql += "WHERE chave_artigo = " + chave_artigo;
+			rs = st.executeQuery(sql);
+			rs.next();
+			int numClassificacoes = rs.getInt("count");
+
+			// Recuperar a classe das classificacoes/* */
+			sql = "SELECT tipo_usuario FROM planejy.tipo_de_usuario_do_artigo ";
+			sql += "WHERE chave_artigo = " + chave_artigo;
+			rs = st.executeQuery(sql);
+			String classificacoes[] = new String[numClassificacoes];
+			int i = 0;
+			String tmp;
+			while (rs.next()) {
+				classificacoes[i] = rs.getString("tipo_usuario");
+				tmp = "";
+				for (int j = 0; j < classificacoes[i].length(); j++) {
+					if (classificacoes[i].charAt(j) == '-') {
+						tmp += "_";
+					} else if (classificacoes[i].charAt(j) == ' ') {
+						tmp += "_";
+					} else {
+						tmp += classificacoes[i].charAt(j);
+					}
+				}
+				classificacoes[i] = tmp;
+				i++;
+			}
+
+			// Atualizar a classificacao do usuario
+			sql = "UPDATE planejy.classificacao_usuario ";
+			sql += "SET ";
+			for (i = 0; i < numClassificacoes; i++) {
+				sql += classificacoes[i] + " = (" + classificacoes[i] + " + 1)";
+				if (i < (numClassificacoes - 1)) {
+					sql += ", ";
+				} else {
+					sql += " ";
+				}
+			}
+			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
+			// Execucao
+			st.executeUpdate(sql);
+
+			// Fechar conexao
+			st.close();
+			// Deu tudo certo!
+			status = true;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return status;
 	}
 }

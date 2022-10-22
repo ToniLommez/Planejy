@@ -46,6 +46,9 @@ public class Aplicacao {
                 get("/articles/:chave/:tokenUsuario", (request, response) -> artigoService.get(request, response));
                 // Receber todos os artigos - Artigos.html
                 get("/articles/all/", (request, response) -> artigoService.getAll(request, response));
+                // Avaliar artigo
+                post("/articles/avaliar/:tokenUsuario/:chave/:nota",
+                                (request, response) -> artigoService.avaliar(request, response));
                 // Receber todos os profissionais - Profissionais.html
                 get("/profissional/all/:tokenUsuario",
                                 (request, response) -> profissionalService.getAll(request, response));

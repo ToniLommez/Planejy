@@ -61,4 +61,22 @@ public class ArtigoService {
 
 		return respostaJSON;
 	}
+
+	public Object avaliar(Request request, Response response) {
+		String tokenUsuario = request.params(":tokenUsuario");
+		int chave = Integer.parseInt(request.params(":chave"));
+		int nota = Integer.parseInt(request.params(":nota"));
+
+		boolean result = artigoDAO.avaliar(tokenUsuario, chave, nota);
+
+		if (result) {
+			response.status(200); // success
+			respostaJSON = "avaliado com sucesso";
+		} else {
+			response.status(404); // 404 Not found
+			respostaJSON = "erro ao avaliar";
+		}
+
+		return respostaJSON;
+	}
 }
