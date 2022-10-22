@@ -57,6 +57,8 @@ const loadPro = profissionals => { //to-do: fix when pro doesnt have x social me
             j++;
         }
 
+        const rating = Number(profissionals.Profissional[i].nota).toFixed(1);
+
         cards += `<div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3 pro-margin">
                       <!-- Card-->
                       <div class="card shadow border-0 rounded">
@@ -76,7 +78,7 @@ const loadPro = profissionals => { //to-do: fix when pro doesnt have x social me
                                       <div class="rating" id="pro-id-${profissionals.Profissional[i].registro}">
                                           ${ratings}
                                       </div>
-                                      <p id="pro-nota-${profissionals.Profissional[i].registro}" class="small text-muted n_votos">${profissionals.Profissional[i].nota}/5 - ${profissionals.Profissional[i].numNotas} avaliações</p>
+                                      <p id="pro-nota-${profissionals.Profissional[i].registro}" class="small text-muted n_votos">${rating}/5 - ${profissionals.Profissional[i].numNotas} avaliações</p>
                                   </div>
                               </div>
                           </div>

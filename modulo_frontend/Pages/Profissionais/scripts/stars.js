@@ -96,7 +96,7 @@ const updateRating = proId => {
     xhr.onload = () => {
         const response = JSON.parse(xhr.responseText).Profissional[0];
 
-        document.querySelector(`#pro-nota-${response.registro}`).innerHTML = `${response.nota}/5 - ${response.numNotas} avaliações`;
+        document.querySelector(`#pro-nota-${response.registro}`).innerHTML = `${response.nota.toFixed(2)}/5 - ${response.numNotas} avaliações`;
 
         document.querySelectorAll(`*[id^="pro-${proId}"]`).forEach((e, i) => {
             const img = e.nextSibling.childNodes[0];
