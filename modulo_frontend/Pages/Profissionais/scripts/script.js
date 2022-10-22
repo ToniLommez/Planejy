@@ -62,7 +62,7 @@ const loadPro = profissionals => { //to-do: fix when pro doesnt have x social me
         cards += `<div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3 pro-margin">
                       <!-- Card-->
                       <div class="card shadow border-0 rounded">
-                          <div class="card-body p-0 ${profissionals.Profissional[i].brilhinho ? 'premium-shadow' : ''}">
+                          <div class="card-body p-0 ${profissionals.Profissional[i].brilhinho === "true" ? 'premium-shadow' : ''}">
                               <img src="images/pro-${profissionals.Profissional[i].registro}.jpg" alt="" class="w-100 card-img-top">
                               <div class="p-4">
                                   <h5 class="mb-0 nome">${profissionals.Profissional[i].nome}</h5>
