@@ -245,6 +245,18 @@ li a {
 
 /* fim das estrelas */
 
+.cards-box .card{
+    z-index: 999;
+    transition-duration: 0.2s; 
+    transition-property: all; 
+    transition-timing-function: ease;
+}
+
+.cards-box .card:hover{
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
 .nome {
     margin: 0px;
 }
