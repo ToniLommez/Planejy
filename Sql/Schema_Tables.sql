@@ -50,18 +50,6 @@ CREATE TABLE Planejy.Nota (
     ON DELETE CASCADE
 );
 
-CREATE TABLE Planejy.Palavra_Chave_Nota (
-    chave_nota     BIGINT,
-    palavra_chave  VARCHAR(40),
-    
-    PRIMARY KEY (chave_nota, palavra_chave),
-
-    FOREIGN KEY (chave_nota)
-    REFERENCES Planejy.Nota (chave)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE
-);
-
 CREATE TABLE Planejy.Artigo (
     chave       SERIAL,
     imagem      VARCHAR(255)  NOT NULL,
@@ -100,18 +88,6 @@ CREATE TABLE Planejy.Tipo_de_Usuario_do_Artigo (
     tipo          VARCHAR(40),
     
     PRIMARY KEY (chave_artigo, tipo),
-
-    FOREIGN KEY (chave_artigo)
-    REFERENCES Planejy.Artigo (chave)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE
-);
-
-CREATE TABLE Planejy.Tags_Artigo (
-    chave_artigo  INT,
-    tags          VARCHAR(40),
-    
-    PRIMARY KEY (chave_artigo, tags),
 
     FOREIGN KEY (chave_artigo)
     REFERENCES Planejy.Artigo (chave)
