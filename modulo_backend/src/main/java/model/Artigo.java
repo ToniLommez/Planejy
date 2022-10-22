@@ -26,6 +26,7 @@ public class Artigo {
     private double nota;
     private int numNotas;
     private int notaUsuario;
+    private String classificacaoCrua;
     private String classificacao[];
     private double classificacaoFinal;
     private Artigo next;
@@ -46,6 +47,7 @@ public class Artigo {
         this.notaUsuario = 0;
         this.numNotas = 0;
         this.classificacao = null;
+        this.classificacaoCrua = null;
         this.classificacaoFinal = 0;
         this.next = null;
     }
@@ -63,6 +65,9 @@ public class Artigo {
         this.nota = nota;
         this.numNotas = numNotas;
         this.notaUsuario = notaUsuario;
+        this.classificacao = null;
+        this.classificacaoCrua = null;
+        this.classificacaoFinal = 0;
         this.next = null;
     }
 
@@ -79,6 +84,7 @@ public class Artigo {
         this.nota = nota;
         this.numNotas = numNotas;
         this.notaUsuario = 0;
+        this.classificacaoCrua = classificacao;
         this.classificacao = classificacao.split(",");
         this.classificacaoFinal = 0;
         this.next = null;
@@ -126,6 +132,10 @@ public class Artigo {
 
     public String[] getClassificacao() {
         return this.classificacao;
+    }
+
+    public String getClassificacaoCrua() {
+        return this.classificacaoCrua;
     }
 
     public double getClassificacaoFinal() {
@@ -356,7 +366,8 @@ public class Artigo {
                     + artigo.imagemAlt + "\", \"titulo\":\"" + artigo.titulo + "\", \"conteudo\":\"" + artigo.conteudo
                     + "\", \"resumo\":\"" + artigo.resumo + "\", \"autor\":\"" + artigo.autor
                     + "\", \"dataFabricacao\":\"" + artigo.dataFabricacao + "\", \"nota\":\"" + artigo.nota
-                    + "\", \"notaUsuario\":\"" + artigo.notaUsuario + "\", \"numNotas\":\"" + artigo.numNotas + "\"";
+                    + "\", \"notaUsuario\":\"" + artigo.notaUsuario + "\", \"numNotas\":\"" + artigo.numNotas
+                    + "\", \"classificacaoCrua\":\"" + artigo.classificacaoCrua + "\"";
             Json += "}";
             Json += ",";
         }
@@ -385,7 +396,8 @@ public class Artigo {
             Json += "\"chave\":" + chave + ", \"imagem\":\"" + imagem + "\", \"imagemAlt\":\"" + imagemAlt
                     + "\", \"titulo\":\"" + titulo + "\", \"conteudo\":\"" + conteudo + "\", \"resumo\":\"" + resumo
                     + "\", \"autor\":\"" + autor + "\", \"dataFabricacao\":\"" + dataFabricacao + "\", \"nota\":\""
-                    + nota + "\", \"notaUsuario\":\"" + notaUsuario + "\", \"numNotas\":\"" + numNotas + "\"";
+                    + nota + "\", \"notaUsuario\":\"" + notaUsuario + "\", \"numNotas\":\"" + numNotas
+                    + "\", \"classificacaoCrua\":\"" + classificacaoCrua + "\"";
             Json += "}";
         }
         return Json;
