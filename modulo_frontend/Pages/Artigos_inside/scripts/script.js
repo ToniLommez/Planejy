@@ -6,12 +6,19 @@ onload = () => {
         return;
     }
 
+    viewTime();
     getArticles();
 }
 
 const logout = () => {
     sessionStorage.removeItem('user');
     location.href = '../../index.html';
+}
+
+const viewTime = () => {
+    setInterval(() => {
+        console.log('yo')
+    }, 5000);
 }
 
 const getArticleId = () => {
