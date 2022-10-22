@@ -34,33 +34,57 @@ public class ProfissionalDAO extends DAO {
 		close();
 	}
 
-	/**
-	 * Metodo GET para retornar todos os profissionais
-	 * Sera construida uma Pilha Simplismente Encadeada possuindo um TOPO de
-	 * referencia e vazio
-	 * 
-	 * @see Profissional.java
-	 * @print erro de existir
-	 * @return Topo da Pilha
-	 */
 	public Profissional getAll(String tokenUsuario) {
 		// Objeto vazio para ser populado
 		Profissional profissional = new Profissional();
 		try {
 			// Conexao
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM planejy.profissional";
-			ResultSet rs = st.executeQuery(sql);
+			ResultSet rs;
+			String sql = "";
+
+			// Criar dicionario para traducao de classificacao do profissional
+			sql += "SELECT * FROM planejy.classificacao_usuario ";
+			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "')";
+			rs = st.executeQuery(sql);
+			rs.next();
+			String nome[] = {"Trabalho", "Estudo", "Faculdade", "Curso", "Vida noturna", "Descanso", "Dia-a-dia", "Social", "Social Profissional", "saude"};
+			int nota[] = {
+				rs.getInt("trabalho"),
+				rs.getInt("estudo"),
+				rs.getInt("faculdade"),
+				rs.getInt("curso"),
+				rs.getInt("vida_noturna"),
+				rs.getInt("descanso"),
+				rs.getInt("dia_a_dia"),
+				rs.getInt("social"),
+				rs.getInt("social_profissional"),
+				rs.getInt("saude")
+			};
+			Profissional.normalizarNotas(nota, nome);
+
+			// Recuperar registros dos profissionais
+			sql = "";
+			sql += "SELECT A.*, string_agg(B.tipo_usuario, ',') AS classificacao ";
+			sql += "FROM planejy.profissional AS A ";
+			sql += "INNER JOIN planejy.tipo_de_usuario_do_profissional AS B ";
+			sql += "ON A.registro = B.registro_profissional ";
+			sql += "GROUP BY A.registro ";
+			sql += "ORDER BY A.registro";
+			rs = st.executeQuery(sql);
 			// Para cada registro adicionar a pilha
 			while (rs.next()) {
 				double notas[] = getAvaliacao(rs.getInt("registro"));
 				Profissional p = new Profissional(rs.getInt("registro"), rs.getString("nome"), rs.getString("servico"),
 						rs.getFloat("preco"), rs.getString("foto"), rs.getString("facebook"), rs.getString("twitter"),
-						rs.getString("instagram"), rs.getString("linkedin"),
-						notas[0], (int) notas[1],
-						getNotaUsuario(tokenUsuario, rs.getInt("registro")));
+						rs.getString("instagram"), rs.getString("linkedin"), notas[0], (int) notas[1],
+						getNotaUsuario(tokenUsuario, rs.getInt("registro")), rs.getString("classificacao"));
+				p.notaFinal(nome, nota);
 				profissional.add(p);
 			}
+
+			profissional.ordenar();
+
 			// Fechar conexao
 			st.close();
 		} catch (Exception e) {
@@ -74,8 +98,13 @@ public class ProfissionalDAO extends DAO {
 
 		try {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM planejy.profissional " +
-					"WHERE profissional.registro = " + registro;
+			String sql = "";
+			sql += "SELECT A.*, string_agg(B.tipo_usuario, ',') AS classificacao ";
+			sql += "FROM planejy.profissional AS A ";
+			sql += "INNER JOIN planejy.tipo_de_usuario_do_profissional AS B ";
+			sql += "ON A.registro = B.registro_profissional ";
+			sql += "GROUP BY A.registro ";
+			sql += "HAVING A.registro = " + registro;
 			ResultSet rs = st.executeQuery(sql);
 
 			while (rs.next()) {
@@ -84,7 +113,7 @@ public class ProfissionalDAO extends DAO {
 				Profissional p = new Profissional(rs.getInt("registro"), rs.getString("nome"), rs.getString("servico"),
 						rs.getFloat("preco"), rs.getString("foto"), rs.getString("facebook"), rs.getString("twitter"),
 						rs.getString("instagram"), rs.getString("linkedin"), notas[0], (int) notas[1],
-						getNotaUsuario(tokenUsuario, rs.getInt("registro")));
+						getNotaUsuario(tokenUsuario, rs.getInt("registro")), rs.getString("classificacao"));
 				profissional.add(p);
 			}
 
@@ -151,7 +180,6 @@ public class ProfissionalDAO extends DAO {
 			// Recuperar a quantidade de classificacoes do profissional
 			sql = "SELECT count(registro_profissional) FROM planejy.tipo_de_usuario_do_profissional ";
 			sql += "WHERE registro_profissional = " + registro_profissional;
-			System.out.printf(sql + "\n");
 			rs = st.executeQuery(sql);
 			rs.next();
 			int numClassificacoes = rs.getInt("count");
@@ -159,7 +187,6 @@ public class ProfissionalDAO extends DAO {
 			// Recuperar a classe das classificacoes/* */
 			sql = "SELECT tipo_usuario FROM planejy.tipo_de_usuario_do_profissional ";
 			sql += "WHERE registro_profissional = " + registro_profissional;
-			System.out.printf(sql + "\n");
 			rs = st.executeQuery(sql);
 			String classificacoes[] = new String[numClassificacoes];
 			int i = 0;
@@ -180,8 +207,6 @@ public class ProfissionalDAO extends DAO {
 				i++;
 			}
 
-				
-
 			// Atualizar a classificacao do usuario
 			sql = "UPDATE planejy.classificacao_usuario ";
 			sql += "SET ";
@@ -194,7 +219,6 @@ public class ProfissionalDAO extends DAO {
 				}
 			}
 			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
-			System.out.printf(sql + "\n");
 			// Execucao
 			st.executeUpdate(sql);
 
