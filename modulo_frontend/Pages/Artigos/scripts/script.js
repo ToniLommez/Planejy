@@ -25,7 +25,7 @@ function executaPesquisa() {
         alert('Ocorreu um erro ao carregar artigos ;-;');
     }
 
-    xhr.open("GET", "http://localhost:5678/articles/all/", true);
+    xhr.open('GET', `http://localhost:5678/articles/all/${user.token}`, true);
     xhr.send();
 }
 

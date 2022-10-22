@@ -60,18 +60,18 @@ const setStarEvents = () => {
                 }
             }
 
-            // rate(proId, starId + 1);
+            rate(index + 1);
         });
     });
 }
 
-//to do
-const rate = (proId, rating) => {
+const rate = rating => {
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', `http://localhost:5678/profissional/avaliar/${user.token}/${proId}/${rating}`, true);
+    xhr.open('POST', `http://localhost:5678/articles/avaliar/${user.token}/${getArticleId()}/${rating}`, true);
 
     xhr.onload = () => {
-        updateRating(proId);
+        // updateRating(proId);
+        console.log(xhr.responseText);
     }
 
     xhr.onerror = () => {
@@ -82,14 +82,14 @@ const rate = (proId, rating) => {
 }
 
 //to do
-const updateRating = proId => {
+const updateRating = rating => {
     let xhr = new XMLHttpRequest();
     xhr.open('GET', `http://localhost:5678/profissional/${proId}/${user.token}`);
 
     xhr.onload = () => {
         const response = JSON.parse(xhr.responseText).Profissional[0];
 
-        document.querySelector(`#pro-nota-${response.registro}`).innerHTML = `${response.nota}/5 - ${response.numNotas} avaliações`;
+        document.querySelector('.n_votos').innerHTML = `${response.nota}/5 - ${response.numNotas} avaliações`;
 
         document.querySelectorAll(`*[id^="pro-${proId}"]`).forEach((e, i) => {
             const img = e.nextSibling.childNodes[0];
