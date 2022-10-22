@@ -57,3 +57,29 @@ VALUES ('Pedro Cunha', 'Psicologo', '100.00', 'pro-15.jpg', 'www.facebook.com', 
 
 INSERT INTO planejy.profissional (nome, servico, preco, foto, facebook, twitter, instagram, linkedin)
 VALUES ('Igor Oliveira', 'Marketing Digital', '30.00', 'pro-16.jpg', 'www.facebook.com', 'www.twitter.com', 'www.instagram.com', 'www.linkedin.com')
+
+
+INSERT INTO planejy.area_profissional
+(registro_profissional, area)
+VALUES
+(1, 'Professor de Quimica'),
+(1, 'Professor de Fisica'),
+(2, 'Personal Trainer'),
+(3, 'Psicologo'),
+(3, 'Terapeuta Familiar'),
+(4, 'Professora de Ingles'),
+(5, 'Professor de Musica'),
+(6, 'Quiroprata'),
+(7, 'Professor de Calculo'),
+(7, 'Professor de Estatistica'),
+(8, 'Acompanhamento Escolar'),
+(9, 'Baba'),
+(10, 'Professor de Fisica'),
+(10, 'Professor de Calculo'),
+(11, 'Nutricionista'),
+(12, 'Professor de Direito Penal'),
+(12, 'Professor de Direito Civil'),
+(13, 'Profissional de Economia Domestica'),
+(14, 'Personal Assistant'),
+(15, 'Psicologo'),
+(16, 'Marketing Digital')

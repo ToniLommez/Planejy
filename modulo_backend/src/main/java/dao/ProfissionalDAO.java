@@ -65,12 +65,19 @@ public class ProfissionalDAO extends DAO {
 
 			// Recuperar registros dos profissionais
 			sql = "";
-			sql += "SELECT A.*, string_agg(B.tipo_usuario, ',') AS classificacao ";
-			sql += "FROM planejy.profissional AS A ";
-			sql += "INNER JOIN planejy.tipo_de_usuario_do_profissional AS B ";
-			sql += "ON A.registro = B.registro_profissional ";
-			sql += "GROUP BY A.registro ";
-			sql += "ORDER BY A.registro";
+			sql += "SELECT A.*, string_agg(C.area, ',') AS servico ";
+			sql += "FROM ";
+			sql += "(SELECT B.*, string_agg(C.tipo_usuario, ',') AS classificacao ";
+			sql += "FROM planejy.profissional AS B ";
+			sql += "INNER JOIN planejy.tipo_de_usuario_do_profissional AS C ";
+			sql += "ON B.registro = C.registro_profissional ";
+			sql += "GROUP BY B.registro ) AS A ";
+			sql += "INNER JOIN planejy.area_profissional AS C ";
+			sql += "ON A.registro = C.registro_profissional ";
+			sql += "GROUP BY ";
+			sql += "A.registro, A.nome, A.preco, A.foto, ";
+			sql += "A.facebook, A.twitter, A.instagram, ";
+			sql += "A.linkedin, A.classificacao ";
 			rs = st.executeQuery(sql);
 			
 			// Para cada registro adicionar a pilha
@@ -100,12 +107,20 @@ public class ProfissionalDAO extends DAO {
 		try {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			String sql = "";
-			sql += "SELECT A.*, string_agg(B.tipo_usuario, ',') AS classificacao ";
-			sql += "FROM planejy.profissional AS A ";
-			sql += "INNER JOIN planejy.tipo_de_usuario_do_profissional AS B ";
-			sql += "ON A.registro = B.registro_profissional ";
-			sql += "GROUP BY A.registro ";
-			sql += "HAVING A.registro = " + registro;
+			sql += "SELECT A.*, string_agg(C.area, ',') AS servico ";
+			sql += "FROM ";
+			sql += "(SELECT B.*, string_agg(C.tipo_usuario, ',') AS classificacao ";
+			sql += "FROM planejy.profissional AS B ";
+			sql += "INNER JOIN planejy.tipo_de_usuario_do_profissional AS C ";
+			sql += "ON B.registro = C.registro_profissional ";
+			sql += "GROUP BY B.registro ";
+			sql += "HAVING B.registro = " + registro + ") AS A ";
+			sql += "INNER JOIN planejy.area_profissional AS C ";
+			sql += "ON A.registro = C.registro_profissional ";
+			sql += "GROUP BY ";
+			sql += "A.registro, A.nome, A.preco, A.foto, ";
+			sql += "A.facebook, A.twitter, A.instagram, ";
+			sql += "A.linkedin, A.classificacao ";
 			ResultSet rs = st.executeQuery(sql);
 
 			while (rs.next()) {

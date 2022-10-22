@@ -41,7 +41,7 @@ public class Aplicacao {
                         response.header("Access-Control-Allow-Methods", "GET, POST");
                 });
 
-                /* ----------------------- RECOMENDACOES ----------------------- */
+                /* -------------------------- ARTIGOS ------------------------- */
                 // Receber artigo pela chave - Artigos_inside.html
                 get("/articles/receive/:chave/:tokenUsuario",
                                 (request, response) -> artigoService.get(request, response));
@@ -54,6 +54,8 @@ public class Aplicacao {
                 // Tempo de consumo do artigo
                 post("/articles/tempo/:tokenUsuario/:chave",
                                 (request, response) -> artigoService.tempo(request, response));
+                                
+                /* ----------------------- PROFISSIONAIS ---------------------- */
                 // Receber todos os profissionais - Profissionais.html
                 get("/profissional/all/:tokenUsuario",
                                 (request, response) -> profissionalService.getAll(request, response));
