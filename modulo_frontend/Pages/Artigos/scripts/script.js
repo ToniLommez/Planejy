@@ -15,27 +15,29 @@ const logout = () => {
 }
 
 function executaPesquisa() {
-    let xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            // Typical action to be performed when the document is ready:
-            loadArticles(xhttp.responseText);
-        }
-    };
-    xhttp.open("GET", "http://localhost:5678/articles/all/", true);
-    xhttp.send();
+    let xhr = new XMLHttpRequest();
+    
+    xhr.onload = () => {
+        loadArticles(JSON.parse(xhr.responseText));
+    }
+
+    xhr.onerror = () => {
+        alert('Ocorreu um erro ao carregar artigos ;-;');
+    }
+
+    xhr.open("GET", "http://localhost:5678/articles/all/", true);
+    xhr.send();
 }
 
-function loadArticles(teste) {
-    const jsonteste = JSON.parse(teste);
+const loadArticles = response => {
     let tab = document.querySelector('.inner_content');
 
     let articles = '';
-    for (let i = 0; i < jsonteste.Articles.length; i++) {
+    for (let i = 0; i < response.Articles.length; i++) {
         let stars = ``;
 
         let j = 0;
-        while (j < Math.round(jsonteste.Articles[i].rating)) {
+        while (j < Math.round(response.Articles[i].nota)) {
             stars += '<span class="fa fa-lg fa-star yellow"></span>';
             j++;
         }
@@ -50,16 +52,16 @@ function loadArticles(teste) {
                 <div class="card mb-6">
                     <div class="row">
                         <div class="col-auto">
-                            <img src="/Pages/Artigos/images/article-${jsonteste.Articles[i].chave}.png" alt="${jsonteste.Articles[i].imagem_alt}" class="img-fluid rounded-start" id="img_Control" />
+                            <img src="/Pages/Artigos/images/article-${response.Articles[i].chave}.png" alt="${response.Articles[i].imagem_alt}" class="img-fluid rounded-start" id="img_Control" />
                         </div>
                         <div class="col-lg">
                             <div class="card-body">
-                                <h5 class="card-title">${jsonteste.Articles[i].titulo}</h5>
+                                <h5 class="card-title">${response.Articles[i].titulo}</h5>
                                 <p class="card-text">
-                                    ${jsonteste.Articles[i].resumo}
+                                    ${response.Articles[i].resumo}
                                 </p>
                                 <form action="../Artigos_inside/Artigos_inside.html">
-                                    <input type="hidden" name="article_id" value="${jsonteste.Articles[i].chave}">
+                                    <input type="hidden" name="article_id" value="${response.Articles[i].chave}">
                                     <input class="btn btn-primary" type="submit" value="Leia Mais">
                                 </form>
                                 <div class="stars">

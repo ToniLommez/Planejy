@@ -218,7 +218,6 @@ li a {
 
 .rating {
     display: flex;
-    flex-direction: row-reverse;
     justify-content: left;
     margin-top: -10px;
 }
@@ -244,18 +243,18 @@ li a {
     opacity: 0;
 }
 
-.rating>label:hover:before,
+/* .rating>label:hover:before,
 .rating>label:hover~label:before {
     opacity: 1 !important;
-}
+} */
 
-.rating>input:checked~label:before {
+/* .rating>input:checked~label:before {
     opacity: 1;
 }
 
 .rating:hover>input:checked~label:before {
     opacity: 0.4;
-}
+} */
 
 .n_votos {
     text-align: left;
