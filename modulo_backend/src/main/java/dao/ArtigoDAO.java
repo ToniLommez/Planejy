@@ -53,10 +53,12 @@ public class ArtigoDAO extends DAO {
 			ResultSet rs = st.executeQuery(sql);
 			// se algo for retornado, chamar o construtor
 			if (rs.next()) {
+				double notas[] = getAvaliacao(rs.getInt("chave"));
+
 				artigo = new Artigo(rs.getInt("chave"), rs.getString("imagem"), rs.getString("imagem_alt"),
 						rs.getString("titulo"), rs.getString("conteudo"), rs.getString("resumo"),
 						rs.getString("autor"), rs.getDate("dia").toLocalDate(), 
-						getAvaliacao(rs.getInt("chave")),
+						notas[0], (int) notas[1],
 						getNotaUsuario(tokenUsuario, rs.getInt("chave")));
 			}
 			// fechar a conexao
@@ -107,10 +109,11 @@ public class ArtigoDAO extends DAO {
 
 			// Para cada string retornada, adicionar a pilha
 			while (rs.next()) {
+				double notas[] = getAvaliacao(rs.getInt("chave"));
 				Artigo p = new Artigo(rs.getInt("chave"), rs.getString("imagem"), rs.getString("imagem_alt"),
 						rs.getString("titulo"), rs.getString("conteudo"), rs.getString("resumo"),
 						rs.getString("autor"), rs.getDate("dia").toLocalDate(),
-						getAvaliacao(rs.getInt("chave")), rs.getString("classificacao"));
+						notas[0], (int) notas[1], rs.getString("classificacao"));
 				p.notaFinal(nome, nota);
 				artigo.add(p);
 			}
@@ -125,10 +128,10 @@ public class ArtigoDAO extends DAO {
 		return artigo;
 	}
 
-	public double getAvaliacao(int chave_artigo) {
+	public double[] getAvaliacao(int chave_artigo) {
 		// Inicializacao de valores
-		int totalNotas = 0;
-		int numNotas = 0;
+		double totalNotas = 0;
+		double numNotas = 0;
 		double notaFinal = 0;
 		try {
 			// Conexao
@@ -151,7 +154,10 @@ public class ArtigoDAO extends DAO {
 			System.err.println(e.getMessage());
 			notaFinal = -1;
 		}
-		return notaFinal;
+		double result[] = new double[2];
+		result[0] = notaFinal;
+		result[1] = numNotas;
+		return result;
 	}
 
 	public int getNotaUsuario(String tokenUsuario, int chave_artigo) {

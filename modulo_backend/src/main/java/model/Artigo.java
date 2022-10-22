@@ -24,6 +24,7 @@ public class Artigo {
     private String autor;
     private LocalDate dataFabricacao;
     private double nota;
+    private int numNotas;
     private int notaUsuario;
     private String classificacao[];
     private double classificacaoFinal;
@@ -43,13 +44,14 @@ public class Artigo {
         this.dataFabricacao = LocalDate.now();
         this.nota = 0;
         this.notaUsuario = 0;
+        this.numNotas = 0;
         this.classificacao = null;
         this.classificacaoFinal = 0;
         this.next = null;
     }
 
     public Artigo(int chave, String imagem, String imagemAlt, String titulo, String conteudo, String resumo,
-            String autor, LocalDate dataFabricacao, double nota, int notaUsuario) {
+            String autor, LocalDate dataFabricacao, double nota, int numNotas, int notaUsuario) {
         this.chave = chave;
         this.imagem = imagem;
         this.imagemAlt = imagemAlt;
@@ -59,12 +61,13 @@ public class Artigo {
         this.autor = autor;
         this.dataFabricacao = dataFabricacao;
         this.nota = nota;
+        this.numNotas = numNotas;
         this.notaUsuario = notaUsuario;
         this.next = null;
     }
 
     public Artigo(int chave, String imagem, String imagemAlt, String titulo, String conteudo, String resumo,
-            String autor, LocalDate dataFabricacao, double nota, String classificacao) {
+            String autor, LocalDate dataFabricacao, double nota, int numNotas, String classificacao) {
         this.chave = chave;
         this.imagem = imagem;
         this.imagemAlt = imagemAlt;
@@ -74,6 +77,7 @@ public class Artigo {
         this.autor = autor;
         this.dataFabricacao = dataFabricacao;
         this.nota = nota;
+        this.numNotas = numNotas;
         this.notaUsuario = 0;
         this.classificacao = classificacao.split(",");
         this.classificacaoFinal = 0;
@@ -102,6 +106,10 @@ public class Artigo {
 
     public String getResumo() {
         return this.resumo;
+    }
+
+    public int getNumNotas() {
+        return this.numNotas;
     }
 
     public String getAutor() {
@@ -345,12 +353,10 @@ public class Artigo {
             // construcao da string apos empilhamento
             Json += "{ ";
             Json += "\"chave\":" + artigo.chave + ", \"imagem\":\"" + artigo.imagem + "\", \"imagemAlt\":\""
-                    + artigo.imagemAlt
-                    + "\", \"titulo\":\"" + artigo.titulo + "\", \"conteudo\":\"" + artigo.conteudo
-                    + "\", \"resumo\":\""
-                    + artigo.resumo
-                    + "\", \"autor\":\"" + artigo.autor + "\", \"dataFabricacao\":\"" + artigo.dataFabricacao
-                    + "\", \"nota\":\"" + artigo.nota + "\", \"notaUsuario\":\"" + artigo.notaUsuario + "\"";
+                    + artigo.imagemAlt + "\", \"titulo\":\"" + artigo.titulo + "\", \"conteudo\":\"" + artigo.conteudo
+                    + "\", \"resumo\":\"" + artigo.resumo + "\", \"autor\":\"" + artigo.autor
+                    + "\", \"dataFabricacao\":\"" + artigo.dataFabricacao + "\", \"nota\":\"" + artigo.nota
+                    + "\", \"notaUsuario\":\"" + artigo.notaUsuario + "\", \"numNotas\":\"" + artigo.numNotas + "\"";
             Json += "}";
             Json += ",";
         }
@@ -379,7 +385,7 @@ public class Artigo {
             Json += "\"chave\":" + chave + ", \"imagem\":\"" + imagem + "\", \"imagemAlt\":\"" + imagemAlt
                     + "\", \"titulo\":\"" + titulo + "\", \"conteudo\":\"" + conteudo + "\", \"resumo\":\"" + resumo
                     + "\", \"autor\":\"" + autor + "\", \"dataFabricacao\":\"" + dataFabricacao + "\", \"nota\":\""
-                    + nota + "\", \"notaUsuario\":\"" + notaUsuario + "\"";
+                    + nota + "\", \"notaUsuario\":\"" + notaUsuario + "\", \"numNotas\":\"" + numNotas + "\"";
             Json += "}";
         }
         return Json;
