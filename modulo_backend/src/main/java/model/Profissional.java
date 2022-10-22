@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Random;
+
 /**
  * Objeto Profissional para ser usado de referencia para populacao do Banco de
  * Dados ou para construcao de JSON para o frontend
@@ -27,6 +29,7 @@ public class Profissional {
     private int notaUsuario;
     private String classificacao[];
     private double classificacaoFinal;
+    private boolean premium;
     private Profissional next;
 
     /**
@@ -47,6 +50,7 @@ public class Profissional {
         this.notaUsuario = 0;
         this.classificacao = null;
         this.classificacaoFinal = 0;
+        this.premium = false;
         this.next = null;
     }
 
@@ -67,6 +71,7 @@ public class Profissional {
         this.notaUsuario = notaUsuario;
         this.classificacao = classificacao.split(",");
         this.classificacaoFinal = 0;
+        this.premium = false;
         this.next = null;
     }
 
@@ -124,6 +129,10 @@ public class Profissional {
 
     public double getClassificacaoFinal() {
         return this.classificacaoFinal;
+    }
+
+    public boolean getPremium() {
+        return this.premium;
     }
 
     public Profissional getNext() {
@@ -325,6 +334,19 @@ public class Profissional {
             array[j + 1] = tmp;
         }
 
+        // Decidir aleatoriamente pelos premiums
+        Random gerador = new Random();
+        long seed = (long) array[8].registro;
+        gerador.setSeed(seed);
+        int numeroDePremiums = gerador.nextInt() % 3;
+        int posicaoPremium[] = new int[numeroDePremiums];
+        for (int i = 0; i < numeroDePremiums; i++) {
+            posicaoPremium[i] = gerador.nextInt() % 3;
+        }
+        for (int i = 0; i < numeroDePremiums; i++) {
+            array[posicaoPremium[i]].premium = true;
+        }
+
         // Empilhar
         for (int i = 0; i < n; i++) {
             this.add(array[i]);
@@ -350,7 +372,7 @@ public class Profissional {
                     + "\",\"preco\":" + tmp.preco + ",\"foto\":\"" + tmp.foto + "\",\"facebook\":\"" + tmp.facebook
                     + "\",\"twitter\":\"" + tmp.twitter + "\",\"instagram\":\"" + tmp.instagram + "\",\"linkedin\":\""
                     + tmp.linkedin + "\",\"nota\":\"" + tmp.nota + "\",\"notaUsuario\":\"" + tmp.notaUsuario
-                    + "\",\"numNotas\":\"" + tmp.numNotas + "\"";
+                    + "\",\"numNotas\":\"" + tmp.numNotas + "\",\"brilhinho\":\"" + tmp.premium + "\"";
             Json += "}";
             Json += ",";
         }
@@ -379,7 +401,8 @@ public class Profissional {
             Json += "\"registro\":" + registro + ",\"nome\":\"" + nome + "\",\"servico\":\"" + servico + "\",\"preco\":"
                     + preco + ",\"foto\":\"" + foto + "\",\"facebook\":\"" + facebook + "\",\"twitter\":\"" + twitter
                     + "\",\"instagram\":" + instagram + "\",\"linkedin\":\"" + linkedin + "\",\"nota\":\"" + nota
-                    + "\",\"notaUsuario\":\"" + notaUsuario + "\",\"numNotas\":\"" + numNotas + "\"";
+                    + "\",\"notaUsuario\":\"" + notaUsuario + "\",\"numNotas\":\"" + numNotas + "\",\"brilhinho\":\""
+                    + premium + "\"";
             Json += "}";
         }
         return Json;
