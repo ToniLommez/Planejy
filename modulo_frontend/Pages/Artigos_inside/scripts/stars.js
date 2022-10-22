@@ -126,16 +126,23 @@ const loadStars = article => {
     ratings.querySelectorAll('label').forEach((e, i) => {
         const img = e.childNodes[1];
         
-        if(i < article.nota){
-            img.classList.add('starActive');
-            img.src = 'images/star1.png';
+        if(i >= article.notaUsuario && i >= article.nota){
+            img.classList.remove('clicked');
+            img.classList.remove('starActive');
+            img.src = 'images/star0.png';
             img.style.opacity = .4;
-        }
-        
-        if(i < article.notaUsuario){
+        }else{
+            if(i < article.nota){
+                img.classList.add('starActive');
+                img.src = 'images/star1.png';
+                img.style.opacity = .4;
+            }
+            
+            if(i < article.notaUsuario){
             img.classList.add('clicked');
             img.src = 'images/star1.png';
             img.style.opacity = 1;
+            }
         }
     });
 
