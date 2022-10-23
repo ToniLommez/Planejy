@@ -16,22 +16,22 @@ let timer = 0;
 
 const hide = () => {
     ghost.style.opacity = 0;
-    visible = false;
 }
 
 const show = () => {
     ghost.style.opacity = 1;
-    visible = true;
 }
 
 const turnOff = () => {
     document.body.removeEventListener('mousemove', setPosition);
     cancelAnimationFrame(animation);
     hide();
+    visible = false;
 }
 
 const turnOn = () => {
     document.body.addEventListener('mousemove', setPosition);
+    visible = true;
     move();
 }
 
