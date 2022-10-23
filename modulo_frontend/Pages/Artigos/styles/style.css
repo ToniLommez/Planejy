@@ -185,6 +185,11 @@ li a {
     border-color: var(--fc-button-hover-border-color, #5e4c77) !important;
 }
 
+.ja-lido {
+    background-color: #a9a7ad !important;
+    border-color: #a9a7ad !important;
+}
+
 @media screen and (max-width: 1024px) {
     .stars {
         bottom: 25px;
