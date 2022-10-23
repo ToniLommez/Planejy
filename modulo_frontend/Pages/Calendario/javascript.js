@@ -395,8 +395,8 @@ window.addEventListener('keyup', e => {
         }
     }else if(buffer.length === halloween.length){
         if(buffer.every((element, index) => element === halloween[index])){
-            if(visible) hide();
-            else show();
+            if(visible) turnOff();
+            else turnOn();
 
             buffer = [];
         }

@@ -10,27 +10,37 @@ let x = 0;
 let y = 0;
 
 let visible = false;
-
 let animation = null;
+
+let timer = 0;
 
 const hide = () => {
     ghost.style.opacity = 0;
     visible = false;
-    document.body.removeEventListener('mousemove', move);
-    cancelAnimationFrame(animation);
 }
 
 const show = () => {
-    document.body.addEventListener('mousemove', setPosition);
-
     ghost.style.opacity = 1;
     visible = true;
+}
+
+const turnOff = () => {
+    document.body.removeEventListener('mousemove', move);
+    cancelAnimationFrame(animation);
+    hide();
+}
+
+const turnOn = () => {
+    document.body.addEventListener('mousemove', setPosition);
+    show();
     move();
 }
 
 const setPosition = e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
+    show();
+    timer = 0;
 }
 
 const move = () => {
@@ -42,6 +52,10 @@ const move = () => {
 
     ghost.style.setProperty('--ghostXPos', ghostX + 'px');
     ghost.style.setProperty('--ghostYPos', ghostY + 'px');
+
+    timer++;
+
+    if(timer > 300) hide();
 
     animation = requestAnimationFrame(move);
 }
