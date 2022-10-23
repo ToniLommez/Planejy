@@ -2,7 +2,7 @@ const user = JSON.parse(sessionStorage.getItem('user'));
 let pros = {};
 
 onload = () => {
-    if(!user){
+    if (!user) {
         location.href = '../../index.html';
         return;
     }
@@ -30,7 +30,7 @@ const getPro = () => {
 
 const loadPro = profissionals => { //to-do: fix when pro doesnt have x social media
     pros = profissionals.Profissional;
-    
+
     let cards = '';
 
     for (let i = 0; i < profissionals.Profissional.length; i++) {
@@ -38,19 +38,19 @@ const loadPro = profissionals => { //to-do: fix when pro doesnt have x social me
         let ratings = '';
 
         let j = 0;
-        while(j < Math.round(profissionals.Profissional[i].nota)){
-            if(j < profissionals.Profissional[i].notaUsuario){
+        while (j < Math.round(profissionals.Profissional[i].nota)) {
+            if (j < profissionals.Profissional[i].notaUsuario) {
                 ratings += `<input class="star" type="radio" name="rating" value="pro-${profissionals.Profissional[i].registro}-${j}" id="pro-${profissionals.Profissional[i].registro}-${j}"><label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}"><img src="images/star1.png" class="img-star starActive clicked"></label>`;
-            }else{
+            } else {
                 ratings += `<input class="star" type="radio" name="rating" value="pro-${profissionals.Profissional[i].registro}-${j}" id="pro-${profissionals.Profissional[i].registro}-${j}"><label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}"><img src="images/star1.png" class="img-star starActive"></label>`;
             }
             j++;
         }
 
-        while(j < 5){
-            if(j < profissionals.Profissional[i].notaUsuario){
+        while (j < 5) {
+            if (j < profissionals.Profissional[i].notaUsuario) {
                 ratings += `<input class="star" type="radio" name="rating" value="pro-${profissionals.Profissional[i].registro}-${j}" id="pro-${profissionals.Profissional[i].registro}-${j}"><label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}"><img src="images/star1.png" class="img-star starActive clicked"></label>`;
-            }else{
+            } else {
                 ratings += `<input class="star" type="radio" name="rating" value="pro-${profissionals.Profissional[i].registro}-${j}" id="pro-${profissionals.Profissional[i].registro}-${j}"><label class="starLabel" for="pro-${profissionals.Profissional[i].registro}-${j}"><img src="images/star0.png" class="img-star"></label>`;
             }
             j++;
@@ -65,7 +65,7 @@ const loadPro = profissionals => { //to-do: fix when pro doesnt have x social me
                           <div class="card-body p-0 ${profissionals.Profissional[i].brilhinho === "true" ? 'premium-shadow' : ''}">
                               <img src="images/pro-${profissionals.Profissional[i].registro}.jpg" alt="" class="w-100 card-img-top">
                               <div class="p-4">
-                                  <h5 class="mb-0 nome">${profissionals.Profissional[i].nome}</h5>
+                                  <h5 class="mb-0 nome">${profissionals.Profissional[i].nome} ${profissionals.Profissional[i].brilhinho === "true" ? '<i class="bi bi-award-fill"></i>' : ''}</h5>
                                   <p class="small text-muted preco">${profissionals.Profissional[i].preco}/h</p>
                                   <p class="small text-muted area">${categories}</p>${categories.indexOf('<br>') === -1 ? '<br>' : ''}
                                   <ul class="social mb-0 list-inline mt-3">
@@ -88,7 +88,10 @@ const loadPro = profissionals => { //to-do: fix when pro doesnt have x social me
     }
 
     document.querySelector('.cards-box').innerHTML = cards;
-    document.querySelectorAll('.clicked').forEach(e => {e.src = 'images/star1.png'; e.style.opacity = 1;});
+    document.querySelectorAll('.clicked').forEach(e => {
+        e.src = 'images/star1.png';
+        e.style.opacity = 1;
+    });
 
     setStarEvents();
 }
