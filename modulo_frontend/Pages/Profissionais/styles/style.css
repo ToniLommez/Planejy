@@ -302,15 +302,14 @@ li a {
 
 .bi-award-fill {
     color: #DAA520;
-    float: right;
+    margin-left: 5px;
     animation: glowing-award 4s infinite;
     font-size: larger;
-    margin-top: -2px;
 }
 
 .nome {
-    margin-top: -2px;
-    padding-bottom: 12px;
+    margin-top: -5px;
+    padding-bottom: 8px;
 }
 
 .area {
