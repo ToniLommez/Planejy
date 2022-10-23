@@ -25,20 +25,20 @@ const show = () => {
 }
 
 const turnOff = () => {
-    document.body.removeEventListener('mousemove', move);
+    document.body.removeEventListener('mousemove', setPosition);
     cancelAnimationFrame(animation);
     hide();
 }
 
 const turnOn = () => {
     document.body.addEventListener('mousemove', setPosition);
-    show();
     move();
 }
 
 const setPosition = e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
+    console.log(mouseX, mouseY);
     show();
     timer = 0;
 }
