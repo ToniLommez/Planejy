@@ -305,11 +305,12 @@ li a {
     float: right;
     animation: glowing-award 4s infinite;
     font-size: larger;
+    margin-top: -2px;
 }
 
 .nome {
-    margin-top: -5px;
-    padding-bottom: 10px;
+    margin-top: -2px;
+    padding-bottom: 12px;
 }
 
 .area {
