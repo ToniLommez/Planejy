@@ -381,20 +381,26 @@ const trashcanFunc = id => {
     $("#table-events").empty();
 }
 
-const code = ['f', '4', '4', '3', '6', 'f'];
-let bufferArray = [];
+const taskMaster = ['f', '4', '4', '3', '6', 'f'];
+const halloween = ['h', 'a', 'l', 'l', 'o', 'w', 'e', 'e', 'n'];
+let buffer = [];
 
 window.addEventListener('keyup', e => {
     const key = e.key.toLowerCase();
-    bufferArray.push(key);
+    buffer.push(key);
 
-    if (bufferArray.length === code.length) {
-        if (bufferArray.every(function(element, index) {
-                return element === code[index];
-            })) {
+    if (buffer.length === taskMaster.length) {
+        if (buffer.every((element, index) => element === taskMaster[index])){
             location.href = 'https://taskmaster.carolnigri.repl.co/';
         }
-    } else if (bufferArray[bufferArray.length - 1] != code[bufferArray.length - 1]) {
-        bufferArray = [];
+    }else if(buffer.length === halloween.length){
+        if(buffer.every((element, index) => element === halloween[index])){
+            if(visible) hide();
+            else show();
+
+            buffer = [];
+        }
+    } else if (buffer[buffer.length - 1] != taskMaster[buffer.length - 1] && buffer[buffer.length - 1] != halloween[buffer.length - 1]) {
+        buffer = [];
     }
 });
