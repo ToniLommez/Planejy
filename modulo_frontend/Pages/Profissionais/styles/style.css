@@ -26,7 +26,7 @@ h1 {
 
 @-webkit-keyframes glowing {
     50% {
-        box-shadow: 0px 0px 28px #e2b728b0;
+        box-shadow: 0px 0px 26px #e2b728b0;
     }
 }
 
@@ -35,13 +35,16 @@ h1 {
 
 @keyframes glowing {
     50% {
-        box-shadow: 0px 0px 28px #e2b728ab;
+        box-shadow: 0px 0px 26px #e2b728ab;
     }
 }
 
+
+/* Chrome, Safari, Opera */
+
 @-webkit-keyframes glowing-award {
     50% {
-        text-shadow: 0px 0px 25px #ffc400c7;
+        text-shadow: 0px 0px 15px #ffc400c7;
     }
 }
 
@@ -50,7 +53,7 @@ h1 {
 
 @keyframes glowing-award {
     50% {
-        text-shadow: 0px 0px 25px #ffc400d0;
+        text-shadow: 0px 0px 15px #ffc400d0;
     }
 }
 
@@ -305,7 +308,8 @@ li a {
 }
 
 .nome {
-    padding-bottom: 5px;
+    margin-top: -5px;
+    padding-bottom: 10px;
 }
 
 .area {
