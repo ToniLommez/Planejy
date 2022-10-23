@@ -38,7 +38,6 @@ const turnOn = () => {
 const setPosition = e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    console.log(mouseX, mouseY);
     show();
     timer = 0;
 }
