@@ -29,6 +29,7 @@ public class Artigo {
     private String classificacaoCrua;
     private String classificacao[];
     private double classificacaoFinal;
+    private boolean jaEntrou;
     private Artigo next;
 
     /**
@@ -49,6 +50,7 @@ public class Artigo {
         this.classificacao = null;
         this.classificacaoCrua = null;
         this.classificacaoFinal = 0;
+        this.jaEntrou = false;
         this.next = null;
     }
 
@@ -68,11 +70,12 @@ public class Artigo {
         this.classificacao = null;
         this.classificacaoCrua = null;
         this.classificacaoFinal = 0;
+        this.jaEntrou = false;
         this.next = null;
     }
 
     public Artigo(int chave, String imagem, String imagemAlt, String titulo, String conteudo, String resumo,
-            String autor, LocalDate dataFabricacao, double nota, int numNotas, String classificacao) {
+            String autor, LocalDate dataFabricacao, double nota, int numNotas, String classificacao, boolean jaEntrou) {
         this.chave = chave;
         this.imagem = imagem;
         this.imagemAlt = imagemAlt;
@@ -87,6 +90,7 @@ public class Artigo {
         this.classificacaoCrua = classificacao;
         this.classificacao = classificacao.split(",");
         this.classificacaoFinal = 0;
+        this.jaEntrou = jaEntrou;
         this.next = null;
     }
 
@@ -140,6 +144,10 @@ public class Artigo {
 
     public double getClassificacaoFinal() {
         return this.classificacaoFinal;
+    }
+
+    public boolean jaEntrou() {
+        return this.jaEntrou;
     }
 
     public Artigo getNext() {
@@ -367,7 +375,7 @@ public class Artigo {
                     + "\", \"resumo\":\"" + artigo.resumo + "\", \"autor\":\"" + artigo.autor
                     + "\", \"dataFabricacao\":\"" + artigo.dataFabricacao + "\", \"nota\":\"" + artigo.nota
                     + "\", \"notaUsuario\":\"" + artigo.notaUsuario + "\", \"numNotas\":\"" + artigo.numNotas
-                    + "\", \"classificacaoCrua\":\"" + artigo.classificacaoCrua + "\"";
+                    + "\", \"classificacaoCrua\":\"" + artigo.classificacaoCrua + "\", \"jaEntrou\":\"" + artigo.jaEntrou + "\"";
             Json += "}";
             Json += ",";
         }
@@ -397,7 +405,7 @@ public class Artigo {
                     + "\", \"titulo\":\"" + titulo + "\", \"conteudo\":\"" + conteudo + "\", \"resumo\":\"" + resumo
                     + "\", \"autor\":\"" + autor + "\", \"dataFabricacao\":\"" + dataFabricacao + "\", \"nota\":\""
                     + nota + "\", \"notaUsuario\":\"" + notaUsuario + "\", \"numNotas\":\"" + numNotas
-                    + "\", \"classificacaoCrua\":\"" + classificacaoCrua + "\"";
+                    + "\", \"classificacaoCrua\":\"" + classificacaoCrua + "\", \"jaEntrou\":\"" + jaEntrou + "\"";
             Json += "}";
         }
         return Json;

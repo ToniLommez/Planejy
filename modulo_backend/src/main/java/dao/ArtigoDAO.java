@@ -115,7 +115,7 @@ public class ArtigoDAO extends DAO {
 				Artigo p = new Artigo(rs.getInt("chave"), rs.getString("imagem"), rs.getString("imagem_alt"),
 						rs.getString("titulo"), rs.getString("conteudo"), rs.getString("resumo"),
 						rs.getString("autor"), rs.getDate("dia").toLocalDate(),
-						notas[0], (int) notas[1], rs.getString("classificacao"));
+						notas[0], (int) notas[1], rs.getString("classificacao"), usuarioJaEntrou(tokenUsuario, rs.getInt("chave")));
 				p.notaFinal(nome, nota);
 				artigo.add(p);
 			}
@@ -162,6 +162,7 @@ public class ArtigoDAO extends DAO {
 		return result;
 	}
 
+
 	public int getNotaUsuario(String tokenUsuario, int chave_artigo) {
 		// Inicializacao de valores
 		int notaUsuario = 0;
@@ -182,6 +183,28 @@ public class ArtigoDAO extends DAO {
 			System.err.println(e.getMessage());
 		}
 		return notaUsuario;
+	}
+
+	public boolean usuarioJaEntrou(String tokenUsuario, int chave_artigo) {
+		// Falso ate se provar o contrario
+		boolean jaEntrou = false;;
+		try {
+			// Conexao
+			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String sql = "SELECT avaliacao FROM planejy.Entrega_Artigo WHERE chave_artigo = "
+					+ chave_artigo + " AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = '"
+					+ tokenUsuario + "') ";
+			ResultSet rs = st.executeQuery(sql);
+			// Para cada registro atualizar valores
+			if (rs.next()) {
+				jaEntrou = true;
+			}
+			// Fechar conexao
+			st.close();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		return jaEntrou;
 	}
 
 	public boolean avaliar(String tokenUsuario, int chave, int nota) {

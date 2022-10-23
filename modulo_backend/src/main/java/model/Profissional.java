@@ -336,7 +336,7 @@ public class Profissional {
 
         // Decidir aleatoriamente pelos premiums
         Random gerador = new Random();
-        long seed = (long) (array[1].registro + array[4].registro + array[8].registro + array[12].registro + array[16].registro);
+        long seed = (long) (array[1].registro + array[4].registro + array[8].registro + array[12].registro + array[15].registro);
         gerador.setSeed(seed);
         int numeroDePremiums = gerador.nextInt(2) + 1;
         int posicaoPremium[] = new int[numeroDePremiums];

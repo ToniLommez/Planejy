@@ -1,7 +1,7 @@
 const user = JSON.parse(sessionStorage.getItem('user'));
 
 onload = () => {
-    if(!user){
+    if (!user) {
         location.href = '../../index.html';
         return;
     }
@@ -16,7 +16,7 @@ const logout = () => {
 
 function executaPesquisa() {
     let xhr = new XMLHttpRequest();
-    
+
     xhr.onload = () => {
         loadArticles(JSON.parse(xhr.responseText));
     }
@@ -62,7 +62,7 @@ const loadArticles = response => {
                                 </p>
                                 <form action="../Artigos_inside/Artigos_inside.html">
                                     <input type="hidden" name="article_id" value="${response.Articles[i].chave}">
-                                    <input class="btn btn-primary" type="submit" value="Leia Mais">
+                                    <input class="btn btn-primary ${response.Articles[i].jaEntrou === "true" ? 'ja-lido' : ''}" type="submit" value="Leia Mais">
                                 </form>
                                 <div class="stars">
                                     ${stars}
