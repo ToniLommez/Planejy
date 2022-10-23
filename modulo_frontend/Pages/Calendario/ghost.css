@@ -3,7 +3,7 @@
     --ghostYPos: 0px;
     --darkText: #f1ede3dc;
     --light: #805ebe94;
-    --ghostShadow: #a576dal;
+    --ghostShadow: #a576da;
     transform: translate3d(var(--ghostXPos), var(--ghostYPos), 0);
     position: fixed;
     left: 20px;
