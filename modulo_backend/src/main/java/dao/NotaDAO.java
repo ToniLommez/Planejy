@@ -1,10 +1,12 @@
 package dao;
 
 import model.Nota;
+
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.Time;
 
 /**
  * Classe NotaDAO que herda a superclasse DAO - Data Access Object
@@ -53,10 +55,10 @@ public class NotaDAO extends DAO {
 		Nota notas = new Nota();
 		try {
 			// Conexao
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM planejy.nota WHERE id_usuario = ( SELECT id FROM planejy.usuario WHERE token = '"
-					+ tokenUsuario + "' )";
-			ResultSet rs = st.executeQuery(sql);
+			String sql = "SELECT * FROM planejy.nota WHERE id_usuario = ( SELECT id FROM planejy.usuario WHERE token = ? )";
+			PreparedStatement stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, tokenUsuario);
+			ResultSet rs = stmt.executeQuery();
 			// Para cada linha retornada adicionar uma nota a Pilha
 			while (rs.next()) {
 				Nota p = new Nota(rs.getLong("chave"), rs.getInt("id_usuario"), rs.getString("titulo"),
@@ -66,7 +68,7 @@ public class NotaDAO extends DAO {
 				notas.add(p);
 			}
 			// Fechar conexao
-			st.close();
+			stmt.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
@@ -93,15 +95,21 @@ public class NotaDAO extends DAO {
 		Nota nota = new Nota(body);
 		try {
 			// ID selecionado atraves do token
-			String sql = "INSERT INTO planejy.nota (id_usuario, titulo, dia, descricao, horario, categoria, cor) VALUES ((SELECT id FROM planejy.usuario WHERE token = '"
-					+ token + "'), '" + nota.getTitulo() + "', '" + nota.getDia().toString() + "', '"
-					+ nota.getDescricao() + "', '" + nota.getHorario().toString() + "', '" + nota.getCategoria()
-					+ "','" + nota.getCor() + "')";
+			String sql = "";
+			sql += "INSERT INTO planejy.nota (id_usuario, titulo, dia, descricao, horario, categoria, cor) ";
+			sql += "VALUES ((SELECT id FROM planejy.usuario WHERE token = ?), ?, ?, ?, ?, ?, ?)";
 			// Conexao
-			PreparedStatement st = conexao.prepareStatement(sql);
-			st.executeUpdate();
+			PreparedStatement stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, token);
+			stmt.setString(2, nota.getTitulo());
+			stmt.setDate(3, new Date(nota.getDia().getTime()));
+			stmt.setString(4, nota.getDescricao());
+			stmt.setTime(5, Time.valueOf(nota.getHorario())); 
+			stmt.setString(6, nota.getCategoria());
+			stmt.setString(7, nota.getCor());
+			stmt.executeUpdate();
 			// Fechar conexao
-			st.close();
+			stmt.close();
 			// Deu tudo certo!
 			status = true;
 		} catch (SQLException e) {
@@ -128,12 +136,14 @@ public class NotaDAO extends DAO {
 		boolean status = false;
 		try {
 			// Conexao
-			Statement st = conexao.createStatement();
-			// ID selecionado atraves do token
-			st.executeUpdate("DELETE FROM planejy.nota WHERE chave = " + chave
-					+ " AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "')");
+			String sql = "DELETE FROM planejy.nota WHERE chave = ? AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = ?)";
+			// Conexao
+			PreparedStatement stmt = getConnection().prepareStatement(sql);
+			stmt.setLong(1, Long.parseLong(chave));
+			stmt.setString(2, tokenUsuario);
+			stmt.execute();
 			// Fechar conexao
-			st.close();
+			stmt.close();
 			// Deu tudo certo!
 			status = true;
 		} catch (SQLException e) {
@@ -163,16 +173,23 @@ public class NotaDAO extends DAO {
 		Nota nota = new Nota(body, chave);
 		try {
 			// Id selecionado atraves do token de validacao
-			String sql = "UPDATE planejy.nota SET titulo = '" + nota.getTitulo() + "', dia = '"
-					+ nota.getDia().toString() + "', descricao = '" + nota.getDescricao() + "', horario = '"
-					+ nota.getHorario().toString() + "', categoria = '" + nota.getCategoria() + "', cor = '"
-					+ nota.getCor() + "' WHERE chave = " + nota.getChave()
-					+ " AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + token + "')";
-			// conexao
-			PreparedStatement st = conexao.prepareStatement(sql);
-			st.executeUpdate();
-			// fechar conexao
-			st.close();
+			String sql = "";
+			sql += "UPDATE planejy.nota SET titulo = ?, dia = ?, descricao = ?, horario = ?, categoria = ?, cor = ? ";
+			sql += "WHERE chave = ? AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = ?)";
+			
+			// Conexao
+			PreparedStatement stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, nota.getTitulo());
+			stmt.setDate(2, new Date(nota.getDia().getTime()));
+			stmt.setString(3, nota.getDescricao());
+			stmt.setTime(4, Time.valueOf(nota.getHorario())); 
+			stmt.setString(5, nota.getCategoria());
+			stmt.setString(6, nota.getCor());
+			stmt.setLong(7, nota.getChave());
+			stmt.setString(8, token);
+			stmt.executeUpdate();
+			// Fechar conexao
+			stmt.close();
 			// Deu tudo certo!
 			status = true;
 		} catch (SQLException e) {

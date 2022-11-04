@@ -1,6 +1,8 @@
 package dao;
 
 import model.Artigo;
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -48,14 +50,16 @@ public class ArtigoDAO extends DAO {
 		Artigo artigo = null;
 		try {
 			// Conexao
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM planejy.artigo WHERE chave=" + chave;
-			ResultSet rs = st.executeQuery(sql);
+			PreparedStatement stmt;
+			ResultSet rs;
+			String sql = "SELECT * FROM planejy.artigo WHERE chave = ?";
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setInt(1, chave);
+			rs = stmt.executeQuery();
 			// se algo for retornado, chamar o construtor
 			if (rs.next()) {
 				clique(tokenUsuario, chave);
 				double notas[] = getAvaliacao(rs.getInt("chave"));
-
 				artigo = new Artigo(rs.getInt("chave"), rs.getString("imagem"), rs.getString("imagem_alt"),
 						rs.getString("titulo"), rs.getString("conteudo"), rs.getString("resumo"),
 						rs.getString("autor"), rs.getDate("dia").toLocalDate(),
@@ -63,7 +67,7 @@ public class ArtigoDAO extends DAO {
 						getNotaUsuario(tokenUsuario, rs.getInt("chave")));
 			}
 			// fechar a conexao
-			st.close();
+			stmt.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
@@ -74,14 +78,16 @@ public class ArtigoDAO extends DAO {
 		Artigo artigo = new Artigo();
 		try {
 			// Conexao
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			PreparedStatement stmt;
 			ResultSet rs;
 			String sql = "";
 
 			// Criar dicionario para traducao de classificacao do artigo
 			sql += "SELECT * FROM planejy.classificacao_usuario ";
-			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "')";
-			rs = st.executeQuery(sql);
+			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = ? )";
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, tokenUsuario);
+			rs = stmt.executeQuery();
 			rs.next();
 			String nome[] = { "Trabalho", "Estudo", "Faculdade", "Curso", "Vida noturna", "Descanso", "Dia-a-dia",
 					"Social", "Social Profissional", "saude" };
@@ -107,7 +113,8 @@ public class ArtigoDAO extends DAO {
 			sql += "ON A.chave = B.chave_artigo ";
 			sql += "GROUP BY A.chave ";
 			sql += "ORDER BY A.chave";
-			rs = st.executeQuery(sql);
+			stmt = getConnection().prepareStatement(sql);
+			rs = stmt.executeQuery();
 
 			// Para cada string retornada, adicionar a pilha
 			while (rs.next()) {
@@ -123,7 +130,7 @@ public class ArtigoDAO extends DAO {
 			artigo.ordenar();
 
 			// fechar a conexao
-			st.close();
+			stmt.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
@@ -137,10 +144,10 @@ public class ArtigoDAO extends DAO {
 		double notaFinal = 0;
 		try {
 			// Conexao
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM planejy.Entrega_Artigo WHERE chave_artigo = "
-					+ chave_artigo + " AND avaliacao IS NOT NULL";
-			ResultSet rs = st.executeQuery(sql);
+			String sql = "SELECT * FROM planejy.Entrega_Artigo WHERE chave_artigo = ? AND avaliacao IS NOT NULL";
+			PreparedStatement stmt = getConnection().prepareStatement(sql);
+			stmt.setInt(1, chave_artigo);
+			ResultSet rs = stmt.executeQuery();
 			// Para cada registro atualizar valores
 			while (rs.next()) {
 				totalNotas += rs.getInt("avaliacao");
@@ -151,7 +158,7 @@ public class ArtigoDAO extends DAO {
 				notaFinal = totalNotas / numNotas;
 			}
 			// Fechar conexao
-			st.close();
+			stmt.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			notaFinal = -1;
@@ -162,23 +169,26 @@ public class ArtigoDAO extends DAO {
 		return result;
 	}
 
-
 	public int getNotaUsuario(String tokenUsuario, int chave_artigo) {
 		// Inicializacao de valores
 		int notaUsuario = 0;
 		try {
 			// Conexao
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT avaliacao FROM planejy.Entrega_Artigo WHERE chave_artigo = "
-					+ chave_artigo + " AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = '"
-					+ tokenUsuario + "' AND avaliacao is NOT NULL ) ";
-			ResultSet rs = st.executeQuery(sql);
+			String sql = "";
+			sql += "SELECT avaliacao FROM planejy.Entrega_Artigo WHERE chave_artigo = ? ";
+			sql += "AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = ? AND avaliacao is NOT NULL ) ";
+			PreparedStatement stmt = getConnection().prepareStatement(sql);
+			stmt.setInt(1, chave_artigo);
+			stmt.setString(2, tokenUsuario);
+			ResultSet rs = stmt.executeQuery();
 			// Para cada registro atualizar valores
 			if (rs.next()) {
 				notaUsuario = rs.getInt("avaliacao");
 			}
 			// Fechar conexao
 			st.close();
+			stmt.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
@@ -191,16 +201,20 @@ public class ArtigoDAO extends DAO {
 		try {
 			// Conexao
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT avaliacao FROM planejy.Entrega_Artigo WHERE chave_artigo = "
-					+ chave_artigo + " AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = '"
-					+ tokenUsuario + "') ";
-			ResultSet rs = st.executeQuery(sql);
+			String sql = "";
+			sql += "SELECT avaliacao FROM planejy.Entrega_Artigo WHERE chave_artigo = ? ";
+			sql += "AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = ? ) ";
+			PreparedStatement stmt = getConnection().prepareStatement(sql);
+			stmt.setInt(1, chave_artigo);
+			stmt.setString(2, tokenUsuario);
+			ResultSet rs = stmt.executeQuery();
 			// Para cada registro atualizar valores
 			if (rs.next()) {
 				jaEntrou = true;
 			}
 			// Fechar conexao
 			st.close();
+			stmt.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
@@ -216,15 +230,21 @@ public class ArtigoDAO extends DAO {
 			String sql;
 
 			sql = "UPDATE Planejy.Entrega_artigo ";
-			sql += "SET avaliacao = " + nota + ", cliques = (cliques + 1) ";
-			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
-			sql += "AND chave_artigo = " + chave;
+			sql += "SET avaliacao = ?, cliques = (cliques + 1) ";
+			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = ? ) ";
+			sql += "AND chave_artigo = ?" ;
+
+			PreparedStatement stmt = getConnection().prepareStatement(sql);
+			stmt.setInt(1, nota);
+			stmt.setString(2, tokenUsuario);
+			stmt.setInt(3, chave);
 
 			// Execucao
-			st.executeUpdate(sql);
+			stmt.executeUpdate();
 
 			// Fechar conexao
 			st.close();
+			stmt.close();
 			// Deu tudo certo!
 			status = atualizarClassificacaoUsuario(tokenUsuario, chave);
 		} catch (SQLException e) {
@@ -244,14 +264,19 @@ public class ArtigoDAO extends DAO {
 
 			sql = "UPDATE Planejy.Entrega_artigo ";
 			sql += "SET tempo = (tempo + 1) ";
-			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
-			sql += "AND chave_artigo = " + chave;
+			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = ? ) ";
+			sql += "AND chave_artigo = ?";
+
+			PreparedStatement stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, tokenUsuario);
+			stmt.setInt(2, chave);
 
 			// Execucao
-			st.executeUpdate(sql);
+			stmt.executeUpdate();
 
 			// Fechar conexao
 			st.close();
+			stmt.close();
 			// Deu tudo certo!
 			status = atualizarClassificacaoUsuario(tokenUsuario, chave);
 		} catch (SQLException e) {
@@ -266,16 +291,22 @@ public class ArtigoDAO extends DAO {
 		boolean status = false;
 		try {
 			// objetos de conexao
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			PreparedStatement stmt;
 			String sql;
 			ResultSet rs;
 
 			// Testar se ja existe avaliacao
 			boolean existe = true;
 			sql = "SELECT * FROM Planejy.Entrega_artigo ";
-			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
-			sql += "AND chave_artigo = " + chave;
-			rs = st.executeQuery(sql);
+			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = ? ) ";
+			sql += "AND chave_artigo = ?";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, tokenUsuario);
+			stmt.setInt(2, chave);
+			rs = stmt.executeQuery();
+
+
 			if (!rs.next()) {
 				existe = false;
 			}
@@ -284,19 +315,22 @@ public class ArtigoDAO extends DAO {
 			if (existe) {
 				sql = "UPDATE Planejy.Entrega_artigo ";
 				sql += "SET cliques = (cliques + 1) ";
-				sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
-				sql += "AND chave_artigo = " + chave;
+				sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = ? ) ";
+				sql += "AND chave_artigo = ?";
 			} else {
 				sql = "INSERT INTO Planejy.Entrega_artigo (id_usuario, chave_artigo, cliques) ";
-				sql += "VALUES ((SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "'), ";
-				sql += chave + ", 1 );";
+				sql += "VALUES ((SELECT id FROM planejy.usuario WHERE token = ? ), ?, 1)";
 			}
 
 			// Execucao
-			st.executeUpdate(sql);
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, tokenUsuario);
+			stmt.setInt(2, chave);
+
+			stmt.executeUpdate();
 
 			// Fechar conexao
-			st.close();
+			stmt.close();
 			// Deu tudo certo!
 			status = atualizarClassificacaoUsuario(tokenUsuario, chave);
 		} catch (SQLException e) {
@@ -316,15 +350,22 @@ public class ArtigoDAO extends DAO {
 
 			// Recuperar a quantidade de classificacoes do profissional
 			sql = "SELECT count(chave_artigo) FROM planejy.tipo_de_usuario_do_artigo ";
-			sql += "WHERE chave_artigo = " + chave_artigo;
-			rs = st.executeQuery(sql);
+			sql += "WHERE chave_artigo = ?";
+			PreparedStatement stmt = getConnection().prepareStatement(sql);
+			stmt.setInt(1, chave_artigo);
+			
+			rs = stmt.executeQuery();
 			rs.next();
 			int numClassificacoes = rs.getInt("count");
 
 			// Recuperar a classe das classificacoes/* */
 			sql = "SELECT tipo FROM planejy.tipo_de_usuario_do_artigo ";
-			sql += "WHERE chave_artigo = " + chave_artigo;
-			rs = st.executeQuery(sql);
+			sql += "WHERE chave_artigo = ?";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setInt(1, chave_artigo);
+
+			rs = stmt.executeQuery();
 			String classificacoes[] = new String[numClassificacoes];
 			int i = 0;
 			String tmp;
@@ -355,12 +396,17 @@ public class ArtigoDAO extends DAO {
 					sql += " ";
 				}
 			}
-			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
+			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = ? ) ";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, tokenUsuario);
+
 			// Execucao
-			st.executeUpdate(sql);
+			stmt.executeUpdate();
 
 			// Fechar conexao
 			st.close();
+			stmt.close();
 			// Deu tudo certo!
 			status = true;
 		} catch (SQLException e) {

@@ -1,9 +1,10 @@
 package dao;
 
 import model.Usuario;
+
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.security.*;
 import java.math.*;
 
@@ -76,9 +77,12 @@ public class UsuarioDAO extends DAO {
 		Usuario usuario = new Usuario();
 		try {
 			// Conexao
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM planejy.usuario WHERE token = '" + token + "'";
-			ResultSet rs = st.executeQuery(sql);
+			String sql = "SELECT * FROM planejy.usuario WHERE token = ?";
+
+			PreparedStatement stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, token);
+			ResultSet rs = stmt.executeQuery();
+
 			// Se receber, popular
 			if (rs.next()) {
 				usuario = new Usuario(rs.getInt("id"), rs.getString("nome"), rs.getDate("nascimento"),
@@ -86,7 +90,7 @@ public class UsuarioDAO extends DAO {
 						rs.getString("genero"), rs.getString("token"));
 			}
 			// Fim de conexao
-			st.close();
+			stmt.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
@@ -106,11 +110,15 @@ public class UsuarioDAO extends DAO {
 		boolean status = false;
 		try {
 			// Conexao
-			Statement st = conexao.createStatement();
-			String sql = "DELETE FROM planejy.usuario WHERE token = '" + token + "' AND id = " + id;
-			st.executeUpdate(sql);
+			String sql = "DELETE FROM planejy.usuario WHERE token = ? AND id = ?";
+
+			PreparedStatement stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, token);
+			stmt.setInt(2, Integer.parseInt(id));
+			stmt.executeUpdate();
+
 			// Fim de conexao
-			st.close();
+			stmt.close();
 			// Deu tudo certo!
 			status = true;
 		} catch (Exception e) {
@@ -138,27 +146,35 @@ public class UsuarioDAO extends DAO {
 		int id = -1;
 		try {
 			// Conexao
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT id FROM planejy.usuario WHERE email = '" + email + "' AND senha = '" + senha + "'";
-			ResultSet rs = st.executeQuery(sql);
+			String sql = "SELECT id FROM planejy.usuario WHERE email = ? AND senha = ?";
+
+			PreparedStatement stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, email);
+			stmt.setString(2, senha);
+			ResultSet rs = stmt.executeQuery();
+
 			// Se retornar algo salvar
 			if (rs.next()) {
 				id = (rs.getInt("id"));
 			} else {
 				id = -1;
 			}
-			// Fim de conexao
-			st.close();
+			
 			// Se Id for encontrado efetuar o login e registrar o Token de acesso unico
 			if (id != -1) {
 				// Nova Conexao para registro
-				Statement stToken = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-						ResultSet.CONCUR_READ_ONLY);
-				String sqlToken = "UPDATE planejy.usuario SET token = '" + token + "' WHERE id = " + id;
-				stToken.executeQuery(sqlToken);
+				sql = "UPDATE planejy.usuario SET token = ? WHERE id = ?";
+
+				stmt = getConnection().prepareStatement(sql);
+				stmt.setString(1, token);
+				stmt.setInt(2, id);
+				stmt.executeQuery();
+
 				// Fim da conexao
-				stToken.close();
 			}
+
+			// Fim de conexao
+			stmt.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
@@ -188,14 +204,17 @@ public class UsuarioDAO extends DAO {
 		senha = md5(senha);
 		try {
 			// objetos de conexao
-			Statement st;
+			PreparedStatement stmt;
 			String sql;
 			ResultSet rs;
 
 			// Validacao de Nick
-			st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			sql = "SELECT nick FROM planejy.usuario WHERE nick = '" + nick + "'";
-			rs = st.executeQuery(sql);
+			sql = "SELECT nick FROM planejy.usuario WHERE nick = ?";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, nick);
+			rs = stmt.executeQuery();
+
 			if (!rs.next()) {
 				result += ("{ \"Usuario\": [{ \"nick\":true , ");
 			} else {
@@ -203,8 +222,12 @@ public class UsuarioDAO extends DAO {
 			}
 
 			// Validacao de Email
-			sql = "SELECT email FROM planejy.usuario WHERE email = '" + email + "'";
-			rs = st.executeQuery(sql);
+			sql = "SELECT email FROM planejy.usuario WHERE email = ?";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, email);
+			rs = stmt.executeQuery();
+
 			if (!rs.next()) {
 				result += ("\"email\":true , ");
 			} else {
@@ -212,19 +235,27 @@ public class UsuarioDAO extends DAO {
 			}
 
 			// Insercao propriamente dita
-			sql = "INSERT INTO planejy.usuario (nome, nick, senha, email) VALUES ('" + nome + "', '" + nick + "', '"
-					+ senha + "', '" + email + "')";
-			st.execute(sql);
+			sql = "INSERT INTO planejy.usuario (nome, nick, senha, email) VALUES (?, ?, ?, ?)";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, nome);
+			stmt.setString(2, nick);
+			stmt.setString(3, senha);
+			stmt.setString(4, email);
+			stmt.execute();
 			
+
 			// Cadastros subsequentes
 			// Cadastro na tabela de classificacao
-			sql = "INSERT INTO planejy.classificacao_usuario (id_usuario) VALUES ((SELECT id FROM planejy.usuario WHERE email = '"
-			+ email + "'))";
-			st.execute(sql);
-			
+			sql = "INSERT INTO planejy.classificacao_usuario (id_usuario) VALUES ((SELECT id FROM planejy.usuario WHERE email = ?))";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, email);
+			stmt.execute();
+
 			// Fim de conexao
 			result += ("\"sucesso\":true } ] }");
-			st.close();
+			stmt.close();
 		} catch (Exception e) {
 			result += ("\"sucesso\":false } ] }");
 			System.err.println(e.getMessage());
@@ -256,14 +287,17 @@ public class UsuarioDAO extends DAO {
 		Usuario usuario = new Usuario(body);
 		try {
 			// Conexao
-			Statement st;
+			PreparedStatement stmt;
 			String sql;
 			ResultSet rs;
 
 			// Validacao de Nick
-			st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			sql = "SELECT nick FROM planejy.usuario WHERE nick = '" + usuario.getNick() + "'";
-			rs = st.executeQuery(sql);
+			sql = "SELECT nick FROM planejy.usuario WHERE nick = ?";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, usuario.getNick());
+			rs = stmt.executeQuery();
+
 			if (!rs.next()) {
 				result += ("{ \"Usuario\": [{ \"nick\":true , ");
 			} else {
@@ -271,8 +305,12 @@ public class UsuarioDAO extends DAO {
 			}
 
 			// Validacao de Email
-			sql = "SELECT email FROM planejy.usuario WHERE email = '" + usuario.getEmail() + "'";
-			rs = st.executeQuery(sql);
+			sql = "SELECT email FROM planejy.usuario WHERE email = ?";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, usuario.getEmail());
+			rs = stmt.executeQuery();
+
 			if (!rs.next()) {
 				result += ("\"email\":true , ");
 			} else {
@@ -280,17 +318,23 @@ public class UsuarioDAO extends DAO {
 			}
 
 			// Update propriamente dito
-			sql = "UPDATE planejy.usuario SET email = '" + usuario.getEmail() + "', nome = '" + usuario.getNome()
-					+ "', nascimento = '" + usuario.getNascimento() + "', nick = '" + usuario.getNick()
-					+ "', genero = '" + usuario.getGenero().charAt(0) + "'WHERE id = " + id + " AND token = '" + token
-					+ "'";
-			PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-			preparedStatement.executeUpdate();
+			sql = "UPDATE planejy.usuario SET email = ?, nome = ?, nascimento = ?, nick = ?, genero = ? ";
+			sql += "WHERE id = ? AND token = ?";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, usuario.getEmail());
+			stmt.setString(2, usuario.getNome());
+			stmt.setDate(3, new Date(usuario.getNascimento().getTime()));
+			stmt.setString(4, usuario.getNick());
+			stmt.setString(5, usuario.getGenero());
+			stmt.setInt(6, id);
+			stmt.setString(7, token);
+			stmt.executeUpdate();
+			
 			result += ("\"sucesso\":true } ] }");
 
 			// fim de conexao
-			preparedStatement.close();
-			st.close();
+			stmt.close();
 		} catch (Exception e) {
 			result += ("\"sucesso\":false } ] }");
 			System.err.println(e.getMessage());
@@ -316,27 +360,33 @@ public class UsuarioDAO extends DAO {
 		int id = -1;
 		try {
 			// Recuperar o ID equivalente ao email e Conexao
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT id FROM planejy.usuario WHERE email = '" + email + "'";
-			ResultSet rs = st.executeQuery(sql);
+			PreparedStatement stmt;
+			ResultSet rs;
+			String sql = "SELECT id FROM planejy.usuario WHERE email = ?";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, email);
+			rs = stmt.executeQuery();
+
 			if (rs.next()) {
 				id = (rs.getInt("id"));
 			} else {
 				id = -1;
 			}
-			// Fim de conexao
-			st.close();
 
 			// Se o email existir o token de recuperacao de senha sera registrado a conta
 			if (id != -1) {
 				// Nova conexao
-				Statement stToken = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-						ResultSet.CONCUR_READ_ONLY);
-				String sqlToken = "UPDATE planejy.usuario SET token = '" + token + "' WHERE id = " + id;
-				stToken.executeQuery(sqlToken);
-				// Fim de conexao
-				stToken.close();
+				sql = "UPDATE planejy.usuario SET token = ? WHERE id = ?";
+
+				stmt = getConnection().prepareStatement(sql);
+				stmt.setString(1, token);
+				stmt.setInt(2, id);
+				stmt.executeQuery();
 			}
+
+			// Fim de conexao
+			stmt.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
@@ -364,27 +414,34 @@ public class UsuarioDAO extends DAO {
 		senha = md5(senha);
 		try {
 			// Recuperacao do ID atraves do token gerado e conexao
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT id FROM planejy.usuario WHERE token = '" + token + "'";
-			ResultSet rs = st.executeQuery(sql);
+			PreparedStatement stmt;
+			ResultSet rs;
+			String sql = "";
+			sql += "SELECT id FROM planejy.usuario WHERE token = ?";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, token);
+			rs = stmt.executeQuery();
+
 			if (rs.next()) {
 				id = (rs.getInt("id"));
 			} else {
 				id = -1;
 			}
 			// Fim de conexao
-			st.close();
 
 			// Efetivar a mudanca de senha
 			if (id != -1) {
 				// Conexao
-				Statement stToken = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-						ResultSet.CONCUR_READ_ONLY);
-				String sqlToken = "UPDATE planejy.usuario SET senha = '" + senha + "' WHERE id = " + id;
-				stToken.executeQuery(sqlToken);
-				// Fim de conexao
-				stToken.close();
+				sql = "UPDATE planejy.usuario SET senha = ? WHERE id = ?";
+
+				stmt = getConnection().prepareStatement(sql);
+				stmt.setString(1, senha);
+				stmt.setInt(2, id);
+				stmt.executeQuery();
 			}
+
+			stmt.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
@@ -407,39 +464,44 @@ public class UsuarioDAO extends DAO {
 		try {
 			// Recuperacao do ID atraves do token gerado e conexao
 			int id = -1;
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT id FROM planejy.usuario WHERE token = '" + token + "'";
-			ResultSet rs = st.executeQuery(sql);
+			PreparedStatement stmt;
+			ResultSet rs;
+			String sql = "";
+			sql += "SELECT id FROM planejy.usuario WHERE token = ?";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, token);
+			rs = stmt.executeQuery();
+
 			if (rs.next()) {
 				id = (rs.getInt("id"));
 			} else {
 				id = -1;
 			}
-			// Fim de conexao
-			st.close();
 
 			// Efetivar a atualizacao dos dados
 			if (id != -1) {
 				// Conexao, construcao e execucao
-				Statement stToken = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-						ResultSet.CONCUR_READ_ONLY);
-				String sqlToken = "UPDATE planejy.classificacao_usuario SET ";
+				sql = "UPDATE planejy.classificacao_usuario SET ";
 				for (int i = 0; i < categorias.length; i++) {
-					sqlToken += categorias[i];
-					sqlToken += " = ";
-					sqlToken += categorias[i];
-					sqlToken += " +1";
+					sql += categorias[i];
+					sql += " = ";
+					sql += categorias[i];
+					sql += " +1";
 					if (i < categorias.length - 1) {
-						sqlToken += ", ";
+						sql += ", ";
 					}
 				}
-				sqlToken += " WHERE id_usuario = " + id;
-				System.out.printf(sqlToken);
-				stToken.executeQuery(sqlToken);
-				// Fim de conexao
-				stToken.close();
+				sql += " WHERE id_usuario = ?";
+
+				stmt = getConnection().prepareStatement(sql);
+				stmt.setInt(1, id);
+				stmt.executeQuery();
+
 				result = true;
 			}
+
+			stmt.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}

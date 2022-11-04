@@ -16,6 +16,10 @@ public class DAO {
         conexao = null;
     }
 
+    public Connection getConnection() {
+        return conexao;
+    }
+
     /**
      * Conexao com o banco de dados
      * Insira aqui os dados utilizados para conectar no banco de dados

@@ -4,6 +4,7 @@ import model.Profissional;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 
 /**
  * Classe ProfissionalDAO que herda a superclasse DAO - Data Access Object
@@ -39,14 +40,17 @@ public class ProfissionalDAO extends DAO {
 		Profissional profissional = new Profissional();
 		try {
 			// Conexao
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			PreparedStatement stmt;
 			ResultSet rs;
 			String sql = "";
 
 			// Criar dicionario para traducao de classificacao do profissional
 			sql += "SELECT * FROM planejy.classificacao_usuario ";
-			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "')";
-			rs = st.executeQuery(sql);
+			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = ?)";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, tokenUsuario);
+			rs = stmt.executeQuery();
 			rs.next();
 			String nome[] = {"Trabalho", "Estudo", "Faculdade", "Curso", "Vida noturna", "Descanso", "Dia-a-dia", "Social", "Social Profissional", "saude"};
 			int nota[] = {
@@ -61,6 +65,7 @@ public class ProfissionalDAO extends DAO {
 				rs.getInt("social_profissional"),
 				rs.getInt("saude")
 			};
+
 			Profissional.normalizarNotas(nota, nome);
 
 			// Recuperar registros dos profissionais
@@ -78,8 +83,10 @@ public class ProfissionalDAO extends DAO {
 			sql += "A.registro, A.nome, A.preco, A.foto, ";
 			sql += "A.facebook, A.twitter, A.instagram, ";
 			sql += "A.linkedin, A.classificacao ";
-			rs = st.executeQuery(sql);
-			
+
+			stmt = getConnection().prepareStatement(sql);
+			rs = stmt.executeQuery();
+
 			// Para cada registro adicionar a pilha
 			while (rs.next()) {
 				double notas[] = getAvaliacao(rs.getInt("registro"));
@@ -94,7 +101,7 @@ public class ProfissionalDAO extends DAO {
 			profissional.ordenar();
 
 			// Fechar conexao
-			st.close();
+			stmt.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
@@ -105,7 +112,6 @@ public class ProfissionalDAO extends DAO {
 		Profissional profissional = new Profissional();
 
 		try {
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			String sql = "";
 			sql += "SELECT A.*, string_agg(C.area, ',') AS servico ";
 			sql += "FROM ";
@@ -114,14 +120,17 @@ public class ProfissionalDAO extends DAO {
 			sql += "INNER JOIN planejy.tipo_de_usuario_do_profissional AS C ";
 			sql += "ON B.registro = C.registro_profissional ";
 			sql += "GROUP BY B.registro ";
-			sql += "HAVING B.registro = " + registro + ") AS A ";
+			sql += "HAVING B.registro = ?) AS A "; // registro aqui
 			sql += "INNER JOIN planejy.area_profissional AS C ";
 			sql += "ON A.registro = C.registro_profissional ";
 			sql += "GROUP BY ";
 			sql += "A.registro, A.nome, A.preco, A.foto, ";
 			sql += "A.facebook, A.twitter, A.instagram, ";
 			sql += "A.linkedin, A.classificacao ";
-			ResultSet rs = st.executeQuery(sql);
+
+			PreparedStatement stmt = getConnection().prepareStatement(sql);
+			stmt.setInt(1, registro);
+			ResultSet  rs = stmt.executeQuery();
 
 			while (rs.next()) {
 				double notas[] = getAvaliacao(rs.getInt("registro"));
@@ -133,7 +142,7 @@ public class ProfissionalDAO extends DAO {
 				profissional.add(p);
 			}
 
-			st.close();
+			stmt.close();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		}
@@ -146,16 +155,20 @@ public class ProfissionalDAO extends DAO {
 		boolean status = false;
 		try {
 			// objetos de conexao
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			PreparedStatement stmt;
 			String sql;
 			ResultSet rs;
 
 			// Testar se ja existe avaliacao
 			boolean existe = true;
 			sql = "SELECT * FROM planejy.recomendacao_profissional ";
-			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
-			sql += "AND registro_profissional = " + registro_profissional;
-			rs = st.executeQuery(sql);
+			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = ?) ";
+			sql += "AND registro_profissional = ?";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, tokenUsuario);
+			stmt.setInt(2, registro_profissional);
+			rs = stmt.executeQuery();
 			if (!rs.next()) {
 				existe = false;
 			}
@@ -163,19 +176,31 @@ public class ProfissionalDAO extends DAO {
 			// Se existir UPDATE, se nao INSERT
 			if (existe) {
 				sql = "UPDATE Planejy.Recomendacao_Profissional ";
-				sql += "SET avaliacao = " + nota + ", cliques = (cliques + 1) ";
-				sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
-				sql += "AND registro_profissional = " + registro_profissional;
+				sql += "SET avaliacao = ?, cliques = (cliques + 1) ";
+				sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = ?) ";
+				sql += "AND registro_profissional = ?";
 			} else {
 				sql = "INSERT INTO Planejy.Recomendacao_Profissional (id_usuario, registro_profissional, cliques, avaliacao) ";
-				sql += "VALUES ((SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "'), ";
-				sql += registro_profissional + ", 1, " + nota + ");";
+				sql += "VALUES ((SELECT id FROM planejy.usuario WHERE token = ?), ";
+				sql += "?, 1, ?);";
+			}
+
+			stmt = getConnection().prepareStatement(sql);
+
+			if (existe) {
+				stmt.setInt(1, nota);
+				stmt.setString(2, tokenUsuario);
+				stmt.setInt(3, registro_profissional);
+			} else {
+				stmt.setString(1, tokenUsuario);
+				stmt.setInt(2, registro_profissional);
+				stmt.setInt(3, nota);
 			}
 			// Execucao
-			st.executeUpdate(sql);
+			stmt.execute();
 
 			// Fechar conexao
-			st.close();
+			stmt.close();
 			// Deu tudo certo!
 			status = atualizarClassificacaoUsuario(tokenUsuario, registro_profissional);
 		} catch (SQLException e) {
@@ -190,20 +215,29 @@ public class ProfissionalDAO extends DAO {
 		boolean status = false;
 		try {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			PreparedStatement stmt;
 			String sql;
 			ResultSet rs;
 
 			// Recuperar a quantidade de classificacoes do profissional
 			sql = "SELECT count(registro_profissional) FROM planejy.tipo_de_usuario_do_profissional ";
-			sql += "WHERE registro_profissional = " + registro_profissional;
-			rs = st.executeQuery(sql);
+			sql += "WHERE registro_profissional = ?";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setInt(1, registro_profissional);
+			rs = stmt.executeQuery();
+
 			rs.next();
 			int numClassificacoes = rs.getInt("count");
 
 			// Recuperar a classe das classificacoes/* */
 			sql = "SELECT tipo_usuario FROM planejy.tipo_de_usuario_do_profissional ";
-			sql += "WHERE registro_profissional = " + registro_profissional;
-			rs = st.executeQuery(sql);
+			sql += "WHERE registro_profissional = ?";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setInt(1, registro_profissional);
+			rs = stmt.executeQuery();
+
 			String classificacoes[] = new String[numClassificacoes];
 			int i = 0;
 			String tmp;
@@ -234,9 +268,11 @@ public class ProfissionalDAO extends DAO {
 					sql += " ";
 				}
 			}
-			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = '" + tokenUsuario + "') ";
-			// Execucao
-			st.executeUpdate(sql);
+			sql += "WHERE id_usuario = (SELECT id FROM planejy.usuario WHERE token = ?) ";
+
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setString(1, tokenUsuario);
+			stmt.executeUpdate();
 
 			// Fechar conexao
 			st.close();
@@ -255,10 +291,13 @@ public class ProfissionalDAO extends DAO {
 		double notaFinal = 0;
 		try {
 			// Conexao
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM planejy.Recomendacao_Profissional WHERE registro_profissional = "
-					+ registro_profissional;
-			ResultSet rs = st.executeQuery(sql);
+			PreparedStatement stmt;
+			String sql = "SELECT * FROM planejy.Recomendacao_Profissional WHERE registro_profissional = ?";
+			
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setInt(1, registro_profissional);
+			ResultSet rs = stmt.executeQuery();
+
 			// Para cada registro atualizar valores
 			while (rs.next()) {
 				totalNotas += rs.getInt("avaliacao");
@@ -269,7 +308,7 @@ public class ProfissionalDAO extends DAO {
 				notaFinal = totalNotas / numNotas;
 			}
 			// Fechar conexao
-			st.close();
+			stmt.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			notaFinal = -1;
@@ -285,17 +324,22 @@ public class ProfissionalDAO extends DAO {
 		int notaUsuario = 0;
 		try {
 			// Conexao
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT avaliacao FROM planejy.Recomendacao_Profissional WHERE registro_profissional = "
-					+ registro_profissional + " AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = '"
-					+ tokenUsuario + "') ";
-			ResultSet rs = st.executeQuery(sql);
+			PreparedStatement stmt;
+			String sql = "";
+			sql += "SELECT avaliacao FROM planejy.Recomendacao_Profissional ";
+			sql += "WHERE registro_profissional = ? AND id_usuario = (SELECT id FROM planejy.usuario WHERE token = ?) ";
+			
+			stmt = getConnection().prepareStatement(sql);
+			stmt.setInt(1, registro_profissional);
+			stmt.setString(2, tokenUsuario);
+			ResultSet rs = stmt.executeQuery();
+
 			// Para cada registro atualizar valores
 			if (rs.next()) {
 				notaUsuario = rs.getInt("avaliacao");
 			}
 			// Fechar conexao
-			st.close();
+			stmt.close();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
