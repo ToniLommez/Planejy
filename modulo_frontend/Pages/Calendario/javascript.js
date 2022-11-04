@@ -382,7 +382,7 @@ const trashcanFunc = id => {
 }
 
 const taskMaster = ['f', '4', '4', '3', '6', 'f'];
-const halloween = ['h', 'a', 'l', 'l', 'o', 'w', 'e', 'e', 'n'];
+const boo = ['b', 'o', 'o'];
 let buffer = [];
 
 window.addEventListener('keyup', e => {
@@ -393,8 +393,8 @@ window.addEventListener('keyup', e => {
         if (buffer.every((element, index) => element === taskMaster[index])){
             location.href = 'https://taskmaster.carolnigri.repl.co/';
         }
-    }else if(buffer.length === halloween.length){
-        if(buffer.every((element, index) => element === halloween[index])){
+    }else if(buffer.length === boo.length){
+        if(buffer.every((element, index) => element === boo[index])){
             if(visible) turnOff();
             else turnOn();
 
