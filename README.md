@@ -13,6 +13,9 @@ html, css e javascript
 o frontend nao possui dependencia de pastas com o backend
 pode ser aberto independentemente e sua pasta transferida para outro endereco
 
+## UTILIZACAO
+O modulo_backend deve ser aberto e executado no eclipse como um projeto maven
+O modulo_frontend deve ser aberto atraves da pasta \Planejy\modulo_frontend atraves do index.html
 
 -------------------------------------------------------------------------------
 
